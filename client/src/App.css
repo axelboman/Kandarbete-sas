@@ -1,19 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Bitter:400,700|Open+Sans:300,400,600&subset=latin-ext');
+
+.text-helvetica{font-family: Arial, Helvetica, sans-serif}
+
 .App {
-  text-align: center;
+  font-family: Helvetica, sans-serif;
+  
+}
+.body{
+  align-content: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 40px;
+  width: 100px;
+  padding: 10px;
+}
+.swithLangButton{
+  padding: 20px;
+  border-radius: 40px;
+  float: right;
+  color: purple;
+  
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background-color:#000099;
+  height: 60px;
   padding: 20px;
   color: white;
 }
-
+.Tabs{
+  color: red;
+  float: right;
+}
 .App-title {
   font-size: 1.5em;
 }
@@ -21,7 +40,52 @@
 .App-intro {
   font-size: large;
 }
+.celenderStyle{
+  border-radius: 4px;
+  margin: auto;
+}
 
+.container{
+  text-align: center;
+  border: solid 1px;
+  width: 100%;
+  margin-top: 10px;
+
+}
+
+.calendarSection{
+  text-align: center;
+  width: 60%;
+  float: right;
+  margin-top: 10px;
+}
+
+.innerCalendar1{
+  width: 48%; 
+  float: left;
+}
+
+.innerCalendar2{
+  width: 48%; 
+  float: right;
+}
+.datePickerSection{
+  border: solid 2px;
+  float: left;
+  margin-top: 10px;
+}
+
+.handChoice{
+  border: dotted 1px;
+  margin: 5px;
+}
+
+.handChoice h3 { float: left; font-size: 1em; }
+
+.datePicker{
+  text-align: center;
+
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

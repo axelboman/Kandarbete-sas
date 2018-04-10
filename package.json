@@ -17,6 +17,9 @@
   },
   "dependencies": {
     "concurrently": "^3.5.1",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "react-calendar": "^2.14.0",
+    "react-date-picker": "^6.10.1",
+    "react-tabs": "^2.2.1"
   }
 }
