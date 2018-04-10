@@ -90,3 +90,41 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.App .container {
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+
+}
+
+.App .navbar-brand {
+  font-weight: bold;
+}
+
+.App .navbar {
+  width: 100%;
+  padding: 0%;
+  border-color: #000099; /* för markeringen */
+  border-radius: 0;
+}
+.App .container-fluid {
+  background-color: #000099;
+  margin: 0%;
+  
+}
+
+
+@media (min-width: 768px) {
+  .container {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    border-radius: 0;
+  
+  }
+}

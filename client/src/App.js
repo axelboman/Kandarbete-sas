@@ -1,97 +1,78 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { Link, withRouter } from "react-router-dom";
+import { Nav, Navbar, NavItem } from "react-bootstrap";
+import Routes from "./Routes";
+import { LinkContainer } from "react-router-bootstrap";
 import logo from './SAS-Logo-white.png';
 import './App.css';
 
+
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import Calendar from 'react-calendar';
-import DatePicker from 'react-date-picker'
 
 
 class App extends Component {
-  //this is for the calendar section
-  state = {
-  date: new Date(),
-  }
-  onChange = date => this.setState({ date })
 
-  //This is where the content is rendered.
+  constructor(props) {
+    super(props);
+  
+    this.state = {
+      isAuthenticated: false, //Ska vara "false" från början men ändra för att se "logout"
+      isAuthenticating: true     
+    };
+  }
+
+  userHasAuthenticated = authenticated => {
+    this.setState({ isAuthenticated: authenticated });
+  }
+
+  handleLogout = event => {
+    this.userHasAuthenticated(false);
+  }
+  
+
   render() {
+    const childProps = {
+      isAuthenticated: this.state.isAuthenticated,
+      userHasAuthenticated: this.userHasAuthenticated
+    };
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} alt="sasLogo" className="App-logo" />
-          <button className="swithLangButton" type="button">Switch Language</button>
-        </header>  
         
-        <div className="body">
-          <div className="container"> 
-            <div className="datePickerSection" >
-              <div className="handChoice">
-                <label>1 First hand choice <br/> </label>
-                <label>From: </label>
-                  <DatePicker className="datePicker"
-                    onChange={this.onChange}
-                    value={this.state.date}
-                  />
-                <label>To: </label>
-                  <DatePicker className="datePicker"
-                    onChange={this.onChange}
-                    value={this.state.date}
-                  />
+        <Navbar fluid collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/" ><img src={logo} alt="sasLogo" className="App-logo" /> </Link>
+            </Navbar.Brand>
+            <Navbar.Toggle/>
+          </Navbar.Header>
+          <button className="swithLangButton" type="button">Switch Language</button>
 
-                </div>
-
-                <div className="handChoice">
-                <label>2 Second hand choice <br/> </label>
-                <label>From: </label>
-                  <DatePicker className="datePicker"
-                    onChange={this.onChange}
-                    value={this.state.date}
-                  />
-                <label>To: </label>
-                  <DatePicker className="datePicker"
-                    onChange={this.onChange}
-                    value={this.state.date}
-                  />
-
-                </div>
-
-                <div className="handChoice">
-                <label>3 third hand choice <br/> </label>
-                <label>From: </label>
-                  <DatePicker className="datePicker"
-                    onChange={this.onChange}
-                    value={this.state.date}
-                  />
-                <label>To: </label>
-                  <DatePicker className="datePicker"
-                    onChange={this.onChange}
-                    value={this.state.date}
-                  />
-
-                </div>
-            </div>
-
-            {/* this is where we create the calenders */}
-            <div className="calendarSection">
-              <div className="innerCalendar1">
-                <Calendar className="celenderStyle"
-                  onChange={this.onChange}
-                  value={this.state.date}
-                />
-              </div>
-              <div className="innerCalendar2">
-                <Calendar className="celenderStyle"
-                  onChange={this.onChange}
-                  value={this.state.date}
-                />
-              </div>
-            </div>
-
-          </div>
-        </div>
-
+          <Navbar.Collapse>
+            <Nav pullRight>
+            {this.state.isAuthenticated
+              ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+              : <Fragment>
+                  <LinkContainer to="/login">
+                    <NavItem>Login</NavItem>
+                  </LinkContainer>
+                </Fragment>
+            }
+            </Nav>
+            <Nav pullRight>
+              <NavItem>Change Language</NavItem>
+            </Nav>
+            <Nav pullLeft>
+              <LinkContainer to="/wishvacation">
+                <NavItem>Wish Vacation</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/myvacations">
+                <NavItem>My Vacations</NavItem>
+              </LinkContainer>              
+            </Nav>
+          </Navbar.Collapse>  
+        </Navbar>
+        <Routes childProps={childProps}  />
 
       </div>
 
