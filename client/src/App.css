@@ -12,15 +12,8 @@
 
 .App-logo {
   height: 40px;
-  width: 100px;
+  width: 80px;
   padding: 10px;
-}
-.swithLangButton{
-  padding: 20px;
-  border-radius: 40px;
-  float: right;
-  color: purple;
-  
 }
 
 .App-header {
@@ -29,9 +22,11 @@
   padding: 20px;
   color: white;
 }
-.Tabs{
-  color: red;
-  float: right;
+.Tabs .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+  background-color:  #006 !important;
+  border: solid #006 !important;
+  border-radius: 5px;
+  color: white;
 }
 .App-title {
   font-size: 1.5em;
@@ -49,7 +44,7 @@
   text-align: center;
   border: solid 1px;
   width: 100%;
-  margin-top: 10px;
+  background-color: #006;
 
 }
 
@@ -73,11 +68,13 @@
   border: solid 2px;
   float: left;
   margin-top: 10px;
+  color: white;
 }
 
 .handChoice{
   border: dotted 1px;
   margin: 5px;
+
 }
 
 .handChoice h3 { float: left; font-size: 1em; }
@@ -100,19 +97,23 @@
 
 }
 
-.App .navbar-brand {
+.navbar-brand {
   font-weight: bold;
+  margin-bottom: 5px;
+
 }
 
 .App .navbar {
   width: 100%;
   padding: 0%;
   border-color: #000099; /* för markeringen */
-  border-radius: 0;
+  border-radius: 0%;
+
 }
 .App .container-fluid {
   background-color: #000099;
   margin: 0%;
+  border-radius: 0%;
   
 }
 
@@ -124,7 +125,6 @@
     margin-right: 0 !important;
     padding-right: 0 !important;
     padding-left: 0 !important;
-    border-radius: 0;
   
   }
 }

@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { Link, withRouter } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from './SAS-Logo-white.png';
 import './App.css';
 
-
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 
 
@@ -46,7 +44,6 @@ class App extends Component {
             </Navbar.Brand>
             <Navbar.Toggle/>
           </Navbar.Header>
-          <button className="swithLangButton" type="button">Switch Language</button>
 
           <Navbar.Collapse>
             <Nav pullRight>
@@ -63,8 +60,8 @@ class App extends Component {
               <NavItem>Change Language</NavItem>
             </Nav>
             <Nav pullLeft>
-              <LinkContainer to="/wishvacation">
-                <NavItem>Wish Vacation</NavItem>
+              <LinkContainer className="Tabs" to="/wishvacation">
+                <NavItem className="Tabs" >Wish Vacation</NavItem>
               </LinkContainer>
               <LinkContainer to="/myvacations">
                 <NavItem>My Vacations</NavItem>
