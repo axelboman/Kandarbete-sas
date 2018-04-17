@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link, } from "react-router-dom";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
+import { Nav, Navbar, NavItem, NavDropdown, MenuItem, Image } from "react-bootstrap";
 import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
 import logo from './SAS-Logo-white.png';
@@ -37,10 +37,10 @@ class App extends Component {
     return (
       <div className="App">
         
-        <Navbar fluid collapseOnSelect>
+        <Navbar inverse fluid collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/" ><img src={logo} alt="sasLogo" className="App-logo" /> </Link>
+            <Image src={logo} alt="sasLogo" className="App-logo" />
             </Navbar.Brand>
             <Navbar.Toggle/>
           </Navbar.Header>
@@ -57,7 +57,12 @@ class App extends Component {
             }
             </Nav>
             <Nav pullRight>
-              <NavItem>Change Language</NavItem>
+            <NavDropdown title="Change Language" >
+        <MenuItem >Swedish</MenuItem>
+        <MenuItem >Norwegian</MenuItem>
+        <MenuItem >Danish</MenuItem>
+        <MenuItem >English</MenuItem>
+      </NavDropdown>
             </Nav>
             <Nav pullLeft>
               <LinkContainer className="Tabs" to="/wishvacation">
