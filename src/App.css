@@ -60,3 +60,39 @@
 
 }
 
+
+  .InputFromTo .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+    background-color: #f0f8ff !important;
+    color: #4a90e2;
+    z-index: 1; 
+    
+  }
+  .InputFromTo .DayPicker-Day {
+    border-radius: 0 !important;
+    z-index: 1; 
+  }
+  .InputFromTo .DayPicker-Day--start {
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+    z-index: 1; 
+    
+  }
+  .InputFromTo .DayPicker-Day--end {
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+    z-index: 1; 
+  }
+  .InputFromTo .DayPickerInput-Overlay {
+    width: 550px;
+    z-index: 1; 
+  }
+  .InputFromTo-to .DayPickerInput-Overlay {
+    margin-left: -198px;
+    z-index: 1; 
+  }
+
+  .timeLine{
+    z-index: 0;
+  }
+
+

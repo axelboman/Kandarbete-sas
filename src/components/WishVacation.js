@@ -1,12 +1,22 @@
 import React, { Component } from "react";
 import moment from 'moment';
-import {RadioButton, RadioGroup} from 'react-radio-buttons'
+import { ButtonGroup, Button} from "react-bootstrap";
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
+import Timeline from 'react-calendar-timeline/lib/'
+import Helmet from 'react-helmet';
 
 import { formatDate, parseDate } from 'react-day-picker/moment';
 
-export default class WishVacation extends Component {
+const groups = [
+  { id: 1, title: 'First hand' },
+  { id: 2, title: 'Second hand' },
+  { id: 3, title: 'Third hand' }
+]
+
+
+
+export default class Example extends Component {
   constructor(props) {
     super(props);
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -45,21 +55,28 @@ export default class WishVacation extends Component {
     this.setState({ to }, this.showFromMonth);
   }
 
-  render() {
+  
+
+  render() { 
     const { from, to } = this.state;
+    const items = [
+      { id: 1, group: 1, title: 'item 1', start_time: from, end_time: to },
+      { id: 2, group: 2, title: 'item 2', start_time: moment().add(-0.5, 'days'), end_time: moment().add(0.5, 'days') },
+    ]
+    console.log({ from, to });
     const modifiers = { start: from, end: to };
     return (
-    <div className="body">  
+      <div className="body">
 
-      <div className="selection">
-            <RadioGroup onChange={ this.onChange } horizontal>
-              <RadioButton value="longtime">Long time</RadioButton>
-              <RadioButton value="shorttime">Short time</RadioButton>
-            </RadioGroup>
-      </div>
-      <div className="container">
-      
-        <div className="firstHandChoice">
+        <div className="selection" >
+
+          <ButtonGroup bsSize="large">
+            <Button>Long time</Button>
+            <Button>Short time</Button>
+          </ButtonGroup>
+        </div>
+
+        <div className="container">
           <div className="InputFromTo">
             <DayPickerInput
               value={from}
@@ -96,59 +113,58 @@ export default class WishVacation extends Component {
                 onDayChange={this.handleToChange}
               />
             </span>
+            
+            <Helmet>
+              <style>{`
+            .InputFromTo .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+              background-color: #f0f8ff !important;
+              color: #4a90e2;
+            }
+            .InputFromTo .DayPicker-Day {
+              border-radius: 0 !important;
+            }
+            .InputFromTo .DayPicker-Day--start {
+              border-top-left-radius: 50% !important;
+              border-bottom-left-radius: 50% !important;
+            }
+            .InputFromTo .DayPicker-Day--end {
+              border-top-right-radius: 50% !important;
+              border-bottom-right-radius: 50% !important;
+            }
+            .InputFromTo .DayPickerInput-Overlay {
+              width: 550px;
+            }
+            .InputFromTo-to .DayPickerInput-Overlay {
+              margin-left: -198px;
+            }
+          `}</style>
+            </Helmet>
           </div>
-        </div> 
-        <div className="secondHandChoice">      
-          <div className="InputFromTo">
-            <DayPickerInput
-              value={from}
-              placeholder="From"
-              format="LL"
-              formatDate={formatDate}
-              parseDate={parseDate}
-              dayPickerProps={{
-                selectedDays: [from, { from, to }],
-                disabledDays: { after: to },
-                toMonth: to,
-                modifiers,
-                numberOfMonths: 2,
-              }}
-              onDayChange={this.handleFromChange}
-            />{' '}
-            —{' '}
-            <span className="InputFromTo-to">
-              <DayPickerInput
-                ref={el => (this.to = el)}
-                value={to}
-                placeholder="To"
-                format="LL"
-                formatDate={formatDate}
-                parseDate={parseDate}
-                dayPickerProps={{
-                  selectedDays: [from, { from, to }],
-                  disabledDays: { before: from },
-                  modifiers,
-                  month: from,
-                  fromMonth: from,
-                  numberOfMonths: 2,
-                }}
-                onDayChange={this.handleToChange}
-              />
-            </span>
-          </div>
-        </div>    
+        </div>
+
+
+        <hr />
+        <div >
+          <Timeline className="timeLine" groups={groups}
+            items={items}
+            defaultTimeStart={moment().startOf('month')}
+            defaultTimeEnd={moment().endOf('month').add(1, 'month')}
+          />
+        </div>
       </div>
-    </div>
+
+
+
     );
   }
-} 
-            
-          
+}
 
-        
-          
-        
-        
-        
-    
+
+
+
+
+
+
+
+
 
