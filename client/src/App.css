@@ -9,6 +9,11 @@
 .body{
   align-content: center;
 }
+.selection{
+  margin: 10px;
+  width: 20%;
+  border-radius: 4px;
+}
 
 .App-logo {
   height: 40px;
@@ -36,15 +41,15 @@
   font-size: large;
 }
 .celenderStyle{
+  border: solid greenyellow !important;
   border-radius: 4px;
-  margin: auto;
 }
 
 .container{
   text-align: center;
   border: solid 1px;
   width: 100%;
-  background-color: #006;
+  background-color: #fafbfc;
 
 }
 
@@ -55,34 +60,42 @@
   margin-top: 10px;
 }
 
-.innerCalendar1{
-  width: 48%; 
-  float: left;
+/*Style for input of dates*/
+.InputFromTo .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+  background-color: black !important;
+  color: #4a90e2;
+}
+.InputFromTo .DayPicker-Day {
+  border-radius: 4px !important;
+}
+.InputFromTo .DayPicker-Day--start {
+  border-top-left-radius: 50% !important;
+  border-bottom-left-radius: 50% !important;
+}
+.InputFromTo .DayPicker-Day--end {
+  border-top-right-radius: 50% !important;
+  border-bottom-right-radius: 50% !important;
+}
+.InputFromTo .DayPickerInput-Overlay {
+  width: 550px;
+}
+.InputFromTo-to .DayPickerInput-Overlay {
+  margin-left: -198px;
 }
 
-.innerCalendar2{
-  width: 48%; 
-  float: right;
-}
-.datePickerSection{
-  border: solid 2px;
-  float: left;
-  margin-top: 10px;
-  color: white;
-}
 
-.handChoice{
+
+.secondHandChoice .firstHandChoice{
   border: dotted 1px;
-  margin: 5px;
+  padding: 5px;
+  margin: 15px;
+  border-radius: 4px;
 
 }
 
 .handChoice h3 { float: left; font-size: 1em; }
 
-.datePicker{
-  text-align: center;
 
-}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
