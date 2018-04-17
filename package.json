@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "express": "^4.16.2",
+    "interact.js": "^1.2.8",
     "moment": "^2.22.1",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
+    "react-bootstrap-switch": "^15.5.3",
     "react-calendar": "^2.14.0",
+    "react-calendar-timeline": "^0.15.10",
     "react-date-picker": "^6.10.1",
     "react-date-range": "^0.9.4",
     "react-day-picker": "^7.1.6",
