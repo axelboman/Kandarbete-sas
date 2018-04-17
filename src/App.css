@@ -7,7 +7,7 @@
 } */
 
 .body{
-  
+
 }
 .celenderStyle{
   border-radius: 4px;
@@ -64,30 +64,6 @@
 
 }
 
-<<<<<<< HEAD
-.InputFromTo .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
-  background-color: #f0f8ff !important;
-  color: #4a90e2;
-}
-.InputFromTo .DayPicker-Day {
-  border-radius: 0 !important;
-}
-.InputFromTo .DayPicker-Day--start {
-  border-top-left-radius: 50% !important;
-  border-bottom-left-radius: 50% !important;
-}
-.InputFromTo .DayPicker-Day--end {
-  border-top-right-radius: 50% !important;
-  border-bottom-right-radius: 50% !important;
-}
-.InputFromTo .DayPickerInput-Overlay {
-  width: 550px;
-}
-.InputFromTo-to .DayPickerInput-Overlay {
-  margin-left: -198px;
-}
-=======
-
   .InputFromTo .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
     background-color: #f0f8ff !important;
     color: #4a90e2;
@@ -123,4 +99,3 @@
   }
 
 
->>>>>>> b8aa34a682268b44c894cf38160c07503307b2de
