@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-
-import "./WishVacation.css";
-
-
 import moment from 'moment';
 import {RadioButton, RadioGroup} from 'react-radio-buttons'
 import DayPickerInput from 'react-day-picker/DayPickerInput';

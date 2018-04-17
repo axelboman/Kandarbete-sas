@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { Link, } from "react-router-dom";
 import { Nav, Navbar, NavItem, NavDropdown, MenuItem, Image } from "react-bootstrap";
 import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
@@ -83,25 +82,3 @@ class App extends Component {
 }
 export default App;
 
-
-
-
-
-
-
-{/* <div className="Tabs">
-
-<Tabs>
-  <TabList>
-    <Tab>Önska semester</Tab>
-    <Tab>Mina semestrar</Tab>
-  </TabList>
-  <TabPanel>
-    <h1 className="App-title">Welcome to Star Alliance!!!</h1>  
-  </TabPanel>
-  <TabPanel>
-    <img src={logo} className="App-logo" alt="logo" />
-  </TabPanel> 
-</Tabs>
-
-</div> */}
