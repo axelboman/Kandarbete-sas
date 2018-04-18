@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from 'moment';
-import { ButtonGroup, Button } from "react-bootstrap";
+import { ButtonGroup, Button, Grid, Row, Col } from "react-bootstrap";
 import Timeline from 'react-calendar-timeline/lib/'
 
 import 'react-dates/initialize';
@@ -26,97 +26,79 @@ export default class Example extends Component {
     this.state = {
       startDates: [],
       endDates: [],
-      focusedInputs: [],
-      startDate11: null,
-      endDate11: null,
-      focusedInput11: null,
-      startDate12: null,
-      endDate12: null,
-      focusedInput12: null,
-      asd12: 'hgfdes'
+      focusedInputs: []
     };
   }
-  createDateRangePicker(id){
-    return(
+  createDateRangePicker(id) {
+    return (
       <div>
-      <DateRangePicker
-        startDateId={"startDate " + id.toString()}
-        endDateId="endDate11"
-        startDate={this.state.startDate11}
-        endDate={this.state.endDate11}
-        onDatesChange={({ startDate, endDate }) => { this.setState({ startDate11: startDate, endDate11: endDate }) }}
-        focusedInput={this.state.focusedInput11}
-        onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput }) }}
-      />
-    </div>
+        <DateRangePicker
+          startDateId={"startDate " + String(id)}
+          endDateId={"endDate " + String(id)}
+          startDate={this.state.startDates[id]}
+          endDate={this.state.endDates[id]}
+          onDatesChange={({ startDate, endDate }) => { this.changeDates(startDate, endDate, id) }}
+          focusedInput={this.state.focusedInputs[id]}
+          onFocusChange={(focusedInput) => { this.changeFocus(focusedInput, id) }}
+        />
+      </div>
     )
   }
+  changeDates(startDate, endDate, id) {
+    let startDatesClone = this.state.startDates.slice();
+    let endDatesClone = this.state.endDates.slice();
+    startDatesClone[id] = startDate;
+    endDatesClone[id] = endDate;
+    this.setState({ startDates: startDatesClone, endDates: endDatesClone });
+  }
+  changeFocus(focusedInput, id) {
+    let focusedInputsClone = this.state.focusedInputs.slice();
+    focusedInputsClone[id] = focusedInput
+    this.setState({ focusedInputs: focusedInputsClone });
+  }
+
 
   render() {
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const items = numbers.map((number) =>
-    ({ id: number, group: number, title: 'item ' + number, start_time: this.state.startDates[number-1], end_time: this.state.endDates[number-1] })
-  );
-  console.log(this.state.startDates.length);
-  console.log("hej " + 55);
-    
-    // [
-    //   { id: 1, group: 1, title: 'item 1', start_time: this.state.startDate11, end_time: this.state.endDate11 },
-
-    // ]
+      ({ id: number, group: number, title: 'item ' + number, start_time: this.state.startDates[number - 1], end_time: this.state.endDates[number - 1] })
+    );
     return (
-      <div className="body">
-
-        <div className="selection" >
-
-          <ButtonGroup bsSize="large">
-            <Button>Long time</Button>
-            <Button>Short time</Button>
-          </ButtonGroup>
-        </div>
+      <Grid fluid className="text-center">
+        <Row className="show-grid">
+          <Col xs={12}>
+            <div>
+              <ButtonGroup bsSize="large">
+                <Button>Long time</Button>
+                <Button>Short time</Button>
+              </ButtonGroup>
+            </div>
+            <hr />
+            <div>
+              {this.createDateRangePicker(0)}
+              {this.createDateRangePicker(1)}
+              {this.createDateRangePicker(2)}
+              {this.createDateRangePicker(3)}
+              {this.createDateRangePicker(4)}
+              {this.createDateRangePicker(5)}
+              {this.createDateRangePicker(6)}
+            </div>
+          </Col>
+        </Row>
         <hr />
-        <div className="container">
-<<<<<<< HEAD
-        
-=======
-        <label className="choiceLabel">First hand Choice</label>
->>>>>>> a92c1b81960bf0435ee4f3c51aa7ea8c91364aae
-          <div>
-            <DateRangePicker
-              startDateId="startDate11"
-              endDateId="endDate11"
-              startDate={this.state.startDate11}
-              endDate={this.state.endDate11}
-              onDatesChange={({ startDate, endDate }) => { this.setState({ startDate11: startDate, endDate11: endDate }) }}
-              focusedInput={this.state.focusedInput11}
-              onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput }) }}
+        <Row className="show-grid">
+
+          <Col xs={12}>
+            <Timeline className="timeLine" groups={groups}
+              items={items}
+              defaultTimeStart={moment().startOf('month')}
+              defaultTimeEnd={moment().endOf('month').add(2, 'month')}
             />
-          </div>
-          <hr/>
-          <label className="choiceLabel">Second hand Choice</label>
-          <div>
-            <DateRangePicker
-              startDateId="startDate12"
-              endDateId="endDate12"
-              startDate={this.state.startDate12}
-              endDate={this.state.endDate12}
-              onDatesChange={({ startDate, endDate }) => { this.setState({ startDate12: startDate, endDate12: endDate }) }}
-              focusedInput={this.state.focusedInput12}
-              onFocusChange={(focusedInput) => { this.setState({ focusedInput12: focusedInput }) }}
-            />
-          </div>
-        </div>
+          </Col>
 
 
-        <hr />
-        <div >
-          <Timeline className="timeLine" groups={groups}
-            items={items}
-            defaultTimeStart={moment().startOf('month')}
-            defaultTimeEnd={moment().endOf('month').add(1, 'month')}
-          />
-        </div>
-      </div>
+        </Row>
+      </Grid>
 
     );
   }
