@@ -9,6 +9,7 @@
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-switch": "^15.5.3",
+    "react-bootstrap-table": "^4.3.1",
     "react-calendar": "^2.14.0",
     "react-calendar-timeline": "^0.15.10",
     "react-date-picker": "^6.10.1",
