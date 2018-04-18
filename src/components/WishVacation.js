@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import moment from 'moment';
-import { ButtonGroup, Button} from "react-bootstrap";
+import { ButtonGroup, Button } from "react-bootstrap";
 import Timeline from 'react-calendar-timeline/lib/'
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
-import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 
 const groups = [
   { id: 1, title: 'Vacation 1: First hand' },
@@ -19,7 +19,6 @@ const groups = [
   { id: 8, title: 'Vacation 3: Second hand' },
   { id: 9, title: 'Vacation 3: Third hand' }
 ]
-var fromid
 
 export default class Example extends Component {
   constructor(props) {
@@ -34,7 +33,7 @@ export default class Example extends Component {
     };
   }
 
-  render() { 
+  render() {
     const items = [
       // { id: 1, group: 1, title: 'item 1', start_time: from, end_time: to },
       { id: 2, group: 2, title: 'item 2', start_time: moment().add(-0.5, 'days'), end_time: moment().add(0.5, 'days') },
@@ -45,31 +44,34 @@ export default class Example extends Component {
         <div className="selection" >
 
           <ButtonGroup bsSize="large">
-
-            {this.renderButtons(testarray[4])}
+            <Button>Long time</Button>
             <Button>Short time</Button>
           </ButtonGroup>
         </div>
-
+        <hr />
         <div className="container">
-        <DateRangePicker
-          startDateId="startDate11"
-          endDateId="endDate11"
-          startDate={this.state.startDate11}
-          endDate={this.state.endDate11}
-          onDatesChange={({ startDate, endDate }) => { this.setState({ startDate11: startDate, endDate11: endDate})}}
-          focusedInput={this.state.focusedInput11}
-          onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput })}}
-        />
-        <DateRangePicker
-          startDateId="startDate12"
-          endDateId="endDate12"
-          startDate={this.state.startDate12}
-          endDate={this.state.endDate12}
-          onDatesChange={({ startDate, endDate }) => { this.setState({ startDate12: startDate, endDate12: endDate})}}
-          focusedInput={this.state.focusedInput12}
-          onFocusChange={(focusedInput) => { this.setState({ focusedInput12: focusedInput })}}
-        />
+          <div>
+            <DateRangePicker
+              startDateId="startDate11"
+              endDateId="endDate11"
+              startDate={this.state.startDate11}
+              endDate={this.state.endDate11}
+              onDatesChange={({ startDate, endDate }) => { this.setState({ startDate11: startDate, endDate11: endDate }) }}
+              focusedInput={this.state.focusedInput11}
+              onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput }) }}
+            />
+          </div>
+          <div>
+            <DateRangePicker
+              startDateId="startDate12"
+              endDateId="endDate12"
+              startDate={this.state.startDate12}
+              endDate={this.state.endDate12}
+              onDatesChange={({ startDate, endDate }) => { this.setState({ startDate12: startDate, endDate12: endDate }) }}
+              focusedInput={this.state.focusedInput12}
+              onFocusChange={(focusedInput) => { this.setState({ focusedInput12: focusedInput }) }}
+            />
+          </div>
         </div>
 
 
