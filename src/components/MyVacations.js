@@ -27,7 +27,7 @@ const vacation = [{
     delete: "Locked"
 }];
 
-export default class ExportCSVTable extends React.Component {
+export default class Maas extends React.Component {
 
   csvTotDaysFormatter(cell, row) {
     return `${row.id}: ${cell} days`;
