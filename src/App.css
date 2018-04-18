@@ -6,7 +6,9 @@
   color: white;
 } */
 
-
+body { 
+  padding-top: 65px; 
+}
 
 
 .navbar {
@@ -42,7 +44,6 @@
 /* For admin page */
 
 .adminHeader {
-  margin-top: 100px;
   margin-bottom: 50px;
 }
 

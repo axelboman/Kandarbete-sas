@@ -36,7 +36,7 @@ class App extends Component {
     return (
       <div className="App">
         
-        <Navbar inverse fluid collapseOnSelect>
+        <Navbar fixedTop inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
             <Image src={logo} alt="sasLogo" className="App-logo" />
