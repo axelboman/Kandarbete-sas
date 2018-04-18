@@ -76,7 +76,11 @@ export default class Example extends Component {
         </div>
         <hr />
         <div className="container">
+<<<<<<< HEAD
         
+=======
+        <label className="choiceLabel">First hand Choice</label>
+>>>>>>> a92c1b81960bf0435ee4f3c51aa7ea8c91364aae
           <div>
             <DateRangePicker
               startDateId="startDate11"
@@ -88,6 +92,8 @@ export default class Example extends Component {
               onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput }) }}
             />
           </div>
+          <hr/>
+          <label className="choiceLabel">Second hand Choice</label>
           <div>
             <DateRangePicker
               startDateId="startDate12"

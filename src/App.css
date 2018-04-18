@@ -64,42 +64,50 @@
 
 }
 
-  .InputFromTo .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
-    background-color: #f0f8ff !important;
-    color: #4a90e2;
-    z-index: 1; 
-    
-  }
-  .InputFromTo .DayPicker-Day {
-    border-radius: 0 !important;
-    z-index: 1; 
-  }
-  .InputFromTo .DayPicker-Day--start {
-    border-top-left-radius: 50% !important;
-    border-bottom-left-radius: 50% !important;
-    z-index: 1; 
-    
-  }
-  .InputFromTo .DayPicker-Day--end {
-    border-top-right-radius: 50% !important;
-    border-bottom-right-radius: 50% !important;
-    z-index: 1; 
-  }
-  .InputFromTo .DayPickerInput-Overlay {
-    width: 550px;
-    z-index: 1; 
-  }
-  .InputFromTo-to .DayPickerInput-Overlay {
-    margin-left: -198px;
-    z-index: 1; 
+  .react-calendar-timeline *{
+    z-index: -2;
   }
 
-  .timeLine{
-    z-index: 0;
+  .rct-sidebar-header{
+    background: #0033cc !important;
   }
 
+  .rct-label-group{
+    background: #0033cc !important;
+  }
+  .DateRangePickerInput__withBorder{
+    border-radius: 4px;
+  }
 
+  .choiceLabel{
+    color: white;
+  }
 /* For table in my vacations */
 .table {
   margin-bottom: 0% !important;
+}
+
+
+/* For admin page */
+
+.adminHeader {
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+.calendar-icon {
+  width: 15px;
+  height: 12px;
+}
+
+.manageButton {
+  margin-bottom: 30px;
+}
+
+.adminBreak {
+  margin-top: 7px !important;
+}
+
+.dropDownGroups {
+  margin-bottom: 20px;
 }

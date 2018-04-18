@@ -69,7 +69,10 @@ class App extends Component {
               </LinkContainer>
               <LinkContainer to="/myvacations">
                 <NavItem>My Vacations</NavItem>
-              </LinkContainer>              
+              </LinkContainer>
+              <LinkContainer to="/admin">
+                <NavItem>Admin</NavItem>
+              </LinkContainer>               
             </Nav>
           </Navbar.Collapse>  
         </Navbar>
