@@ -103,3 +103,28 @@
 .table {
   margin-bottom: 0% !important;
 }
+
+
+/* For admin page */
+
+.adminHeader {
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+.calendar-icon {
+  width: 15px;
+  height: 12px;
+}
+
+.manageButton {
+  margin-bottom: 30px;
+}
+
+.adminBreak {
+  margin-top: 7px !important;
+}
+
+.dropDownGroups {
+  margin-bottom: 20px;
+}
