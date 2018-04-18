@@ -24,20 +24,46 @@ export default class Example extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      startDates: [],
+      endDates: [],
+      focusedInputs: [],
       startDate11: null,
       endDate11: null,
       focusedInput11: null,
       startDate12: null,
       endDate12: null,
       focusedInput12: null,
+      asd12: 'hgfdes'
     };
+  }
+  createDateRangePicker(id){
+    return(
+      <div>
+      <DateRangePicker
+        startDateId={"startDate " + id.toString()}
+        endDateId="endDate11"
+        startDate={this.state.startDate11}
+        endDate={this.state.endDate11}
+        onDatesChange={({ startDate, endDate }) => { this.setState({ startDate11: startDate, endDate11: endDate }) }}
+        focusedInput={this.state.focusedInput11}
+        onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput }) }}
+      />
+    </div>
+    )
   }
 
   render() {
-    const items = [
-      // { id: 1, group: 1, title: 'item 1', start_time: from, end_time: to },
-      { id: 2, group: 2, title: 'item 2', start_time: moment().add(-0.5, 'days'), end_time: moment().add(0.5, 'days') },
-    ]
+    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const items = numbers.map((number) =>
+    ({ id: number, group: number, title: 'item ' + number, start_time: this.state.startDates[number-1], end_time: this.state.endDates[number-1] })
+  );
+  console.log(this.state.startDates.length);
+  console.log("hej " + 55);
+    
+    // [
+    //   { id: 1, group: 1, title: 'item 1', start_time: this.state.startDate11, end_time: this.state.endDate11 },
+
+    // ]
     return (
       <div className="body">
 
@@ -50,6 +76,7 @@ export default class Example extends Component {
         </div>
         <hr />
         <div className="container">
+        
           <div>
             <DateRangePicker
               startDateId="startDate11"
@@ -84,8 +111,6 @@ export default class Example extends Component {
           />
         </div>
       </div>
-
-
 
     );
   }
