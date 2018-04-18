@@ -67,6 +67,21 @@
   .react-calendar-timeline *{
     z-index: -2;
   }
+
+  .rct-sidebar-header{
+    background: #0033cc !important;
+  }
+
+  .rct-label-group{
+    background: #0033cc !important;
+  }
+  .DateRangePickerInput__withBorder{
+    border-radius: 4px;
+  }
+
+  .choiceLabel{
+    color: white;
+  }
 /* For table in my vacations */
 .table {
   margin-bottom: 0% !important;
