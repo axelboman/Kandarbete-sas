@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import moment from 'moment';
+<<<<<<< HEAD
 import { ButtonGroup, Button, Grid, Row, Col, Panel, Form, ControlLabel, FormGroup, FormControl, Carousel } from "react-bootstrap";
+=======
+import { ButtonGroup, Button, Grid, Row, Col, Panel, Form, ControlLabel, FormGroup, FormControl, Tabs, Tab, TabContainer, TabContent, TabPane, Nav, NavItem, } from "react-bootstrap";
+>>>>>>> d71be61fdee911f07abc41f49547f2939af9a1da
 import Timeline from 'react-calendar-timeline/lib/'
 
 import 'react-dates/initialize';
@@ -21,6 +25,7 @@ const groups = [
 ]
 
 export default class Example extends Component {
+<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.state = {
@@ -56,18 +61,21 @@ export default class Example extends Component {
     this.setState({ focusedInputs: focusedInputsClone });
   }
 
+=======
+>>>>>>> d71be61fdee911f07abc41f49547f2939af9a1da
 
   render() {
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const items = numbers.map((number) =>
-      ({ id: number, group: number, title: 'item ' + number, start_time: this.state.startDates[number - 1], end_time: this.state.endDates[number - 1] })
+      ({ id: number, group: number, title: 'item ' + number, start_time: null, end_time: null })
     );
+
     return (
       <Grid fluid >
         <Row className="show-grid">
-          <Col xs={0} sm={1} md={2} lg={3}>
+          <Col xs={0}>
           </Col>
-          <Col xs={12} sm={10} md={8} lg={6}>
+          <Col xs={12}>
             <div className="text-center">
               <ButtonGroup bsSize="large" >
                 <Button>Long time</Button>
@@ -75,6 +83,7 @@ export default class Example extends Component {
               </ButtonGroup>
             </div>
             <hr />
+<<<<<<< HEAD
 
             <Panel bsStyle="primary">
               <Panel.Heading>
@@ -216,13 +225,16 @@ export default class Example extends Component {
             </Panel>
 
 
+=======
+            <Example2/>
+>>>>>>> d71be61fdee911f07abc41f49547f2939af9a1da
           </Col>
-          <Col xs={0} sm={1} md={2} lg={3}>
+          <Col xs={0}>
           </Col>
         </Row>
+        
         <hr />
         <Row className="show-grid">
-
           <Col xs={12}>
             <Timeline className="timeLine" groups={groups}
               items={items}
@@ -230,8 +242,6 @@ export default class Example extends Component {
               defaultTimeEnd={moment().endOf('month').add(2, 'month')}
             />
           </Col>
-
-
         </Row>
       </Grid>
 
@@ -239,7 +249,132 @@ export default class Example extends Component {
   }
 }
 
+class Example2 extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      startDates: [],
+      endDates: [],
+      focusedInputs: []
+    };
+  }
+
+  changeDates(startDate, endDate, id) {
+    let startDatesClone = this.state.startDates.slice();
+    let endDatesClone = this.state.endDates.slice();
+    startDatesClone[id] = startDate;
+    endDatesClone[id] = endDate;
+    this.setState({ startDates: startDatesClone, endDates: endDatesClone });
+  }
+  changeFocus(focusedInput, id) {
+    let focusedInputsClone = this.state.focusedInputs.slice();
+    focusedInputsClone[id] = focusedInput
+    this.setState({ focusedInputs: focusedInputsClone });
+  }
+
+  createDateRangePicker(id) {
+    return (
+        <DateRangePicker
+          startDateId={"startDate " + String(id)}
+          endDateId={"endDate " + String(id)}
+          startDate={this.state.startDates[id]}
+          endDate={this.state.endDates[id]}
+          onDatesChange={({ startDate, endDate }) => { this.changeDates(startDate, endDate, id) }}
+          focusedInput={this.state.focusedInputs[id]}
+          onFocusChange={(focusedInput) => { this.changeFocus(focusedInput, id) }}
+        />
+
+    )
+  }
+    //creating the form to input dates + discripition area and submit button.
+    createInputFields(id1, id2, id3){
+      return(
+        <Form horizontal>
+          <FormGroup controlId="formHorizontalVacation1Choice1">
+            <Col componentClass={ControlLabel}sm={1}>Vacation dates</Col>
+            <Col sm={3}>{this.createDateRangePicker(id1)}</Col>
+            <Col componentClass={ControlLabel} sm={1}>Vacation dates</Col>
+            <Col sm={3}>{this.createDateRangePicker(id2)}</Col>
+            <Col componentClass={ControlLabel} sm={1}>Vacation dates</Col>
+            <Col sm={3}>{this.createDateRangePicker(id3)}</Col>
+          </FormGroup>
+          <FormGroup controlId="formControlsTextarea1">
+          <Col componentClass={ControlLabel} sm={2}>Description</Col>
+          <Col sm={8}>
+          <FormControl componentClass="input" placeholder="textarea" />
+            </Col>
+          </FormGroup>
+        </Form>
+      )
+    }
+
+  render(){
+    return(
+      <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+      <Row className="clearfix">
+        <Col sm={2}>
+          <Nav bsStyle="pills" stacked>
+            <NavItem eventKey="first">First hand choice</NavItem>
+            <NavItem eventKey="second">Second hand choice</NavItem>
+            <NavItem eventKey="third">Third hand choice</NavItem>
+          </Nav>
+          <hr/>
+          <Col sm={2}>
+            <Button type="submit">Submit request</Button>
+          </Col>
+        </Col>
+
+        <Col sm={10}>
+          <Tab.Content animation>
+            <Tab.Pane eventKey="first">
+              <Panel bsStyle="primary">
+                <Panel.Heading>
+                  <Panel.Title componentClass="h3">First hand choice</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>
+                  {this.createInputFields(0, 1, 2)}
+                  </Panel.Body>
+              </Panel>
+            </Tab.Pane>
+          </Tab.Content>
+        </Col>
+
+        <Col sm={10}>
+          <Tab.Content animation>
+            <Tab.Pane eventKey="second">
+              <Panel bsStyle="primary">
+                <Panel.Heading>
+                  <Panel.Title componentClass="h3">Second hand choice</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>    
+                  {this.createInputFields(3, 4, 5)}            
+                </Panel.Body>
+              </Panel>
+            </Tab.Pane>
+          </Tab.Content>
+        </Col>
+        <Col sm={10}>
+
+          <Tab.Content animation>
+            <Tab.Pane eventKey="third">
+              <Panel bsStyle="primary">
+                <Panel.Heading>
+                  <Panel.Title componentClass="h3">Third hand choice</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>                
+                  {this.createInputFields(6, 7, 8)}
+                </Panel.Body>
+              </Panel>
+            </Tab.Pane>
+          </Tab.Content>
+        </Col>
+      </Row>
+    </Tab.Container>
+    )
+
+  }
+}
 
 
 
