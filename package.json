@@ -1,32 +1,31 @@
 {
-  "name": "client",
+  "name": "sas-vacation-management-system",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "express": "^4.16.2",
     "interact.js": "^1.2.8",
     "moment": "^2.22.1",
+    "mysql": "^2.15.0",
     "react": "^16.3.2",
     "react-bootstrap": "^0.32.1",
     "react-bootstrap-switch": "^15.5.3",
     "react-bootstrap-table": "^4.3.1",
-    "react-calendar": "^2.14.0",
     "react-calendar-timeline": "^0.15.10",
-    "react-date-picker": "^6.10.1",
-    "react-date-range": "^0.9.4",
     "react-dates": "^16.6.1",
-    "react-day-picker": "^7.1.6",
     "react-dom": "^16.3.2",
-    "react-helmet": "^5.2.0",
-    "react-radio-buttons": "^1.2.1",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "client": "react-scripts start",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.17.3"
+  },
+  "proxy": "http://localhost:3001/"
 }

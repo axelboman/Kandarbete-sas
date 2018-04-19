@@ -13,28 +13,30 @@ body {
 
 .navbar {
   border-radius: 0%;
-  /* background-color: #000099; */
+  /*background-color: #000099;*/
 
 }
-
+  /*Css for overview calendar*/
   .react-calendar-timeline *{
     z-index: -2;
   }
 
   .rct-sidebar-header{
-    background: #0033cc !important;
+    background: #000099 !important;
+    border-top-left-radius: 4px;
   }
 
   .rct-label-group{
-    background: #0033cc !important;
+    background: #000099 !important;
+    border-top-right-radius: 4px;
   }
+
+  /*CSS for date input fields*/
+
   .DateRangePickerInput__withBorder{
     border-radius: 4px;
   }
 
-  .choiceLabel{
-    color: white;
-  }
 /* For table in my vacations */
 .table {
   margin-bottom: 0% !important;

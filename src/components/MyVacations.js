@@ -1,5 +1,6 @@
 import React from "react";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { Grid, Row, Col} from "react-bootstrap";
 
 const vacation = [{
     id: 1,
@@ -39,7 +40,8 @@ export default class Maas extends React.Component {
         defaultSortOrder: 'asc'
     };
     return (
-        <div className="appliedVacations">
+      <Grid fluid >
+      <Col xs={12}>
                 <h1>My Vacations</h1>
                 <p>Here you can see status of your upcoming vacation as well as you vacation history</p>
             <hr/>
@@ -62,7 +64,8 @@ export default class Maas extends React.Component {
                 <TableHeaderColumn dataField='date' dataSort={ true } csvHeader='date' width='14.3%'>Date</TableHeaderColumn>
                 <TableHeaderColumn dataField='delete' width='14.3%'>Delete</TableHeaderColumn>    
             </BootstrapTable>
-        </div>
+            </Col>
+            </Grid> 
     );
   }
 }
