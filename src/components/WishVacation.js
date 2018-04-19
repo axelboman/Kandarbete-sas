@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import moment from 'moment';
-<<<<<<< HEAD
-import { ButtonGroup, Button, Grid, Row, Col, Panel, Form, ControlLabel, FormGroup, FormControl, Carousel } from "react-bootstrap";
-=======
 import { ButtonGroup, Button, Grid, Row, Col, Panel, Form, ControlLabel, FormGroup, FormControl, Tabs, Tab, TabContainer, TabContent, TabPane, Nav, NavItem, } from "react-bootstrap";
->>>>>>> d71be61fdee911f07abc41f49547f2939af9a1da
 import Timeline from 'react-calendar-timeline/lib/'
 
 import 'react-dates/initialize';
@@ -25,44 +21,6 @@ const groups = [
 ]
 
 export default class Example extends Component {
-<<<<<<< HEAD
-  constructor(props) {
-    super(props);
-    this.state = {
-      startDates: [],
-      endDates: [],
-      focusedInputs: []
-    };
-  }
-  createDateRangePicker(id) {
-    return (
-      <DateRangePicker
-        startDateId={"startDate " + String(id)}
-        endDateId={"endDate " + String(id)}
-        startDate={this.state.startDates[id]}
-        endDate={this.state.endDates[id]}
-        onDatesChange={({ startDate, endDate }) => { this.changeDates(startDate, endDate, id) }}
-        focusedInput={this.state.focusedInputs[id]}
-        onFocusChange={(focusedInput) => { this.changeFocus(focusedInput, id) }}
-      />
-
-    )
-  }
-  changeDates(startDate, endDate, id) {
-    let startDatesClone = this.state.startDates.slice();
-    let endDatesClone = this.state.endDates.slice();
-    startDatesClone[id] = startDate;
-    endDatesClone[id] = endDate;
-    this.setState({ startDates: startDatesClone, endDates: endDatesClone });
-  }
-  changeFocus(focusedInput, id) {
-    let focusedInputsClone = this.state.focusedInputs.slice();
-    focusedInputsClone[id] = focusedInput
-    this.setState({ focusedInputs: focusedInputsClone });
-  }
-
-=======
->>>>>>> d71be61fdee911f07abc41f49547f2939af9a1da
 
   render() {
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -83,151 +41,7 @@ export default class Example extends Component {
               </ButtonGroup>
             </div>
             <hr />
-<<<<<<< HEAD
-
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">First hand choice</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>
-                <Form horizontal>
-                  <FormGroup controlId="formHorizontalVacation1Choice1">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 1
-                   </Col>
-                    <Col sm={6}>
-                      {this.createDateRangePicker(0)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation1Choice2">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 2
-                   </Col>
-                    <Col sm={6}>
-                      {this.createDateRangePicker(1)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation1Choice3">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 3
-                   </Col>
-                    <Col sm={6}>
-                      {this.createDateRangePicker(2)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formControlsTextarea1">
-                    <Col componentClass={ControlLabel} sm={2}>
-                      Description
-                   </Col>
-                    <Col sm={8}>
-                      <FormControl componentClass="textarea" placeholder="textarea" />
-                    </Col>
-                  </FormGroup>
-
-                  <FormGroup>
-                    <Col smOffset={4} sm={10}>
-                      <Button type="submit">Submit request</Button>
-                    </Col>
-                  </FormGroup>
-                </Form>
-              </Panel.Body>
-            </Panel>
-
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">Second hand choice</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>                <Form horizontal>
-                <FormGroup controlId="formHorizontalVacation2Choice1">
-                  <Col componentClass={ControlLabel} sm={4}>
-                    Choice 1
-                   </Col>
-                  <Col sm={6}>
-                    {this.createDateRangePicker(3)}
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formHorizontalVacation2Choice2">
-                  <Col componentClass={ControlLabel} sm={4}>
-                    Choice 2
-                   </Col>
-                  <Col sm={6}>
-                    {this.createDateRangePicker(4)}
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formHorizontalVacation2Choice3">
-                  <Col componentClass={ControlLabel} sm={4}>
-                    Choice 3
-                   </Col>
-                  <Col sm={6}>
-                    {this.createDateRangePicker(5)}
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formControlsTextarea2">
-                  <Col componentClass={ControlLabel} sm={2}>
-                    Description
-                   </Col>
-                  <Col sm={8}>
-                    <FormControl componentClass="textarea" placeholder="textarea" />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup>
-                  <Col smOffset={4} sm={10}>
-                    <Button type="submit">Submit request</Button>
-                  </Col>
-                </FormGroup>
-              </Form></Panel.Body>
-            </Panel>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">Third hand choice</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>                <Form horizontal>
-                <FormGroup controlId="formHorizontalVacation3Choice1">
-                  <Col componentClass={ControlLabel} sm={4}>
-                    Choice 1
-                   </Col>
-                  <Col sm={6}>
-                    {this.createDateRangePicker(6)}
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formHorizontalVacation3Choice2">
-                  <Col componentClass={ControlLabel} sm={4}>
-                    Choice 2
-                   </Col>
-                  <Col sm={6}>
-                    {this.createDateRangePicker(7)}
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formHorizontalVacation3Choice3">
-                  <Col componentClass={ControlLabel} sm={4}>
-                    Choice 3
-                   </Col>
-                  <Col sm={6}>
-                    {this.createDateRangePicker(8)}
-                  </Col>
-                </FormGroup>
-                <FormGroup controlId="formControlsTextarea3">
-                  <Col componentClass={ControlLabel} sm={2}>
-                    Description
-                   </Col>
-                  <Col sm={8}>
-                    <FormControl componentClass="textarea" placeholder="textarea" />
-                  </Col>
-                </FormGroup>
-
-                <FormGroup>
-                  <Col smOffset={4} sm={10}>
-                    <Button type="submit">Submit request</Button>
-                  </Col>
-                </FormGroup>
-              </Form></Panel.Body>
-            </Panel>
-
-
-=======
             <Example2/>
->>>>>>> d71be61fdee911f07abc41f49547f2939af9a1da
           </Col>
           <Col xs={0}>
           </Col>
