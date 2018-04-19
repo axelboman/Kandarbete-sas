@@ -76,11 +76,7 @@ export default class Example extends Component {
         </div>
         <hr />
         <div className="container">
-<<<<<<< HEAD
-        
-=======
         <label className="choiceLabel">First hand Choice</label>
->>>>>>> a92c1b81960bf0435ee4f3c51aa7ea8c91364aae
           <div>
             <DateRangePicker
               startDateId="startDate11"
