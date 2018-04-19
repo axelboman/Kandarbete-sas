@@ -94,7 +94,7 @@ export default class Example extends Component {
                       Choice 2
                    </Col>
                     <Col sm={6}>
-                    {this.createDateRangePicker(2)}
+                    {this.createDateRangePicker(1)}
                     </Col>
                   </FormGroup>
                   <FormGroup controlId="formHorizontalVacation1Choice3">
@@ -102,7 +102,7 @@ export default class Example extends Component {
                       Choice 3
                    </Col>
                     <Col sm={6}>
-                    {this.createDateRangePicker(3)}
+                    {this.createDateRangePicker(2)}
                     </Col>
                   </FormGroup>
                   <FormGroup controlId="formControlsTextarea1">
