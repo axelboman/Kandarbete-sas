@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import moment from 'moment';
-import { ButtonGroup, Button, Image, DropdownButton, SplitButton, MenuItem, Grid, Row, Col } from "react-bootstrap";
+import { Button, Image, DropdownButton, MenuItem, Grid, Col } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import Timeline from 'react-calendar-timeline/lib/'
 import logo from '../calendar-icon.png';
+
+
+
+
 
 const groups = [
   { id: 1, title: 'Armin Zakeri' },
@@ -14,14 +19,13 @@ const groups = [
 ]
 
 
+
+
 export default class Admin extends Component {
   constructor(props) {
     super(props);
   }
 
-  handleManageButtonClick = (onClick) => {
-    console.log("manage application");
-  }
   render() {
     const items = []
 
@@ -33,11 +37,9 @@ export default class Admin extends Component {
           </div>
 
           <div className="manageButton">
-            <ButtonGroup bsStyle="primary" >
-              <Button
-                onClick={() => this.handleManageButtonClick()}
-              >Manage Applications</Button>
-            </ButtonGroup>
+            <LinkContainer to= "/adminmanage">
+                    <Button bsStyle="default"> Manage Applications </Button>
+            </LinkContainer>    
           </div>
 
           <div><Image src={logo} alt="calendarIcon" className="calendar-icon" /> Vacation calendar</div>
@@ -69,6 +71,7 @@ export default class Admin extends Component {
     );
   }
 }
+
 
 
 

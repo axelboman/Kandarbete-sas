@@ -10,12 +10,12 @@ import AdminManage from "./components/AdminManage";
 
 export default ({ childProps }) =>
   <Switch>
-    <AppliedRoute path="/" exact component={Login} props={childProps} />
-    <AppliedRoute path="/login" exact component={Login} props={childProps} />
-    <AppliedRoute path="/wishvacation" exact component={WishVacation} props={childProps} />
-    <AppliedRoute path="/myvacations" exact component={MyVacations} props={childProps} />
-    <AppliedRoute path="/admin" exact component={Admin} props={childProps} />
-    <AppliedRoute path="/admin/adminmanage" component={AdminManage} props={childProps} />
+    <AppliedRoute exact path="/"  component={Login} props={childProps} />
+    <AppliedRoute exact path="/login" component={Login} props={childProps} />
+    <AppliedRoute exact path="/wishvacation" component={WishVacation} props={childProps} />
+    <AppliedRoute exact path="/myvacations" component={MyVacations} props={childProps} />
+    <AppliedRoute exact path="/admin" component={Admin} props={childProps} />
+    <AppliedRoute exact path="/adminmanage" component={AdminManage} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
   </Switch>;

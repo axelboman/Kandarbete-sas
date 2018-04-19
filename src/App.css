@@ -63,3 +63,13 @@ body {
 .dropDownGroups {
   margin-bottom: 20px;
 }
+
+
+/* For manage page */
+
+.manageHeader {
+  margin-bottom: 50px;
+}
+.manageBreak {
+  margin-top: 7px !important;
+}

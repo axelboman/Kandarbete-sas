@@ -47,6 +47,8 @@ export default class Maas extends React.Component {
             data={ vacation } 
             exportCSV={ true } 
             options={ options } 
+            bordered={ false }
+            frame
             striped 
             search
             hover 
