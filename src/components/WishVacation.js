@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from 'moment';
-import { ButtonGroup, Button, Grid, Row, Col, Panel, Form, ControlLabel, FormGroup, FormControl } from "react-bootstrap";
+import { ButtonGroup, Button, Grid, Row, Col, Panel, Form, ControlLabel, FormGroup, FormControl, Tabs, Tab, TabContainer, TabContent, TabPane, Nav, NavItem, } from "react-bootstrap";
 import Timeline from 'react-calendar-timeline/lib/'
 
 import 'react-dates/initialize';
@@ -21,6 +21,50 @@ const groups = [
 ]
 
 export default class Example extends Component {
+
+  render() {
+    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const items = numbers.map((number) =>
+      ({ id: number, group: number, title: 'item ' + number, start_time: null, end_time: null })
+    );
+
+    return (
+      <Grid fluid >
+        <Row className="show-grid">
+          <Col xs={0}>
+          </Col>
+          <Col xs={12}>
+            <div className="text-center">
+              <ButtonGroup bsSize="large" >
+                <Button>Long time</Button>
+                <Button>Short time</Button>
+              </ButtonGroup>
+            </div>
+            <hr />
+            <Example2/>
+          </Col>
+          <Col xs={0}>
+          </Col>
+        </Row>
+        
+        <hr />
+        <Row className="show-grid">
+          <Col xs={12}>
+            <Timeline className="timeLine" groups={groups}
+              items={items}
+              defaultTimeStart={moment().startOf('month')}
+              defaultTimeEnd={moment().endOf('month').add(2, 'month')}
+            />
+          </Col>
+        </Row>
+      </Grid>
+
+    );
+  }
+}
+
+class Example2 extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +73,20 @@ export default class Example extends Component {
       focusedInputs: []
     };
   }
+
+  changeDates(startDate, endDate, id) {
+    let startDatesClone = this.state.startDates.slice();
+    let endDatesClone = this.state.endDates.slice();
+    startDatesClone[id] = startDate;
+    endDatesClone[id] = endDate;
+    this.setState({ startDates: startDatesClone, endDates: endDatesClone });
+  }
+  changeFocus(focusedInput, id) {
+    let focusedInputsClone = this.state.focusedInputs.slice();
+    focusedInputsClone[id] = focusedInput
+    this.setState({ focusedInputs: focusedInputsClone });
+  }
+
   createDateRangePicker(id) {
     return (
         <DateRangePicker
@@ -43,201 +101,94 @@ export default class Example extends Component {
 
     )
   }
-  changeDates(startDate, endDate, id) {
-    let startDatesClone = this.state.startDates.slice();
-    let endDatesClone = this.state.endDates.slice();
-    startDatesClone[id] = startDate;
-    endDatesClone[id] = endDate;
-    this.setState({ startDates: startDatesClone, endDates: endDatesClone });
-  }
-  changeFocus(focusedInput, id) {
-    let focusedInputsClone = this.state.focusedInputs.slice();
-    focusedInputsClone[id] = focusedInput
-    this.setState({ focusedInputs: focusedInputsClone });
-  }
+    //creating the form to input dates + discripition area and submit button.
+    createInputFields(id1, id2, id3){
+      return(
+        <Form horizontal>
+          <FormGroup controlId="formHorizontalVacation1Choice1">
+            <Col componentClass={ControlLabel}sm={1}>Vacation dates</Col>
+            <Col sm={3}>{this.createDateRangePicker(id1)}</Col>
+            <Col componentClass={ControlLabel} sm={1}>Vacation dates</Col>
+            <Col sm={3}>{this.createDateRangePicker(id2)}</Col>
+            <Col componentClass={ControlLabel} sm={1}>Vacation dates</Col>
+            <Col sm={3}>{this.createDateRangePicker(id3)}</Col>
+          </FormGroup>
+          <FormGroup controlId="formControlsTextarea1">
+          <Col componentClass={ControlLabel} sm={2}>Description</Col>
+          <Col sm={8}>
+          <FormControl componentClass="input" placeholder="textarea" />
+            </Col>
+          </FormGroup>
+        </Form>
+      )
+    }
 
-
-  render() {
-    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const items = numbers.map((number) =>
-      ({ id: number, group: number, title: 'item ' + number, start_time: this.state.startDates[number - 1], end_time: this.state.endDates[number - 1] })
-    );
-    return (
-      <Grid fluid >
-        <Row className="show-grid">
-          <Col xs={0} sm={1} md={2} lg={3}>
+  render(){
+    return(
+      <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+      <Row className="clearfix">
+        <Col sm={2}>
+          <Nav bsStyle="pills" stacked>
+            <NavItem eventKey="first">First hand choice</NavItem>
+            <NavItem eventKey="second">Second hand choice</NavItem>
+            <NavItem eventKey="third">Third hand choice</NavItem>
+          </Nav>
+          <hr/>
+          <Col sm={2}>
+            <Button type="submit">Submit request</Button>
           </Col>
-          <Col xs={12} sm={10} md={8} lg={6}>
-            <div className="text-center">
-              <ButtonGroup bsSize="large" >
-                <Button>Long time</Button>
-                <Button>Short time</Button>
-              </ButtonGroup>
-            </div>
-            <hr />
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">Vacation 1</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>
-                <Form horizontal>
-                  <FormGroup controlId="formHorizontalVacation1Choice1">
-                    <Col componentClass={ControlLabel}sm={4}>
-                      Choice 1
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(0)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation1Choice2">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 2
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(1)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation1Choice3">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 3
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(2)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formControlsTextarea1">
-                  <Col componentClass={ControlLabel} sm={2}>
-                      Description
-                   </Col>
-                   <Col sm={8}>
-                   <FormControl componentClass="textarea" placeholder="textarea" />
-                    </Col>
-    </FormGroup>
+        </Col>
 
-                  <FormGroup>
-                    <Col smOffset={4} sm={10}>
-                      <Button type="submit">Submit request</Button>
-                    </Col>
-                  </FormGroup>
-                </Form>
+        <Col sm={10}>
+          <Tab.Content animation>
+            <Tab.Pane eventKey="first">
+              <Panel bsStyle="primary">
+                <Panel.Heading>
+                  <Panel.Title componentClass="h3">First hand choice</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>
+                  {this.createInputFields(0, 1, 2)}
+                  </Panel.Body>
+              </Panel>
+            </Tab.Pane>
+          </Tab.Content>
+        </Col>
+
+        <Col sm={10}>
+          <Tab.Content animation>
+            <Tab.Pane eventKey="second">
+              <Panel bsStyle="primary">
+                <Panel.Heading>
+                  <Panel.Title componentClass="h3">Second hand choice</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>    
+                  {this.createInputFields(3, 4, 5)}            
                 </Panel.Body>
-            </Panel>
+              </Panel>
+            </Tab.Pane>
+          </Tab.Content>
+        </Col>
+        <Col sm={10}>
 
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">Vacation 2</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>                <Form horizontal>
-                  <FormGroup controlId="formHorizontalVacation2Choice1">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 1
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(3)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation2Choice2">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 2
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(4)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation2Choice3">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 3
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(5)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formControlsTextarea2">
-                  <Col componentClass={ControlLabel} sm={2}>
-                      Description
-                   </Col>
-                   <Col sm={8}>
-                   <FormControl componentClass="textarea" placeholder="textarea" />
-                    </Col>
-    </FormGroup>
+          <Tab.Content animation>
+            <Tab.Pane eventKey="third">
+              <Panel bsStyle="primary">
+                <Panel.Heading>
+                  <Panel.Title componentClass="h3">Third hand choice</Panel.Title>
+                </Panel.Heading>
+                <Panel.Body>                
+                  {this.createInputFields(6, 7, 8)}
+                </Panel.Body>
+              </Panel>
+            </Tab.Pane>
+          </Tab.Content>
+        </Col>
+      </Row>
+    </Tab.Container>
+    )
 
-                  <FormGroup>
-                    <Col smOffset={4} sm={10}>
-                      <Button type="submit">Submit request</Button>
-                    </Col>
-                  </FormGroup>
-                </Form></Panel.Body>
-            </Panel>
-            <Panel bsStyle="primary">
-              <Panel.Heading>
-                <Panel.Title componentClass="h3">Vacation 3</Panel.Title>
-              </Panel.Heading>
-              <Panel.Body>                <Form horizontal>
-                  <FormGroup controlId="formHorizontalVacation3Choice1">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 1
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(6)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation3Choice2">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 2
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(7)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formHorizontalVacation3Choice3">
-                    <Col componentClass={ControlLabel} sm={4}>
-                      Choice 3
-                   </Col>
-                    <Col sm={6}>
-                    {this.createDateRangePicker(8)}
-                    </Col>
-                  </FormGroup>
-                  <FormGroup controlId="formControlsTextarea3">
-                  <Col componentClass={ControlLabel} sm={2}>
-                      Description
-                   </Col>
-                   <Col sm={8}>
-                   <FormControl componentClass="textarea" placeholder="textarea" />
-                    </Col>
-    </FormGroup>
-
-                  <FormGroup>
-                    <Col smOffset={4} sm={10}>
-                      <Button type="submit">Submit request</Button>
-                    </Col>
-                  </FormGroup>
-                </Form></Panel.Body>
-            </Panel>
-
-          </Col>
-          <Col xs={0} sm={1} md={2} lg={3}>
-          </Col>
-        </Row>
-        <hr />
-        <Row className="show-grid">
-
-          <Col xs={12}>
-            <Timeline className="timeLine" groups={groups}
-              items={items}
-              defaultTimeStart={moment().startOf('month')}
-              defaultTimeEnd={moment().endOf('month').add(2, 'month')}
-            />
-          </Col>
-
-
-        </Row>
-      </Grid>
-
-    );
   }
 }
-
-
 
 
 
