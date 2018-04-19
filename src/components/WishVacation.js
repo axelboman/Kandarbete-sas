@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import moment from 'moment';
-import { ButtonGroup, Button } from "react-bootstrap";
+import { ButtonGroup, Button, Grid, Row, Col, Panel, Form, ControlLabel, FormGroup, FormControl } from "react-bootstrap";
 import Timeline from 'react-calendar-timeline/lib/'
 
 import 'react-dates/initialize';
@@ -26,93 +26,212 @@ export default class Example extends Component {
     this.state = {
       startDates: [],
       endDates: [],
-      focusedInputs: [],
-      startDate11: null,
-      endDate11: null,
-      focusedInput11: null,
-      startDate12: null,
-      endDate12: null,
-      focusedInput12: null,
-      asd12: 'hgfdes'
+      focusedInputs: []
     };
   }
-  createDateRangePicker(id){
-    return(
-      <div>
-      <DateRangePicker
-        startDateId={"startDate " + id.toString()}
-        endDateId="endDate11"
-        startDate={this.state.startDate11}
-        endDate={this.state.endDate11}
-        onDatesChange={({ startDate, endDate }) => { this.setState({ startDate11: startDate, endDate11: endDate }) }}
-        focusedInput={this.state.focusedInput11}
-        onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput }) }}
-      />
-    </div>
+  createDateRangePicker(id) {
+    return (
+        <DateRangePicker
+          startDateId={"startDate " + String(id)}
+          endDateId={"endDate " + String(id)}
+          startDate={this.state.startDates[id]}
+          endDate={this.state.endDates[id]}
+          onDatesChange={({ startDate, endDate }) => { this.changeDates(startDate, endDate, id) }}
+          focusedInput={this.state.focusedInputs[id]}
+          onFocusChange={(focusedInput) => { this.changeFocus(focusedInput, id) }}
+        />
+
     )
   }
+  changeDates(startDate, endDate, id) {
+    let startDatesClone = this.state.startDates.slice();
+    let endDatesClone = this.state.endDates.slice();
+    startDatesClone[id] = startDate;
+    endDatesClone[id] = endDate;
+    this.setState({ startDates: startDatesClone, endDates: endDatesClone });
+  }
+  changeFocus(focusedInput, id) {
+    let focusedInputsClone = this.state.focusedInputs.slice();
+    focusedInputsClone[id] = focusedInput
+    this.setState({ focusedInputs: focusedInputsClone });
+  }
+
 
   render() {
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const items = numbers.map((number) =>
-    ({ id: number, group: number, title: 'item ' + number, start_time: this.state.startDates[number-1], end_time: this.state.endDates[number-1] })
-  );
-  console.log(this.state.startDates.length);
-  console.log("hej " + 55);
-    
-    // [
-    //   { id: 1, group: 1, title: 'item 1', start_time: this.state.startDate11, end_time: this.state.endDate11 },
-
-    // ]
+      ({ id: number, group: number, title: 'item ' + number, start_time: this.state.startDates[number - 1], end_time: this.state.endDates[number - 1] })
+    );
     return (
-      <div className="body">
+      <Grid fluid >
+        <Row className="show-grid">
+          <Col xs={0} sm={1} md={2} lg={3}>
+          </Col>
+          <Col xs={12} sm={10} md={8} lg={6}>
+            <div className="text-center">
+              <ButtonGroup bsSize="large" >
+                <Button>Long time</Button>
+                <Button>Short time</Button>
+              </ButtonGroup>
+            </div>
+            <hr />
+            <Panel bsStyle="primary">
+              <Panel.Heading>
+                <Panel.Title componentClass="h3">Vacation 1</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>
+                <Form horizontal>
+                  <FormGroup controlId="formHorizontalVacation1Choice1">
+                    <Col componentClass={ControlLabel}sm={4}>
+                      Choice 1
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(0)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalVacation1Choice2">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 2
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(2)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalVacation1Choice3">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 3
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(3)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formControlsTextarea1">
+                  <Col componentClass={ControlLabel} sm={2}>
+                      Description
+                   </Col>
+                   <Col sm={8}>
+                   <FormControl componentClass="textarea" placeholder="textarea" />
+                    </Col>
+    </FormGroup>
 
-        <div className="selection" >
+                  <FormGroup>
+                    <Col smOffset={4} sm={10}>
+                      <Button type="submit">Submit request</Button>
+                    </Col>
+                  </FormGroup>
+                </Form>
+                </Panel.Body>
+            </Panel>
 
-          <ButtonGroup bsSize="large">
-            <Button>Long time</Button>
-            <Button>Short time</Button>
-          </ButtonGroup>
-        </div>
+            <Panel bsStyle="primary">
+              <Panel.Heading>
+                <Panel.Title componentClass="h3">Vacation 2</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>                <Form horizontal>
+                  <FormGroup controlId="formHorizontalVacation2Choice1">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 1
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(3)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalVacation2Choice2">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 2
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(4)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalVacation2Choice3">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 3
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(5)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formControlsTextarea2">
+                  <Col componentClass={ControlLabel} sm={2}>
+                      Description
+                   </Col>
+                   <Col sm={8}>
+                   <FormControl componentClass="textarea" placeholder="textarea" />
+                    </Col>
+    </FormGroup>
+
+                  <FormGroup>
+                    <Col smOffset={4} sm={10}>
+                      <Button type="submit">Submit request</Button>
+                    </Col>
+                  </FormGroup>
+                </Form></Panel.Body>
+            </Panel>
+            <Panel bsStyle="primary">
+              <Panel.Heading>
+                <Panel.Title componentClass="h3">Vacation 3</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>                <Form horizontal>
+                  <FormGroup controlId="formHorizontalVacation3Choice1">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 1
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(6)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalVacation3Choice2">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 2
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(7)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formHorizontalVacation3Choice3">
+                    <Col componentClass={ControlLabel} sm={4}>
+                      Choice 3
+                   </Col>
+                    <Col sm={6}>
+                    {this.createDateRangePicker(8)}
+                    </Col>
+                  </FormGroup>
+                  <FormGroup controlId="formControlsTextarea3">
+                  <Col componentClass={ControlLabel} sm={2}>
+                      Description
+                   </Col>
+                   <Col sm={8}>
+                   <FormControl componentClass="textarea" placeholder="textarea" />
+                    </Col>
+    </FormGroup>
+
+                  <FormGroup>
+                    <Col smOffset={4} sm={10}>
+                      <Button type="submit">Submit request</Button>
+                    </Col>
+                  </FormGroup>
+                </Form></Panel.Body>
+            </Panel>
+
+          </Col>
+          <Col xs={0} sm={1} md={2} lg={3}>
+          </Col>
+        </Row>
         <hr />
-        <div className="container">
-        <label className="choiceLabel">First hand Choice</label>
-          <div>
-            <DateRangePicker
-              startDateId="startDate11"
-              endDateId="endDate11"
-              startDate={this.state.startDate11}
-              endDate={this.state.endDate11}
-              onDatesChange={({ startDate, endDate }) => { this.setState({ startDate11: startDate, endDate11: endDate }) }}
-              focusedInput={this.state.focusedInput11}
-              onFocusChange={(focusedInput) => { this.setState({ focusedInput11: focusedInput }) }}
+        <Row className="show-grid">
+
+          <Col xs={12}>
+            <Timeline className="timeLine" groups={groups}
+              items={items}
+              defaultTimeStart={moment().startOf('month')}
+              defaultTimeEnd={moment().endOf('month').add(2, 'month')}
             />
-          </div>
-          <hr/>
-          <label className="choiceLabel">Second hand Choice</label>
-          <div>
-            <DateRangePicker
-              startDateId="startDate12"
-              endDateId="endDate12"
-              startDate={this.state.startDate12}
-              endDate={this.state.endDate12}
-              onDatesChange={({ startDate, endDate }) => { this.setState({ startDate12: startDate, endDate12: endDate }) }}
-              focusedInput={this.state.focusedInput12}
-              onFocusChange={(focusedInput) => { this.setState({ focusedInput12: focusedInput }) }}
-            />
-          </div>
-        </div>
+          </Col>
 
 
-        <hr />
-        <div >
-          <Timeline className="timeLine" groups={groups}
-            items={items}
-            defaultTimeStart={moment().startOf('month')}
-            defaultTimeEnd={moment().endOf('month').add(1, 'month')}
-          />
-        </div>
-      </div>
+        </Row>
+      </Grid>
 
     );
   }

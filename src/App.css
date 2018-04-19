@@ -6,57 +6,10 @@
   color: white;
 } */
 
-.body{
-
-}
-.celenderStyle{
-  border-radius: 4px;
-  margin: auto;
+body { 
+  padding-top: 65px; 
 }
 
-.container{
-  text-align: center;
-  border: solid 1px;
-  width: 100%;
-  background-color: #006;
-
-}
-
-.calendarSection{
-  text-align: center;
-  width: 60%;
-  float: right;
-  margin-top: 10px;
-}
-
-.innerCalendar1{
-  width: 48%; 
-  float: left;
-}
-
-.innerCalendar2{
-  width: 48%; 
-  float: right;
-}
-.datePickerSection{
-  border: solid 2px;
-  float: left;
-  margin-top: 10px;
-  color: white;
-}
-
-.handChoice{
-  border: dotted 1px;
-  margin: 5px;
-
-}
-
-.handChoice h3 { float: left; font-size: 1em; }
-
-.datePicker{
-  text-align: center;
-
-}
 
 .navbar {
   border-radius: 0%;
@@ -91,7 +44,6 @@
 /* For admin page */
 
 .adminHeader {
-  margin-top: 100px;
   margin-bottom: 50px;
 }
 
