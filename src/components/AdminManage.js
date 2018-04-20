@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import moment from 'moment';
-import { ButtonGroup, Button, Image, DropdownButton, SplitButton, MenuItem, Grid, Col} from "react-bootstrap";
+import { Grid, Col} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import Timeline from 'react-calendar-timeline/lib/'
-import App from "../App";
 
 const vacation = [{
     id: 1,
@@ -36,9 +33,6 @@ const vacation = [{
 
 
 export default class AdminManage extends Component {
-    constructor(props) {
-      super(props);
-    }
 
     render() { 
         const options = { 

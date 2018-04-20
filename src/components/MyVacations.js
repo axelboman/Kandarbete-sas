@@ -1,6 +1,6 @@
 import React from "react";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Grid, Row, Col} from "react-bootstrap";
+import { Grid, Col} from "react-bootstrap";
 
 const vacation = [{
     id: 1,
