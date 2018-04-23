@@ -8,25 +8,25 @@ export default class Login extends Component {
   
         this.state = {
             email: "",
-            password: ""
+            password: "",
         };
     }
-  
+
     validateForm() {
         return this.state.email.length > 0 && this.state.password.length > 0;
     }
 
-    handleChange = event => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
-    }
+    // handleChange = event => {
+    //     this.setState({
+    //         [event.target.id]: event.target.value
+    //     });
+    // }
     
-    handleSubmit = event => {
-        event.preventDefault();
-        this.props.userHasAuthenticated(true);  //kanske inte?
-        this.props.history.push("/");
-    }
+    // handleSubmit = event => {
+    //     event.preventDefault();
+    //     this.props.userHasAuthenticated(true);  //kanske inte?
+    //     this.props.history.push("/");
+    // }
 
     // handleSubmit = async event => {
     //     event.preventDefault();
@@ -42,6 +42,9 @@ export default class Login extends Component {
     render() {
         return (
             <div className="Login">
+            {/* <ul>
+        { this.state.persons.map(person => <li>{person.first_name}</li>)}
+      </ul> */}
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>

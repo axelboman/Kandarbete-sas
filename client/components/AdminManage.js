@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Grid, Col} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import axios from 'axios';
 
 const vacation = [{
     id: 1,
@@ -33,7 +34,20 @@ const vacation = [{
 
 
 export default class AdminManage extends Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            applications: []
+    
+        };
+    }
+    componentDidMount() {
+        axios.get(`/api/applications`)
+          .then(res => {
+            const applications = res.data;
+            this.setState({ applications });
+          })
+      }
     render() { 
         const options = { 
             exportCSVSeparator: ', ',
@@ -49,7 +63,7 @@ export default class AdminManage extends Component {
                     <hr className="manageBreak">
                     </hr> 
                     <BootstrapTable className="table" 
-                    data={ vacation } 
+                    data={ this.state.applications } 
                     exportCSV={ true } 
                     options={ options } 
                     bordered={ false }
