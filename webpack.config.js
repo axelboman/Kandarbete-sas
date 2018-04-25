@@ -30,7 +30,7 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     proxy: {
-      "/api": "http://localhost:3001"
+      "/api": "http://localhost:3000"
     }
   },
   plugins: [

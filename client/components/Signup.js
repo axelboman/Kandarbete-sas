@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "../css/Login.css";
 
-export default class Login extends Component {
+export default class Signup extends Component {
+
+
     render() {
         return (
             <div className="Login">
-                <form method="post" action="/api/login">
+                <form method="post" action="/api/signup">
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Username</ControlLabel>
                         <FormControl
@@ -28,7 +30,7 @@ export default class Login extends Component {
                         bsSize="large"
                         type="submit"
                     >
-                        Login
+                        Register
                     </Button>
                 </form>
             </div>
