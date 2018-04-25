@@ -9,15 +9,15 @@ import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
 
 const groups = [
-  { id: 1, title: 'Vacation 1: First hand' },
-  { id: 2, title: 'Vacation 1: Second hand' },
-  { id: 3, title: 'Vacation 1: Third hand' },
-  { id: 4, title: 'Vacation 2: First hand' },
-  { id: 5, title: 'Vacation 2: Second hand' },
-  { id: 6, title: 'Vacation 2: Third hand' },
-  { id: 7, title: 'Vacation 3: First hand' },
-  { id: 8, title: 'Vacation 3: Second hand' },
-  { id: 9, title: 'Vacation 3: Third hand' }
+  { id: 1, title: 'First hand: V1' },
+  { id: 2, title: 'First hand: V2' },
+  { id: 3, title: 'First hand: V3' },
+  { id: 4, title: 'Second hand: V1' },
+  { id: 5, title: 'Second hand: V2' },
+  { id: 6, title: 'Second hand: V3' },
+  { id: 7, title: 'Third hand: V1' },
+  { id: 8, title: 'Third hand: V2' },
+  { id: 9, title: 'Third hand: V3' }
 ]
 
 export default class Example extends Component {
@@ -52,23 +52,23 @@ export default class Example extends Component {
         <Panel.Body>
           <Form horizontal>
             <FormGroup controlId="formHorizontalChoice">
-              <Col xs={12} md={3} mdOffset={1}>
+              <Col xs={12} md={4}>
                 <ControlLabel>Vacation 1</ControlLabel><div />
                 {this.createDateRangePicker(id1)}
-                <FormControl type="text"
-                  placeholder="Enter vacation description" />
+                {/* <FormControl type="text"
+                  placeholder="Enter vacation description" /> */}
               </Col>
-              <Col xs={12} md={3} mdOffset={1}>
+              <Col xs={12} md={4}>
                 <ControlLabel>Vacation 2</ControlLabel><div />
                 {this.createDateRangePicker(id2)}
-                <FormControl type="text"
-                  placeholder="Enter vacation description" />
+                {/* <FormControl type="text"
+                  placeholder="Enter vacation description" /> */}
               </Col>
-              <Col xs={12} md={3} mdOffset={1}>
+              <Col xs={12} md={4}>
                 <ControlLabel>Vacation 3</ControlLabel><div />
                 {this.createDateRangePicker(id3)}
-                <FormControl type="text"
-                  placeholder="Enter vacation description" />
+                {/* <FormControl type="text"
+                  placeholder="Enter vacation description" /> */}
               </Col>
             </FormGroup>
           </Form>

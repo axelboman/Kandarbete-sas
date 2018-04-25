@@ -13,21 +13,36 @@ body {
 
 .navbar {
   border-radius: 0%;
-  /*background-color: #000099;*/
+  /*background-color: #3f4551 !important;*/
 
 }
+.nav-pills>li.active>a{
+  background-color: #3f4551 !important;
+  border-color: #3f4551 !important;
+  
+}
+.panel-heading{
+  background-color: #3f4551 !important;
+  
+}
+.panel-primary {
+  border-color: #3f4551 !important;
+}
+
+
+
   /*Css for overview calendar*/
   .react-calendar-timeline *{
     z-index: -2;
   }
 
   .rct-sidebar-header{
-    background: #000099 !important;
+    background: #3f4551 !important;
     border-top-left-radius: 4px;
   }
 
   .rct-label-group{
-    background: #000099 !important;
+    background: #3f4551 !important;
     border-top-right-radius: 4px;
   }
 
