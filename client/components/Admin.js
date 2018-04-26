@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Button, Image, DropdownButton, MenuItem, Grid, Col } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import Timeline from 'react-calendar-timeline/lib/'
-import logo from '../calendar-icon.png';
+import logo from '../images/calendar-icon.png';
 
 
 

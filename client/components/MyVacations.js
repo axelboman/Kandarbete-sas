@@ -1,6 +1,7 @@
 import React from "react";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Grid, Col} from "react-bootstrap";
+import axios from 'axios';
 
 const vacation = [{
     id: 1,
@@ -35,7 +36,10 @@ export default class Maas extends React.Component {
   }
 
 
-
+  componentDidMount() {
+    axios.get(`/api/myvacations`)
+     
+  }
   render() {
     const options = { 
         exportCSVSeparator: ', ',
