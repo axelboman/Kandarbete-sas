@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Col} from "react-bootstrap";
+import { Alert, Button, Grid, Col} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import axios from 'axios';
 
@@ -47,7 +47,66 @@ export default class AdminManage extends Component {
             const applications = res.data;
             this.setState({ applications });
           })
-      }
+    }
+
+    //Onclick handlers for change
+    onClickChangeSelected(cell, row, rowIndex){
+        console.log('Row #', rowIndex);
+        console.log(row);
+    }
+
+    //Button for change
+    changeButton(cell, row, enumObject, rowIndex) {
+        return (
+           <Button 
+                bsStyle="default"
+                bsSize="small" 
+                type="button" 
+                onClick={() => 
+                this.onClickChangeSelected(cell, row, rowIndex)}
+           >
+           Change 
+           {/* row { rowIndex } */}
+           </Button>
+        )
+    }
+
+    //Onclick handlers for Accept or decline
+    onClickAcceptSelected(cell, row, rowIndex){
+        console.log("Accept");
+        console.log(row);
+
+    }
+    onClickDeclineSelected(cell, row, rowIndex){
+        console.log("Decline"); 
+        console.log(row);
+
+    }
+
+    //Button for decisions accept or decline
+    decisionButtons(cell, row, enumObject, rowIndex) {
+        return (
+            <ButtonGroup>
+                <Button 
+                    bsStyle="success" 
+                    type="decision"
+                    onClick={() => 
+                    this.onClickAcceptSelected(cell, row, rowIndex)}
+                >
+                Accept
+                </Button>
+                <Button 
+                    bsStyle="danger" 
+                    type="decision"
+                    onClick={() => 
+                    this.onClickDeclineSelected(cell, row, rowIndex)}
+                >
+                Decline
+                </Button>
+            </ButtonGroup>
+        )
+    }
+
     render() { 
         const options = { 
             exportCSVSeparator: ', ',
@@ -82,8 +141,8 @@ export default class AdminManage extends Component {
                         <TableHeaderColumn dataField='description' csvHeader='description' width='10%'>Description</TableHeaderColumn>
                         <TableHeaderColumn dataField='totDays' dataSort={ true } csvFormat={ this.csvTotDaysFormatter } width='10%'>Total number of days</TableHeaderColumn>
                         <TableHeaderColumn dataField='date' dataSort={ true } csvHeader='date' width='10%'>Date</TableHeaderColumn>
-                        <TableHeaderColumn width='10%'>Decision</TableHeaderColumn>    
-                        <TableHeaderColumn width='10%'>Change</TableHeaderColumn>    
+                        <TableHeaderColumn width='10%' dataField='decision' dataFormat={this.decisionButtons.bind(this)}>Decision</TableHeaderColumn>    
+                        <TableHeaderColumn width='10%' dataField='button' dataFormat={this.changeButton.bind(this)}>Change</TableHeaderColumn>  
                     </BootstrapTable>
                 </Col>
             </Grid>
