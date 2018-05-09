@@ -5,7 +5,7 @@ module.exports = function (passport, con, bcrypt) {
     passport.use(new LocalStrategy(
         function (username, password, done) {
             
-            con.query("SELECT password FROM users WHERE username = ?", [username], function (err, results, fields) {
+            con.query("SELECT password FROM users WHERE emp_no = ?", [username], function (err, results, fields) {
                 if (err) { done(err) };
                 
                 if (results.length === 0) {

@@ -3,46 +3,25 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Grid, Col} from "react-bootstrap";
 import axios from 'axios';
 
-const vacation = [{
-    id: 1,
-    created: "2018-01-31 22:05:16",
-    status: "Approved",
-    description: "Ski trip",
-    totDays: 1,
-    date: "2018-01-31",
-    delete: "Locked"
-  },{    
-    id: 2,
-    created: "2018-02-01 09:20:39",
-    status: "Approved",
-    description: "Family vacation",
-    totDays: 10,
-    date: "2018-02-18 To 2018-02-28",
-    delete: "Locked"
-  },{
-    id: 3,
-    created: "2018-03-01 15:25:36",
-    status: "Declined",
-    description: "Easter",
-    totDays: 6,
-    date: "2018-03-28 To 2018-04-02",
-    delete: "Locked"
-}];
 
 export default class Maas extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        vacations: []
 
-  csvTotDaysFormatter(cell, row) {
-    return `${row.id}: ${cell} days`;
-  }
+    };
+}
 
-
-  componentDidMount() {
+  componentWillMount() {
     axios.get(`/api/myvacations`)
-     
-  }
+      .then(res => {
+        const vacations = res.data;
+        this.setState({ vacations });
+      })
+}
   render() {
     const options = { 
-        exportCSVSeparator: ', ',
         defaultSortOrder: 'asc'
     };
     return (
@@ -52,8 +31,7 @@ export default class Maas extends React.Component {
                 <p>Here you can see status of your upcoming vacation as well as you vacation history</p>
             <hr/>
             <BootstrapTable className="table" 
-            data={ vacation } 
-            exportCSV={ true } 
+            data={ this.state.vacations } 
             options={ options } 
             bordered={ false }
             frame
@@ -62,13 +40,14 @@ export default class Maas extends React.Component {
             hover 
             condensed
             sort={ true }>
-                <TableHeaderColumn dataField='id' isKey={ true } dataSort={ true } csvFieldType='number' width='14.3%'>Employee ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='created' dataSort={ true } csvHeader='created' width='14.3%'>Created</TableHeaderColumn>
-                <TableHeaderColumn dataField='status' dataSort={ true } csvHeader='status' width='14.3%'>Status</TableHeaderColumn>
-                <TableHeaderColumn dataField='description' csvHeader='description' width='14.3%'>Description</TableHeaderColumn>
-                <TableHeaderColumn dataField='totDays' dataSort={ true } csvFormat={ this.csvTotDaysFormatter } width='14.3%'>Total number of days</TableHeaderColumn>
-                <TableHeaderColumn dataField='date' dataSort={ true } csvHeader='date' width='14.3%'>Date</TableHeaderColumn>
-                <TableHeaderColumn dataField='delete' width='14.3%'>Delete</TableHeaderColumn>    
+                <TableHeaderColumn dataField='period' isKey={ true } dataSort={ true } width='12.5%'>Period</TableHeaderColumn> 
+                <TableHeaderColumn dataField='start_date'  dataSort={ true } width='12.5%'>Start date</TableHeaderColumn>
+                <TableHeaderColumn dataField='end_date' dataSort={ true } width='12.5%'>End date</TableHeaderColumn>
+                <TableHeaderColumn dataField='choice_no' dataSort={ true } width='12.5%'>Choice no</TableHeaderColumn>
+                <TableHeaderColumn dataField='created' dataSort={ true } width='12.5%'>Created</TableHeaderColumn>
+                <TableHeaderColumn dataField='status' dataSort={ true } width='12.5%'>Status</TableHeaderColumn>
+                <TableHeaderColumn dataField='description' width='12.5%'>Description</TableHeaderColumn>
+                <TableHeaderColumn dataField='delete' width='12.5%'>Delete</TableHeaderColumn>    
             </BootstrapTable>
             </Col>
             </Grid> 
@@ -78,5 +57,4 @@ export default class Maas extends React.Component {
 
 
 //OBS SE HÄR http://allenfang.github.io/react-bootstrap-table/docs.html
-
 

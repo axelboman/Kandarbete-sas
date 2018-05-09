@@ -11,7 +11,7 @@ var mysql = require('mysql');
 var logger = require('morgan');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 var options = require("./database").database;
 var con = mysql.createConnection(options);

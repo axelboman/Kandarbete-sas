@@ -1,8 +1,8 @@
 module.exports = {
     database:{
-        host: "localhost",
-        user: "root",
+        host: "db4free.net",
+        user: "rootuser",
         password: "staralliance",
-        database: "mydb"
+        database: "mydatabase"
     }
   }

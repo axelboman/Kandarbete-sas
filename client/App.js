@@ -9,7 +9,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import WishVacation from "./components/WishVacation";
 import MyVacations from "./components/MyVacations";
-import Admin from "./components/Admin";
+import AdminOverview from "./components/AdminOverview";
 import AdminManage from "./components/AdminManage";
 import axios from 'axios';
 
@@ -19,13 +19,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: null
+      status: null,
+      name: null
     };
   }
   componentWillMount() {
-    axios.get(`/api/authenticated`)
+    axios.get(`/api/getstatus`)
       .then(res => {
-        this.setState({ authenticated: res.data });
+        this.setState({ status: res.data.status });
+        if (res.data.status >= 1) {
+          this.setState({ name: res.data.first_name + " " + res.data.last_name });
+        };
 
       });
 
@@ -47,7 +51,7 @@ class App extends Component {
           <Navbar.Collapse>
 
             <Navbar.Form pullRight>
-              {this.state.authenticated ?
+              {this.state.status >= 1 ?
                 <Button
                   bsStyle="danger"
                   onClick={() => { axios.get(`/api/logout`) }}
@@ -58,14 +62,20 @@ class App extends Component {
             </Navbar.Form>
 
             <Nav pullRight>
+            {this.state.status >= 1 &&
+                <Navbar.Text>
+                  Signed in as: {this.state.name}
+                </Navbar.Text>
+              }
               <NavDropdown title="Change Language" id="basic-nav-dropdown">
                 <MenuItem >Swedish</MenuItem>
                 <MenuItem >Norwegian</MenuItem>
                 <MenuItem >Danish</MenuItem>
                 <MenuItem >English</MenuItem>
               </NavDropdown>
+
             </Nav>
-            {this.state.authenticated &&
+            {this.state.status === 1 &&
               <Nav pullLeft>
                 <LinkContainer to="/wishvacation">
                   <NavItem >Wish Vacation</NavItem>
@@ -73,32 +83,57 @@ class App extends Component {
                 <LinkContainer to="/myvacations">
                   <NavItem >My Vacations</NavItem>
                 </LinkContainer>
-                <LinkContainer to="/admin">
-                  <NavItem>Admin</NavItem>
+              </Nav>
+            }
+            {this.state.status === 2 &&
+              <Nav pullLeft>
+                <LinkContainer to="/overview">
+                  <NavItem>Overview</NavItem>
+                </LinkContainer>
+                <LinkContainer to="/manage">
+                  <NavItem>Manage</NavItem>
                 </LinkContainer>
               </Nav>
             }
           </Navbar.Collapse>
         </Navbar>
         <Switch>
-          
+
           <Route exact path="/signup" component={Signup} />
-            {this.state.authenticated && <Route exact path="/" component={MyVacations}/>}
-            {this.state.authenticated && <Route exact path="/login" component={MyVacations}/>}
-            {this.state.authenticated && <Route exact path="/wishvacation" component={WishVacation} />}
-            {this.state.authenticated && <Route exact path="/myvacations" component={MyVacations} />}
-            {this.state.authenticated && <Route exact path="/admin" component={Admin} />}
-            {this.state.authenticated && <Route exact path="/adminmanage" component={AdminManage} />}
-        
-          {!this.state.authenticated  && <Route exact path="/" component={Login} />}
-          {!this.state.authenticated  && <Route exact path="/login" component={Login} />}
-          {!this.state.authenticated  && <Route exact path="/wishvacation" component={Login} />}
-          {!this.state.authenticated  && <Route exact path="/myvacations" component={Login} />}
-          {!this.state.authenticated  && <Route exact path="/admin" component={Login} />}
-          {!this.state.authenticated  && <Route exact path="/adminmanage" component={Login} />}
+          {this.state.status === 1 &&
+            <Fragment><Route exact path="/" component={MyVacations} />
+              <Route exact path="/login" component={MyVacations} />
+              <Route exact path="/wishvacation" component={WishVacation} />
+              <Route exact path="/myvacations" component={MyVacations} />
+              <Route exact path="/overview" component={MyVacations} />
+              <Route exact path="/manage" component={MyVacations} />
+            </Fragment>}
+          {this.state.status === 2 &&
+            <Fragment><Route exact path="/" component={AdminOverview} />
+              <Route exact path="/login" component={AdminOverview} />
+              <Route exact path="/overview" component={AdminOverview} />
+              <Route exact path="/manage" component={AdminManage} />
+              <Route exact path="/wishvacation" component={AdminOverview} />
+              <Route exact path="/myvacations" component={AdminOverview} />
+            </Fragment>}
+          {this.state.status === 0 &&
+            <Fragment><Route exact path="/" component={Login} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/wishvacation" component={Login} />
+              <Route exact path="/myvacations" component={Login} />
+              <Route exact path="/overview" component={Login} />
+              <Route exact path="/manage" component={Login} />
+            </Fragment>}
+
+          {/* {!this.state.isUser  && <Route exact path="/" component={Login} />}
+          {!this.state.isUser  && <Route exact path="/login" component={Login} />}
+          {!this.state.isUser  && <Route exact path="/wishvacation" component={Login} />}
+          {!this.state.isUser  && <Route exact path="/myvacations" component={Login} />}
+          {!this.state.isUser  && <Route exact path="/admin" component={Login} />}
+          {!this.state.isUser  && <Route exact path="/adminmanage" component={Login} />} */}
 
           <Route component={NotFound} />
-          
+
         </Switch>
 
       </div>

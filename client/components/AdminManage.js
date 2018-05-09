@@ -1,36 +1,7 @@
 import React, { Component } from "react";
-import { Alert, Button, Grid, Col} from "react-bootstrap";
+import { Button, Grid, Col, ButtonGroup} from "react-bootstrap";
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import axios from 'axios';
-
-const vacation = [{
-    id: 1,
-    sender: "Armin Zakeri",
-    created: "2018-01-31 22:05:16",
-    status: "Not reviewed",
-    description: "Ski trip",
-    totDays: 1,
-    date: "2018-01-31",
-    delete: "Locked"
-  },{    
-    id: 2,
-    sender: "Axel Boman",
-    created: "2018-02-01 09:20:39",
-    status: "Not reviewed",
-    description: "Family vacation",
-    totDays: 10,
-    date: "2018-02-18 To 2018-02-28",
-    delete: "Locked"
-  },{
-    id: 3,
-    sender: "Carl Westerberg",
-    created: "2018-03-01 15:25:36",
-    status: "Not reviewed",
-    description: "Easter",
-    totDays: 6,
-    date: "2018-03-28 To 2018-04-02",
-    delete: "Locked"
-}];
 
 
 export default class AdminManage extends Component {
