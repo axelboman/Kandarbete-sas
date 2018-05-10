@@ -53,7 +53,7 @@ export default class MyVacations extends Component {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (text, record) => <span>{record.status === 0 ? 'Unconfirmed' : 'Confirmed'}</span>,
+      render: (text, record) => <span>{record.status === 0 && 'Not reviewed'}{record.status === 1 && 'Denied'}{record.status === 2 && 'Accepted'}</span>,
     } 
   ];
     return (

@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Divider, Popconfirm } from 'antd';
 import Overview from "./Overview";
+import Applications from "./Applications";
 import axios from 'axios';
 import moment from 'moment'
 const FormItem = Form.Item;
@@ -93,7 +94,7 @@ export default class VacationPeriods extends React.Component {
                 <span>
                     <a onClick={() => this.showOverview(record)}>Overview</a>
                     <Divider type="vertical" />
-                    <a href="javascript:;">Applications</a>
+                    <a onClick={() => this.showApplications(record)}>Applications</a>
                     <Divider type="vertical" />
                     <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record)}>
                         <a href="javascript:;">Delete</a>
@@ -104,6 +105,7 @@ export default class VacationPeriods extends React.Component {
         this.state = {
             sitevisibility: true,
             overviewvisibility: false,
+            applicationvisibility: false,
             visible: false,
             vacationperiods: null,
             activevacationperiod: null
@@ -112,6 +114,11 @@ export default class VacationPeriods extends React.Component {
     showOverview(record) {
         this.setState({ sitevisibility: false });
         this.setState({ overviewvisibility: true });
+        this.setState({ activevacationperiod: record });
+    }
+    showApplications(record) {
+        this.setState({ sitevisibility: false });
+        this.setState({ applicationvisibility: true });
         this.setState({ activevacationperiod: record });
     }
     componentDidMount() {
@@ -209,6 +216,13 @@ export default class VacationPeriods extends React.Component {
                 {this.state.overviewvisibility &&
                     <div>
                         <Overview
+                            vacationperiod={this.state.activevacationperiod}
+                        />
+                    </div>
+                }
+                {this.state.applicationvisibility &&
+                    <div>
+                        <Applications
                             vacationperiod={this.state.activevacationperiod}
                         />
                     </div>

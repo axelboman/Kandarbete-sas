@@ -33,7 +33,8 @@ export default class Applications extends React.Component {
             title: 'Vacation no',
             dataIndex: 'vacation_no',
             key: 'vacation_no',
-        }, {
+        }, 
+        {
             title: 'Choice no',
             dataIndex: 'choice_no',
             key: 'choice_no',
@@ -50,21 +51,21 @@ export default class Applications extends React.Component {
             //     key: 'status',
             //     render: (text, record) => <span>{record.status ===  1 && 'Staff'}{record.status ===  2 && 'Admin'}</span>,
             // },
-            // {
-            //     title: 'Action',
-            //     key: 'action',
-            //     render: (text, record) => (
-            //         <span>
-            //             <a onClick={() => this.showOverview(record.id)}>Overview</a>
-            //             <Divider type="vertical" />
-            //             <a href="javascript:;">Applications</a>
-            //             <Divider type="vertical" />
-            //             <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.id)}>
-            //                 <a href="javascript:;">Delete</a>
-            //             </Popconfirm>
-            //         </span>
-            //     ),
-            // }
+            {
+                title: 'Action',
+                key: 'action',
+                render: (text, record) => (
+                    <span>
+                        <a onClick={() => this.confirmApplication(record)}>Confirm</a>
+                        <Divider type="vertical" />
+                        <a onClick={() => this.denyApplication(record)}>Deny</a>
+                        <Divider type="vertical" />
+                        <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+                            <a href="javascript:;">Delete</a>
+                        </Popconfirm>
+                    </span>
+                ),
+            }
         ];
         this.state = {
             applications: null
@@ -73,8 +74,46 @@ export default class Applications extends React.Component {
     componentDidMount() {
         this.getApplications();
     }
+    confirmApplication(record){
+        var dataSource = [...this.state.applications];
+        axios.post(`/api/editvacation`, { id: record.key, status: 2 })
+        for (var i=0;i<dataSource.length; i++){
+            if (dataSource[i].vacation_no == record.vacation_no &&
+                dataSource[i].emp_no == record.emp_no &&
+                dataSource[i].period == record.period &&
+                dataSource[i].key != record.key
+            ){
+                dataSource[i].status = 1
+                axios.post(`/api/editvacation`, { id: dataSource[i].key, status: 1 })
+            }
+            if (dataSource[i].key == record.key){
+                dataSource[i].status = 2
+            }
+        }
+        this.setState({  applications: dataSource});
+    }
+    denyApplication(record){
+        var dataSource = [...this.state.applications];
+        axios.post(`/api/editvacation`, { id: record.key, status: 1 })
+        for (var i=0;i<dataSource.length; i++){
+            if (dataSource[i].key == record.key){
+                dataSource[i].status = 1
+            }
+        }
+        this.setState({  applications: dataSource});
+    }
+    onDelete = (key) => {
+        const dataSource = [...this.state.applications];
+        axios.post(`/api/deletevacation`, { id: key })
+            .then(res => { });
+        this.setState({  applications: dataSource.filter(item => item.key !== key) });
+    }
     getApplications() {
-        axios.get(`/api/getapplications`)
+        var periodID = null;
+        if (this.props.vacationperiod !== undefined){
+            periodID = this.props.vacationperiod.key;
+        }
+        axios.get(`/api/getapplications`, { params: { period: periodID } })
             .then(res => {
                 var applications = res.data;
                 for (var i = 0; i < applications.length; i++) {
@@ -87,6 +126,7 @@ export default class Applications extends React.Component {
                         start_date: applications[i].start_date,
                         end_date: applications[i].end_date,
                         vacation_no: applications[i].vacation_no,
+                        period: applications[i].period,
                         key: applications[i].id,
                     }
                 }

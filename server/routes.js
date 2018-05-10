@@ -5,7 +5,7 @@ module.exports = function (app, passport, con, bcrypt) {
         if (req.user) {
             var redir = { redirect: "/" };
             return res.json(redir);
-      } 
+        }
     });
     app.post('/api/sendvacationapplication', (req, res, next) => {
         con.query("INSERT INTO vacation (choice_no, description, emp_no, created, period,vacation_no,start_date,end_date,status) VALUES (?,?,?,?,?,?,?,?,?)",
@@ -22,6 +22,24 @@ module.exports = function (app, passport, con, bcrypt) {
         con.query("DELETE FROM vacation_period WHERE id=?", [req.body.id], function (err, result, fields) {
             if (err) throw err;
         });
+    });
+    app.post('/api/deletevacation', (req, res, next) => {
+        con.query("DELETE FROM vacation WHERE id=?", [req.body.id], function (err, result, fields) {
+            if (err) throw err;
+        });
+    });
+    app.post('/api/editvacation', (req, res, next) => {
+        if (req.body.status !== undefined) {
+            con.query("UPDATE vacation SET status = ? WHERE id=?", [req.body.status, req.body.id], function (err, result, fields) {
+                if (err) throw err;
+            });
+        }
+        if (req.body.start_date !== undefined && req.body.end_date !== undefined) {
+            con.query("UPDATE vacation SET open_status = ? WHERE id=?", [req.body.openstatus, req.body.id], function (err, result, fields) {
+                if (err) throw err;
+            });
+        }
+
     });
     app.post('/api/editvacationperiod', (req, res, next) => {
         if (req.body.name !== undefined) {
@@ -59,11 +77,19 @@ module.exports = function (app, passport, con, bcrypt) {
         });
     });
     app.get('/api/getapplications', (req, res, next) => {
-        con.query("SELECT * FROM vacation", function (err, result, fields) {
-            if (err) throw err;
-            res.send(result);
+        if (req.query.period !== undefined) {
+            con.query("SELECT * FROM vacation WHERE period = ?",[req.query.period] , function (err, result, fields) {
+                if (err) throw err;
+                res.send(result);
 
-        });
+            });
+        } else {
+            con.query("SELECT * FROM vacation", function (err, result, fields) {
+                if (err) throw err;
+                res.send(result);
+
+            });
+        }
     });
     app.get('/api/getvacations', (req, res, next) => {
         con.query("SELECT status FROM users WHERE emp_no = ?", [req.user], function (err, result, fields) {
@@ -76,7 +102,7 @@ module.exports = function (app, passport, con, bcrypt) {
                 });
             }
             if (result[0].status == 2) {
-                con.query("SELECT v.choice_no, v.description, v.vacation_no, v.start_date, v.end_date, v.status, v.emp_no, v.id FROM vacation AS v WHERE v.period = ? ;",[req.query.period] , function (err, result, fields) {
+                con.query("SELECT v.choice_no, v.description, v.vacation_no, v.start_date, v.end_date, v.status, v.emp_no, v.id FROM vacation AS v WHERE v.period = ? ;", [req.query.period], function (err, result, fields) {
                     if (err) throw err;
                     res.send(result);
 
@@ -141,27 +167,6 @@ module.exports = function (app, passport, con, bcrypt) {
             res.clearCookie('connect.sid')
         })
 
-
-    });
-    app.post('/api/signup', (req, res, next) => {
-        const username = req.body.username;
-        const password = req.body.password;
-        bcrypt.hash(password, saltRounds, function (err, hash) {
-            // Store hash in your password DB.
-
-            con.query("INSERT INTO users (username, password) VALUES (?,?)", [username, hash], function (err, result, fields) {
-                if (err) throw err;
-                con.query("SELECT LAST_INSERT_ID() as user_id", function (err, result, fields) {
-                    if (err) throw err;
-                    const user_id = result[0];
-                    req.login(user_id, function (err) {
-                        res.redirect('/');
-
-                    });
-                });
-            });
-        });
-        // res.redirect('back');
 
     });
 

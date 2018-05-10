@@ -1,100 +1,11 @@
 @import '~antd/dist/antd.css';
-/* .Tabs .navbar-default .navbar-nav>.active>a, .navbar-nav>.active>a:focus, .navbar-nav>.active>a:hover{
-  background-color:  #006 !important;
-  border: solid #006 !important;
-  border-radius: 5px;
-  color: white;
-} */
-/* 
-body { 
-
-  height: 100%;
-} */
 
 .logo {
   height: 32px;
   padding-left: 40px;
   margin: 16px;
 }
-.navbar {
-  border-radius: 0%;
-  /*background-color: #3f4551 !important;*/
 
-}
-.nav-pills>li.active>a{
-  background-color: #3f4551 !important;
-  border-color: #3f4551 !important;
-  
-}
-.panel-heading{
-  background-color: #3f4551 !important;
-  
-}
-.panel-primary {
-  border-color: #3f4551 !important;
-}
-
-
-
-  /*Css for overview calendar*/
-  .react-calendar-timeline *{
-    z-index: -2;
-  }
-
-  .rct-sidebar-header{
-    background: #3f4551 !important;
-    border-top-left-radius: 4px;
-  }
-
-  .rct-label-group{
-    background: #3f4551 !important;
-    border-top-right-radius: 4px;
-  }
-
-  /*CSS for date input fields*/
-
-  .DateRangePickerInput__withBorder{
-    border-radius: 4px;
-  }
-
-/* For table in my vacations */
-.table {
-  margin-bottom: 0% !important;
-}
-
-
-/* For admin page */
-
-.adminHeader {
-  margin-bottom: 50px;
-}
-
-.calendar-icon {
-  width: 15px;
-  height: 12px;
-}
-
-.manageButton {
-  margin-bottom: 30px;
-}
-
-.adminBreak {
-  margin-top: 7px !important;
-}
-
-.dropDownGroups {
-  margin-bottom: 20px;
-}
-
-
-/* For manage page */
-
-.manageHeader {
-  margin-bottom: 50px;
-}
-.manageBreak {
-  margin-top: 7px !important;
-}
 .editable-cell {
   position: relative;
 }
@@ -137,9 +48,9 @@ body {
 .editable-add-btn {
   margin-bottom: 8px;
 }
-.login-form {
+/* .login-form {
   max-width: 300px;
-}
+} */
 .login-form-forgot {
   float: right;
 }

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import logo from './images/SAS-Logo-white.png';
-import { Layout, Menu, Icon , Button, Form} from 'antd';
+import { Layout, Menu, Icon, Button, Form, Divider } from 'antd';
 import './css/App.css';
 import { Route, Switch } from "react-router-dom";
 import NotFound from "./components/NotFound";
@@ -30,9 +30,9 @@ class App extends Component {
       collapsed: !this.state.collapsed,
     });
   }
-  logOut(){
+  logOut() {
     axios.get(`/api/logout`);
-    this.setState({ status : 0});
+    this.setState({ status: 0 });
 
   }
   componentDidMount() {
@@ -67,28 +67,31 @@ class App extends Component {
           onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
         >
 
-          <img src={logo} className="logo"  />
+          <img src={logo} className="logo" />
 
           {this.state.status === 1 &&
             <Menu onClick={this.handleClick} theme="dark" mode="inline" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">
-                <Icon type="user" />
+                <Icon type="calendar" />
                 <span className="nav-text">Wish vacation</span>
               </Menu.Item>
               <Menu.Item key="2">
-                <Icon type="video-camera" />
+                <Icon type="table" />
                 <span className="nav-text">My vacations</span>
               </Menu.Item>
-              <Menu.Item key="3">
-                <Icon type="user" />
-                <span className="nav-text">Change language</span>
-              </Menu.Item>
+              <Menu.SubMenu key="sub" title={<span><Icon type="flag" /><span>Change language</span></span>}>
+                <Menu.Item key="3">Swedish</Menu.Item>
+                <Menu.Item key="4">Norwegian</Menu.Item>
+                <Menu.Item key="5">Danish</Menu.Item>
+                <Menu.Item key="6">English</Menu.Item>
+
+              </Menu.SubMenu>
             </Menu>
           }
           {this.state.status === 2 &&
             <Menu onClick={this.handleClick} theme="dark" mode="inline" defaultSelectedKeys={['1']}>
               <Menu.Item key="1">
-                <Icon type="upload" />
+                <Icon type="calendar" />
                 <span className="nav-text">Vacation periods</span>
               </Menu.Item>
               <Menu.Item key="2">
@@ -96,13 +99,16 @@ class App extends Component {
                 <span className="nav-text">Staff</span>
               </Menu.Item>
               <Menu.Item key="3">
-                <Icon type="user" />
-                <span className="nav-text">Applications</span>
+                <Icon type="table" />
+                <span className="nav-text">All applications</span>
               </Menu.Item>
-              <Menu.Item key="4">
-                <Icon type="user" />
-                <span className="nav-text">Change language</span>
-              </Menu.Item>
+              <Menu.SubMenu key="sub" title={<span><Icon type="flag" /><span>Change language</span></span>}>
+                <Menu.Item key="4">Swedish</Menu.Item>
+                <Menu.Item key="5">Norwegian</Menu.Item>
+                <Menu.Item key="6">Danish</Menu.Item>
+                <Menu.Item key="7">English</Menu.Item>
+
+              </Menu.SubMenu>
             </Menu>
           }
         </Sider>
@@ -164,16 +170,17 @@ class App extends Component {
           </Navbar.Collapse>
         </Navbar> */}
         <Layout>
-          <Header style={{ background: '#7dbcea'}} >
-          {this.state.status >= 1 &&
-                <span>
-                  Signed in as: {this.state.name}
-                </span>
-              }
-          {this.state.status >= 1 ?<Button type="danger" onClick={() => { this.logOut() }}>Logout</Button>:
-                null
-              }
-            </Header>
+          <Header style={{ background: '#fff' }} >
+            {this.state.status >= 1 &&
+              <span>
+                Signed in as: {this.state.name}
+              </span>
+            }
+            {this.state.status >= 1 ? <Button type="danger" onClick={() => { this.logOut() }}>Logout</Button> :
+              null
+            }
+          </Header>
+
           <Content style={{ background: '#fff', padding: 24 }}>
             {this.state.status === 0 &&
               <div>
