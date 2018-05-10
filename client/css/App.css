@@ -5,12 +5,17 @@
   border-radius: 5px;
   color: white;
 } */
-
+/* 
 body { 
-  padding-top: 65px; 
+
+  height: 100%;
+} */
+
+.logo {
+  height: 32px;
+  padding-left: 40px;
+  margin: 16px;
 }
-
-
 .navbar {
   border-radius: 0%;
   /*background-color: #3f4551 !important;*/
@@ -131,4 +136,13 @@ body {
 
 .editable-add-btn {
   margin-bottom: 8px;
+}
+.login-form {
+  max-width: 300px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
 }

@@ -1,37 +1,60 @@
 import React, { Component } from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import "../css/Login.css";
+import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
+const FormItem = Form.Item;
+import axios from 'axios';
 
-export default class Login extends Component {
-    render() {
-        return (
-            <div className="Login">
-                <form method="post" action="/api/login">
-                    <FormGroup controlId="email" bsSize="large">
-                        <ControlLabel>Username</ControlLabel>
-                        <FormControl
-                            autoFocus
-                            type="text"
-                            name="username"
-
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="password" bsSize="large">
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            name="password"
-                            type="password"
-                        />
-                    </FormGroup>
-                    <Button
-                        block
-                        bsSize="large"
-                        type="submit"
-                    >
-                        Login
-                    </Button>
-                </form>
-            </div>
-        );
+export default class Login extends React.Component {
+    handleSubmit = (e) => {
+      e.preventDefault();
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+            axios.post(`/api/login`, values).then(function (response) {
+                if (response.data.redirect == '/') {
+                    window.location = "/"
+                } 
+            })
+            .catch(function(error) {
+                window.location = "/"
+            });
+        }
+      });
     }
-}
+    render() {
+      const { getFieldDecorator } = this.props.form;
+      return (
+        <Row>
+        <Col offset={8}>
+        <Form onSubmit={this.handleSubmit} className="login-form">
+          <FormItem>
+            {getFieldDecorator('username', {
+              rules: [{ required: true, message: 'Please input your username!' }],
+            })(
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your Password!' }],
+            })(
+              <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('remember', {
+              valuePropName: 'checked',
+              initialValue: true,
+            })(
+              <Checkbox>Remember me</Checkbox>
+            )}
+            <a className="login-form-forgot" href="">Forgot password</a>
+            <Button type="primary" htmlType="submit" className="login-form-button">
+              Log in
+            </Button>
+          </FormItem>
+        </Form>
+        </Col>
+        </Row>
+      );
+    }
+  }
+  

@@ -1,10 +1,12 @@
 
 module.exports = function (app, passport, con, bcrypt) {
 
-    app.post('/api/login', passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    }));
+    app.post('/api/login', passport.authenticate('local'), (req, res, next) => {
+        if (req.user) {
+            var redir = { redirect: "/" };
+            return res.json(redir);
+      } 
+    });
     app.post('/api/sendvacationapplication', (req, res, next) => {
         con.query("INSERT INTO vacation (choice_no, description, emp_no, created, period,vacation_no,start_date,end_date,status) VALUES (?,?,?,?,?,?,?,?,?)",
             [req.body.choice_no, req.body.description, req.user, req.body.created, req.body.period, req.body.vacation_no, req.body.start_date, req.body.end_date, req.body.status], function (err, result, fields) {
@@ -43,7 +45,6 @@ module.exports = function (app, passport, con, bcrypt) {
         });
     });
     app.post('/api/editstaffmembers', (req, res, next) => {
-        console.log(req.body.target);
         con.query("UPDATE users AS u SET u.email = ?, u.first_name = ?, u.last_name = ?, u.location = ? WHERE emp_no = ?",
             [req.body.target.email, req.body.target.first_name, req.body.target.last_name, req.body.target.location, req.body.target.emp_no], function (err, result, fields) {
                 if (err) throw err;
@@ -67,8 +68,15 @@ module.exports = function (app, passport, con, bcrypt) {
     app.get('/api/getvacations', (req, res, next) => {
         con.query("SELECT status FROM users WHERE emp_no = ?", [req.user], function (err, result, fields) {
             if (err) throw err;
-            if (result[0].status >= 1) {
+            if (result[0].status == 1) {
                 con.query("SELECT vacation_period.name, v.choice_no, v.description, v.vacation_no, v.start_date, v.end_date, v.status FROM vacation AS v INNER JOIN vacation_period ON v.period=vacation_period.ID WHERE v.emp_no = ?;", [req.user], function (err, result, fields) {
+                    if (err) throw err;
+                    res.send(result);
+
+                });
+            }
+            if (result[0].status == 2) {
+                con.query("SELECT v.choice_no, v.description, v.vacation_no, v.start_date, v.end_date, v.status, v.emp_no, v.id FROM vacation AS v WHERE v.period = ? ;",[req.query.period] , function (err, result, fields) {
                     if (err) throw err;
                     res.send(result);
 

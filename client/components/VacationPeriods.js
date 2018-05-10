@@ -1,6 +1,8 @@
 import React from "react";
 import { Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Divider, Popconfirm } from 'antd';
+import Overview from "./Overview";
 import axios from 'axios';
+import moment from 'moment'
 const FormItem = Form.Item;
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
@@ -56,28 +58,28 @@ export default class VacationPeriods extends React.Component {
             dataIndex: 'name',
             key: 'name',
             defaultSortOrder: 'descend',
-  sorter: (a, b) => a.name - b.name,
-            // render: (text, record) => (
-            //     <EditableCell
-            //         value={text}
-            //         onChange={this.onCellChange(record.id, 'name')}
-            //     />
-            // ),
+            sorter: (a, b) => a.name - b.name,
+            render: (text, record) => (
+                <EditableCell
+                    value={text}
+                    onChange={this.onCellChange(record.key, 'name')}
+                />
+            ),
         }, {
             title: 'Start date',
             dataIndex: 'start_date',
             key: 'start_date',
-            render: text => <span>{text.slice(0, 10)}</span>,
+            render: (text, record) => <span>{moment(record.start_date).format('YYYY-MM-DD')}</span>,
         }, {
             title: 'End date',
             dataIndex: 'end_date',
             key: 'end_date',
-            render: text => <span>{text.slice(0, 10)}</span>,
+            render: (text, record) => <span>{moment(record.end_date).format('YYYY-MM-DD')}</span>,
         }, {
             title: 'Open',
             dataIndex: 'open_status',
             key: 'open_status',
-            render: (text, record) => <Switch defaultChecked={text === 1 ? true : false} onChange={(switchValue) => this.onChangeWithId(record.id, switchValue)} />
+            render: (text, record) => <Switch defaultChecked={text === 1 ? true : false} onChange={(switchValue) => this.onChangeWithId(record.key, switchValue)} />
             // render: text => <span>{
             //     text === 1 ?
             //         'Open' :
@@ -89,11 +91,11 @@ export default class VacationPeriods extends React.Component {
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <a onClick={() => this.showOverview(record.id)}>Overview</a>
+                    <a onClick={() => this.showOverview(record)}>Overview</a>
                     <Divider type="vertical" />
                     <a href="javascript:;">Applications</a>
                     <Divider type="vertical" />
-                    <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.id)}>
+                    <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record)}>
                         <a href="javascript:;">Delete</a>
                     </Popconfirm>
                 </span>
@@ -101,12 +103,16 @@ export default class VacationPeriods extends React.Component {
         }];
         this.state = {
             sitevisibility: true,
+            overviewvisibility: false,
             visible: false,
-            vacationperiods: null
+            vacationperiods: null,
+            activevacationperiod: null
         };
     }
-    showOverview(id) {
+    showOverview(record) {
         this.setState({ sitevisibility: false });
+        this.setState({ overviewvisibility: true });
+        this.setState({ activevacationperiod: record });
     }
     componentDidMount() {
         this.getVacationPeriods();
@@ -123,7 +129,16 @@ export default class VacationPeriods extends React.Component {
     getVacationPeriods() {
         axios.get(`/api/getvacationperiods`)
             .then(res => {
-                const vacationperiods = res.data;
+                var vacationperiods = res.data;
+                for (var i = 0; i < vacationperiods.length; i++) {
+                    vacationperiods[i] = {
+                        open_status: vacationperiods[i].open_status,
+                        name: vacationperiods[i].name,
+                        start_date: vacationperiods[i].start_date,
+                        end_date: vacationperiods[i].end_date,
+                        key: vacationperiods[i].id,
+                    }
+                }
                 this.setState({ vacationperiods });
             })
     }
@@ -161,7 +176,7 @@ export default class VacationPeriods extends React.Component {
 
         return (value) => {
             const dataSource = [...this.state.vacationperiods];
-            const target = dataSource.find(item => item.id === key);
+            const target = dataSource.find(item => item.key === key);
             if (target) {
                 target[dataIndex] = value;
                 this.setState({ vacationperiods: dataSource });
@@ -179,7 +194,7 @@ export default class VacationPeriods extends React.Component {
     render() {
         return (
             <div>
-                {this.state.sitevisibility ?
+                {this.state.sitevisibility &&
                     <div>
                         <Button className="editable-add-btn" type="primary" onClick={this.showModal}>Create new vacation period</Button>
                         <CollectionCreateForm
@@ -189,7 +204,14 @@ export default class VacationPeriods extends React.Component {
                             onCreate={this.handleCreate}
                         />
                         <Table columns={this.columns} dataSource={this.state.vacationperiods} />
-                    </div> : null
+                    </div>
+                }
+                {this.state.overviewvisibility &&
+                    <div>
+                        <Overview
+                            vacationperiod={this.state.activevacationperiod}
+                        />
+                    </div>
                 }
             </div>
 

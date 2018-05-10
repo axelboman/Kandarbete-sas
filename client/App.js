@@ -1,18 +1,18 @@
 import React, { Component, Fragment } from 'react';
-import { Nav, Navbar, NavItem, NavDropdown, MenuItem, Image, Button } from "react-bootstrap";
 import logo from './images/SAS-Logo-white.png';
+import { Layout, Menu, Icon , Button, Form} from 'antd';
 import './css/App.css';
 import { Route, Switch } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
 import NotFound from "./components/NotFound";
 import Login from "./components/Login";
-import Signup from "./components/Signup";
-import WishVacation from "./components/WishVacation";
+import VacationPeriods from "./components/VacationPeriods";
+import Staff from "./components/Staff";
+import Applications from "./components/Applications";
 import MyVacations from "./components/MyVacations";
-import AdminOverview from "./components/AdminOverview";
-import AdminManage from "./components/AdminManage";
+import VacationWisher from "./components/VacationWisher";
 import axios from 'axios';
-
+const WrappedNormalLoginForm = Form.create()(Login);
+const { Header, Content, Footer, Sider } = Layout;
 
 
 class App extends Component {
@@ -20,10 +20,22 @@ class App extends Component {
     super(props);
     this.state = {
       status: null,
-      name: null
+      name: null,
+      current: '1',
+      collapsed: false,
     };
   }
-  componentWillMount() {
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  }
+  logOut(){
+    axios.get(`/api/logout`);
+    this.setState({ status : 0});
+
+  }
+  componentDidMount() {
     axios.get(`/api/getstatus`)
       .then(res => {
         this.setState({ status: res.data.status });
@@ -34,13 +46,67 @@ class App extends Component {
       });
 
   }
+  handleClick = (e) => {
+    // console.log('click ', e);
+    // console.log(e.key);
+    // console.log("a");
+    if (e.key !== undefined) {
+      this.setState({
+        current: e.key,
+      });
+    }
 
+  }
   render() {
 
     return (
-      <div className="App">
+      <Layout  >
+        <Sider style={{ height: '100vh' }}
+          breakpoint="lg"
+          collapsedWidth="0"
+          onCollapse={(collapsed, type) => { console.log(collapsed, type); }}
+        >
 
-        <Navbar fixedTop inverse collapseOnSelect>
+          <img src={logo} className="logo"  />
+
+          {this.state.status === 1 &&
+            <Menu onClick={this.handleClick} theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+              <Menu.Item key="1">
+                <Icon type="user" />
+                <span className="nav-text">Wish vacation</span>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Icon type="video-camera" />
+                <span className="nav-text">My vacations</span>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Icon type="user" />
+                <span className="nav-text">Change language</span>
+              </Menu.Item>
+            </Menu>
+          }
+          {this.state.status === 2 &&
+            <Menu onClick={this.handleClick} theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+              <Menu.Item key="1">
+                <Icon type="upload" />
+                <span className="nav-text">Vacation periods</span>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Icon type="user" />
+                <span className="nav-text">Staff</span>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Icon type="user" />
+                <span className="nav-text">Applications</span>
+              </Menu.Item>
+              <Menu.Item key="4">
+                <Icon type="user" />
+                <span className="nav-text">Change language</span>
+              </Menu.Item>
+            </Menu>
+          }
+        </Sider>
+        {/* <Navbar fixedTop inverse collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
               <Image src={logo} alt="sasLogo" className="App-logo" />
@@ -62,7 +128,7 @@ class App extends Component {
             </Navbar.Form>
 
             <Nav pullRight>
-            {this.state.status >= 1 &&
+              {this.state.status >= 1 &&
                 <Navbar.Text>
                   Signed in as: {this.state.name}
                 </Navbar.Text>
@@ -96,47 +162,100 @@ class App extends Component {
               </Nav>
             }
           </Navbar.Collapse>
-        </Navbar>
-        <Switch>
+        </Navbar> */}
+        <Layout>
+          <Header style={{ background: '#7dbcea'}} >
+          {this.state.status >= 1 &&
+                <span>
+                  Signed in as: {this.state.name}
+                </span>
+              }
+          {this.state.status >= 1 ?<Button type="danger" onClick={() => { this.logOut() }}>Logout</Button>:
+                null
+              }
+            </Header>
+          <Content style={{ background: '#fff', padding: 24 }}>
+            {this.state.status === 0 &&
+              <div>
+                <WrappedNormalLoginForm />
+              </div>}
+            {this.state.status === 2 &&
+              <div>
+                {this.state.current == 1 &&
+                  <VacationPeriods />
+                }
+                {this.state.current == 2 &&
+                  <Staff />
+                }
+                {this.state.current == 3 &&
+                  <Applications />
+                }
+              </div>}
+            {this.state.status === 1 &&
+              <div>
+                {this.state.current == 1 &&
+                  <VacationWisher />
+                }
+                {this.state.current == 2 &&
+                  <MyVacations />
+                }
+              </div>}
+            {/* <Fragment><Route exact path="/" component={MyVacations} />
+                <Route exact path="/login" component={MyVacations} />
+                <Route exact path="/wishvacation" component={WishVacation} />
+                <Route exact path="/myvacations" component={MyVacations} />
+                <Route exact path="/overview" component={MyVacations} />
+                <Route exact path="/manage" component={MyVacations} />
+              </Fragment>
+              {this.state.status === 2 &&
+              <Fragment><Route exact path="/" component={AdminOverview} />
+                <Route exact path="/login" component={AdminOverview} />
+                <Route exact path="/overview" component={AdminOverview} />
+                <Route exact path="/manage" component={AdminManage} />
+                <Route exact path="/wishvacation" component={AdminOverview} />
+                <Route exact path="/myvacations" component={AdminOverview} />
+              </Fragment>}
+            {this.state.status === 0 &&
+              <Fragment><Route exact path="/" component={Login} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/wishvacation" component={Login} />
+                <Route exact path="/myvacations" component={Login} />
+                <Route exact path="/overview" component={Login} />
+                <Route exact path="/manage" component={Login} />
+              </Fragment>} */}
+            {/* <Switch>
+            {this.state.status === 1 &&
+              <Fragment><Route exact path="/" component={MyVacations} />
+                <Route exact path="/login" component={MyVacations} />
+                <Route exact path="/wishvacation" component={WishVacation} />
+                <Route exact path="/myvacations" component={MyVacations} />
+                <Route exact path="/overview" component={MyVacations} />
+                <Route exact path="/manage" component={MyVacations} />
+              </Fragment>}
+            {this.state.status === 2 &&
+              <Fragment><Route exact path="/" component={AdminOverview} />
+                <Route exact path="/login" component={AdminOverview} />
+                <Route exact path="/overview" component={AdminOverview} />
+                <Route exact path="/manage" component={AdminManage} />
+                <Route exact path="/wishvacation" component={AdminOverview} />
+                <Route exact path="/myvacations" component={AdminOverview} />
+              </Fragment>}
+            {this.state.status === 0 &&
+              <Fragment><Route exact path="/" component={Login} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/wishvacation" component={Login} />
+                <Route exact path="/myvacations" component={Login} />
+                <Route exact path="/overview" component={Login} />
+                <Route exact path="/manage" component={Login} />
+              </Fragment>}
 
-          <Route exact path="/signup" component={Signup} />
-          {this.state.status === 1 &&
-            <Fragment><Route exact path="/" component={MyVacations} />
-              <Route exact path="/login" component={MyVacations} />
-              <Route exact path="/wishvacation" component={WishVacation} />
-              <Route exact path="/myvacations" component={MyVacations} />
-              <Route exact path="/overview" component={MyVacations} />
-              <Route exact path="/manage" component={MyVacations} />
-            </Fragment>}
-          {this.state.status === 2 &&
-            <Fragment><Route exact path="/" component={AdminOverview} />
-              <Route exact path="/login" component={AdminOverview} />
-              <Route exact path="/overview" component={AdminOverview} />
-              <Route exact path="/manage" component={AdminManage} />
-              <Route exact path="/wishvacation" component={AdminOverview} />
-              <Route exact path="/myvacations" component={AdminOverview} />
-            </Fragment>}
-          {this.state.status === 0 &&
-            <Fragment><Route exact path="/" component={Login} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/wishvacation" component={Login} />
-              <Route exact path="/myvacations" component={Login} />
-              <Route exact path="/overview" component={Login} />
-              <Route exact path="/manage" component={Login} />
-            </Fragment>}
+            <Route component={NotFound} />
 
-          {/* {!this.state.isUser  && <Route exact path="/" component={Login} />}
-          {!this.state.isUser  && <Route exact path="/login" component={Login} />}
-          {!this.state.isUser  && <Route exact path="/wishvacation" component={Login} />}
-          {!this.state.isUser  && <Route exact path="/myvacations" component={Login} />}
-          {!this.state.isUser  && <Route exact path="/admin" component={Login} />}
-          {!this.state.isUser  && <Route exact path="/adminmanage" component={Login} />} */}
+          </Switch> */}
+          </Content>
+        </Layout>
 
-          <Route component={NotFound} />
-
-        </Switch>
-
-      </div>
+      </Layout>
 
     );
   }
