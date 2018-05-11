@@ -70,22 +70,23 @@ export default class VacationPeriods extends React.Component {
             title: 'Start date',
             dataIndex: 'start_date',
             key: 'start_date',
-            render: (text, record) => <span>{moment(record.start_date).format('YYYY-MM-DD')}</span>,
+            render: (text, record) => <EditableDatePicker
+                value={record.start_date}
+                onChange={this.onCellChange(record.key, 'start_date')}
+            />,
         }, {
             title: 'End date',
             dataIndex: 'end_date',
             key: 'end_date',
-            render: (text, record) => <span>{moment(record.end_date).format('YYYY-MM-DD')}</span>,
+            render: (text, record) => <EditableDatePicker
+            value={record.end_date}
+            onChange={this.onCellChange(record.key, 'end_date')}
+        />,
         }, {
             title: 'Open',
             dataIndex: 'open_status',
             key: 'open_status',
             render: (text, record) => <Switch defaultChecked={text === 1 ? true : false} onChange={(switchValue) => this.onChangeWithId(record.key, switchValue)} />
-            // render: text => <span>{
-            //     text === 1 ?
-            //         'Open' :
-            //         'Closed'
-            // }</span>,
         },
         {
             title: 'Action',
@@ -138,13 +139,9 @@ export default class VacationPeriods extends React.Component {
             .then(res => {
                 var vacationperiods = res.data;
                 for (var i = 0; i < vacationperiods.length; i++) {
-                    vacationperiods[i] = {
-                        open_status: vacationperiods[i].open_status,
-                        name: vacationperiods[i].name,
-                        start_date: vacationperiods[i].start_date,
-                        end_date: vacationperiods[i].end_date,
-                        key: vacationperiods[i].id,
-                    }
+                    vacationperiods[i].start_date = moment(vacationperiods[i].start_date).format('YYYY-MM-DD'); 
+                    vacationperiods[i].end_date = moment(vacationperiods[i].end_date).format('YYYY-MM-DD'); 
+                    vacationperiods[i].key = vacationperiods[i].id;
                 }
                 this.setState({ vacationperiods });
             })
@@ -188,7 +185,7 @@ export default class VacationPeriods extends React.Component {
                 target[dataIndex] = value;
                 this.setState({ vacationperiods: dataSource });
             }
-            axios.post(`/api/editvacationperiod`, { id: key, name: value });
+            axios.post(`/api/editvacationperiod`, {start_date: target.start_date, end_date: target.end_date, id: target.key, name: target.name });
         };
     }
     onDelete = (key) => {
@@ -264,6 +261,53 @@ class EditableCell extends React.Component {
                                 onChange={this.handleChange}
                                 onPressEnter={this.check}
                             />
+                            <Icon
+                                type="check"
+                                className="editable-cell-icon-check"
+                                onClick={this.check}
+                            />
+                        </div>
+                        :
+                        <div className="editable-cell-text-wrapper">
+                            {value || ' '}
+                            <Icon
+                                type="edit"
+                                className="editable-cell-icon"
+                                onClick={this.edit}
+                            />
+                        </div>
+                }
+            </div>
+        );
+    }
+}
+class EditableDatePicker extends React.Component {
+    state = {
+        value: this.props.value,
+        editable: false,
+    }
+    handleChange = (e, d) => {
+        const value = e.format('YYYY-MM-DD');
+        this.setState({ value });
+    }
+    check = () => {
+        
+        this.setState({ editable: false });
+        if (this.props.onChange) {
+            this.props.onChange(this.state.value);
+        }
+    }
+    edit = () => {
+        this.setState({ editable: true });
+    }
+    render() {
+        const { value, editable } = this.state;
+        return (
+            <div className="editable-cell">
+                {
+                    editable ?
+                        <div className="editable-cell-input-wrapper">
+                            <DatePicker value={moment(value)} onChange={this.handleChange} format='YYYY-MM-DD' />
                             <Icon
                                 type="check"
                                 className="editable-cell-icon-check"

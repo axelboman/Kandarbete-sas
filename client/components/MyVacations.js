@@ -16,7 +16,11 @@ export default class MyVacations extends Component {
   getVacations() {
     axios.get(`/api/getvacations`)
       .then(res => {
-        const vacations = res.data;
+        var vacations = res.data;
+        for (var i = 0; i < vacations.length; i++) {
+                    
+          vacations[i].key = vacations[i].id;
+      }
         this.setState({ vacations });
       })
   }

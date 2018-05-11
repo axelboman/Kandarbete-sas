@@ -100,16 +100,7 @@ export default class Staff extends React.Component {
             .then(res => {
                 var staffmembers = res.data;
                 for (var i = 0; i < staffmembers.length; i++) {
-                    staffmembers[i] = {
-                        status: staffmembers[i].status,
-                        location: staffmembers[i].location,
-                        emp_no: staffmembers[i].emp_no,
-                        first_name: staffmembers[i].first_name,
-                        last_name: staffmembers[i].last_name,
-                        hire_date: staffmembers[i].hire_date,
-                        email: staffmembers[i].email,
-                        key: staffmembers[i].emp_no,
-                    }
+                    staffmembers[i].key = staffmembers[i].emp_no;
                 }
 
                 this.setState({ staffmembers });
