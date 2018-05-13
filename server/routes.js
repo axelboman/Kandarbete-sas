@@ -35,7 +35,7 @@ module.exports = function (app, passport, con, bcrypt) {
             });
         }
         if (req.body.start_date !== undefined && req.body.end_date !== undefined) {
-            con.query("UPDATE vacation SET start_date = ?, end_date = ? WHERE id=?", [req.body.start_date,req.body.end_date, req.body.id], function (err, result, fields) {
+            con.query("UPDATE vacation SET start_date = ?, end_date = ? WHERE id=?", [req.body.start_date, req.body.end_date, req.body.id], function (err, result, fields) {
                 if (err) throw err;
             });
         }
@@ -43,11 +43,11 @@ module.exports = function (app, passport, con, bcrypt) {
     });
     app.post('/api/editvacationperiod', (req, res, next) => {
         if (req.body.name !== undefined) {
-            con.query("UPDATE vacation_period SET name = ?, start_date = ?, end_date = ? WHERE id=?", 
-            [req.body.name,req.body.start_date,req.body.end_date, req.body.id], 
-            function (err, result, fields) {
-                if (err) throw err;
-            });
+            con.query("UPDATE vacation_period SET name = ?, start_date = ?, end_date = ? WHERE id=?",
+                [req.body.name, req.body.start_date, req.body.end_date, req.body.id],
+                function (err, result, fields) {
+                    if (err) throw err;
+                });
         }
         if (req.body.openstatus !== undefined) {
             con.query("UPDATE vacation_period SET open_status = ? WHERE id=?", [req.body.openstatus, req.body.id], function (err, result, fields) {
@@ -80,11 +80,24 @@ module.exports = function (app, passport, con, bcrypt) {
     });
     app.get('/api/getapplications', (req, res, next) => {
         if (req.query.period !== undefined) {
-            con.query("SELECT * FROM vacation WHERE period = ?",[req.query.period] , function (err, result, fields) {
+            con.query("SELECT status FROM users WHERE emp_no = ?", [req.user], function (err, result, fields) {
                 if (err) throw err;
-                res.send(result);
+                if (result[0].status == 1) {
+                    con.query("SELECT * FROM vacation WHERE period = ? AND emp_no = ?", [req.query.period, req.user], function (err, result, fields) {
+                        if (err) throw err;
+                        res.send(result);
 
+                    });
+                }
+                if (result[0].status == 2) {
+                    con.query("SELECT * FROM vacation WHERE period = ?", [req.query.period], function (err, result, fields) {
+                        if (err) throw err;
+                        res.send(result);
+    
+                    });
+                }
             });
+
         } else {
             con.query("SELECT vacation_period.name, v.choice_no, v.description, v.vacation_no, v.start_date, v.end_date, v.status, v.emp_no, v.id FROM vacation AS v LEFT JOIN vacation_period ON v.period=vacation_period.ID", function (err, result, fields) {
                 if (err) throw err;
