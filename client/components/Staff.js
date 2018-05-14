@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Divider, Popconfirm } from 'antd';
+import { Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Divider, Popconfirm, Select } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 const FormItem = Form.Item;
@@ -65,12 +65,12 @@ export default class Staff extends React.Component {
             key: 'status',
             render: (text, record) => <span>{record.status === 1 && 'Staff'}{record.status === 2 && 'Admin'}</span>,
         },
-            // {
-            //     title: 'Qualifications',
-            //     dataIndex: 'status',
-            //     key: 'status',
-            //     render: (text, record) => <span>{record.status ===  1 && 'Staff'}{record.status ===  2 && 'Admin'}</span>,
-            // },
+        {
+            title: 'Qualifications',
+            dataIndex: 'qualifications',
+            key: 'qualifications',
+            render: (text, record) => <span>{record.qualifications.map((title) => title + ", ")}</span>,
+        },
             // {
             //     title: 'Action',
             //     key: 'action',
@@ -89,7 +89,8 @@ export default class Staff extends React.Component {
         ];
         this.state = {
             visible: false,
-            staffmembers: null
+            staffmembers: null,
+            qualifications: null
         };
     }
     componentDidMount() {
@@ -101,10 +102,25 @@ export default class Staff extends React.Component {
                 var staffmembers = res.data;
                 for (var i = 0; i < staffmembers.length; i++) {
                     staffmembers[i].key = staffmembers[i].emp_no;
+                    staffmembers[i].qualifications = [];
                 }
 
                 this.setState({ staffmembers });
+                axios.get(`/api/getqualifications`)
+                    .then(res => {
+                        var qualifications = res.data;
+                        this.setState({ qualifications });
+                        for (var i = 0; i < qualifications.length; i++) {
+                            for (var y = 0; y < staffmembers.length; y++) {
+                                if (staffmembers[y].emp_no == qualifications[i].emp_no) {
+                                    staffmembers[y].qualifications.push(qualifications[i].title);
+                                }
+                            }
+                        }
+                        this.setState({ staffmembers });
+                    })
             })
+
     }
     showModal = () => {
         this.setState({ visible: true });
@@ -118,6 +134,14 @@ export default class Staff extends React.Component {
             if (err) {
                 return;
             }
+            // var qualifications = [];
+            // for (var i = 0; i < values['select-multiple'].length; i++) {
+            //     for (var y = 0; y < this.state.qualifications.length; y++) {
+            //         if (this.state.qualifications[y].id == values['select-multiple'][i]) {
+            //             qualifications.push(this.state.qualifications[y].title)
+            //         }
+            //     }
+            // }
             var valuestosend = {
                 status: values['status'],
                 location: values['location'],
@@ -126,10 +150,16 @@ export default class Staff extends React.Component {
                 first_name: values['first_name'],
                 last_name: values['last_name'],
                 email: values['first_name'] + "." + values['last_name'] + "@sas.se",
-                hire_date: moment().format('YYYY-MM-DD')
+                hire_date: moment().format('YYYY-MM-DD'),
+  
             }
-            axios.post(`/api/createuser`, valuestosend);
-            this.state.staffmembers[this.state.staffmembers.length] = valuestosend;
+            axios.post(`/api/createuser`, valuestosend).then(res => {
+                for (var i = 0; i < values['select-multiple'].length; i++) {
+                    axios.post(`/api/createqualification`, { qualification: values['select-multiple'][i], emp_no: values['emp_no']});
+                }
+            });
+            // this.state.staffmembers[this.state.staffmembers.length] = valuestosend;
+            this.getStaffMembers();
             form.resetFields();
             this.setState({ visible: false });
 
@@ -181,6 +211,7 @@ const CollectionCreateForm = Form.create()(
     class extends React.Component {
         state = {
             confirmDirty: false,
+            qualifications: null
         };
         compareToFirstPassword = (rule, value, callback) => {
             const form = this.props.form;
@@ -215,6 +246,20 @@ const CollectionCreateForm = Form.create()(
         handleConfirmBlur = (e) => {
             const value = e.target.value;
             this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+        }
+        componentDidMount() {
+            this.itirateOptions();
+        }
+        itirateOptions() {
+            var qualifications = [];
+            axios.get(`/api/getallqualifications`)
+                .then(res => {
+                    for (var i = 0; i < res.data.length; i++) {
+                        qualifications.push(<Select.Option key={res.data[i].id} >{res.data[i].title}</Select.Option>)
+                    }
+                    this.setState({ qualifications });
+                })
+
         }
         render() {
             const { visible, onCancel, onCreate, form } = this.props;
@@ -288,6 +333,20 @@ const CollectionCreateForm = Form.create()(
                                 </Radio.Group>
                             )}
                         </FormItem>
+                        <FormItem
+                            label="Select qualification"
+                        >
+                            {getFieldDecorator('select-multiple', {
+                                rules: [
+                                    { required: true, message: 'Please select a qualification', type: 'array' },
+                                ],
+                            })(
+                                <Select mode="multiple">
+                                    {this.state.qualifications}
+                                </Select>
+                            )}
+                        </FormItem>
+
 
                     </Form>
                 </Modal>

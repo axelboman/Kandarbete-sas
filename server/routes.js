@@ -61,8 +61,17 @@ module.exports = function (app, passport, con, bcrypt) {
             con.query("INSERT INTO users (emp_no, first_name, last_name, email, hire_date, location, password, status) VALUES (?,?,?,?,?,?,?,?)",
                 [req.body.emp_no, req.body.first_name, req.body.last_name, req.body.email, req.body.hire_date, req.body.location, hash, req.body.status], function (err, result, fields) {
                     if (err) throw err;
+                    res.send(result);
                 });
         });
+    });
+    app.post('/api/createqualification', (req, res, next) => {
+        console.log(req.body.emp_no)
+        console.log(req.body.qualification)
+            con.query("INSERT INTO competence_group (emp_no, id) VALUES (?,?)",
+                [req.body.emp_no, req.body.qualification], function (err, result, fields) {
+                    if (err) throw err;
+                });
     });
     app.post('/api/editstaffmembers', (req, res, next) => {
         con.query("UPDATE users AS u SET u.email = ?, u.first_name = ?, u.last_name = ?, u.location = ? WHERE emp_no = ?",
@@ -73,6 +82,20 @@ module.exports = function (app, passport, con, bcrypt) {
     });
     app.get('/api/getstaffmembers', (req, res, next) => {
         con.query("SELECT u.email, u.hire_date, u.first_name, u.last_name, u.location, u.emp_no, u.status FROM users AS u", function (err, result, fields) {
+            if (err) throw err;
+            res.send(result);
+
+        });
+    });
+    app.get('/api/getallqualifications', (req, res, next) => {
+        con.query("SELECT * FROM qualification", function (err, result, fields) {
+            if (err) throw err;
+            res.send(result);
+
+        });
+    });
+    app.get('/api/getqualifications', (req, res, next) => {
+        con.query("SELECT competence_group.emp_no, qualification.title FROM competence_group LEFT JOIN qualification ON competence_group.id = qualification.id", function (err, result, fields) {
             if (err) throw err;
             res.send(result);
 
@@ -93,7 +116,7 @@ module.exports = function (app, passport, con, bcrypt) {
                     con.query("SELECT * FROM vacation WHERE period = ?", [req.query.period], function (err, result, fields) {
                         if (err) throw err;
                         res.send(result);
-    
+
                     });
                 }
             });
