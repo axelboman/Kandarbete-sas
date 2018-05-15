@@ -31,7 +31,7 @@ export default class VacationWisher extends Component {
             key: 'action',
             render: (text, record) => (
                 <span>
-                    <a onClick={() => this.showApplications(record)}>Apply</a>
+                   {record.status == 0 ? <a onClick={() => this.showApplications(record)}>Apply</a> : null }
                 </span>
             ),
         }];
@@ -54,21 +54,21 @@ export default class VacationWisher extends Component {
         this.setState({ periodvisibility: false });
         this.setState({ applicationvisibility: true });
         this.setState({ activeperiod: record });
-        var activevacations = [];
-        for (var i = 0; i < this.state.vacations.length; i++) {
-            if (this.state.vacations[i].period == record.id) {
-                activevacations[activevacations.length] = this.state.vacations[i]
-                if (this.state.vacations[i].vacation_no == 2 && this.state.radiovalue < 2) {
-                    this.setState({ radiovalue: 2 });
+        // var activevacations = [];
+        // for (var i = 0; i < this.state.vacations.length; i++) {
+        //     if (this.state.vacations[i].period == record.id) {
+        //         activevacations[activevacations.length] = this.state.vacations[i]
+        //         if (this.state.vacations[i].vacation_no == 2 && this.state.radiovalue < 2) {
+        //             this.setState({ radiovalue: 2 });
 
-                }
-                if (this.state.vacations[i].vacation_no == 3 && this.state.radiovalue < 3) {
-                    this.setState({ radiovalue: 3 });
+        //         }
+        //         if (this.state.vacations[i].vacation_no == 3 && this.state.radiovalue < 3) {
+        //             this.setState({ radiovalue: 3 });
 
-                }
-            }
-        }
-        this.setState({ activevacations });
+        //         }
+        //     }
+        // }
+        // this.setState({ activevacations });
     }
     getVacationPeriods() {
         axios.get(`/api/getvacationperiods`)
@@ -252,7 +252,7 @@ const TimeRelatedForm = Form.create()(
 
             }
         }
-        createValidators(id) {
+        createValidators(id, fieldsValue) {
             if (fieldsValue[`range-picker${id}1`] !== undefined) {
                 axios.post(`/api/sendvacationapplication`, {
                     choice_no: 1,
@@ -293,21 +293,20 @@ const TimeRelatedForm = Form.create()(
         }
         handleSubmit = (e) => {
             e.preventDefault();
-
             this.props.form.validateFields((err, fieldsValue) => {
                 if (err) {
                     return;
                 }
-
                 // Should format date value before submit.
-                createValidators(1);
+                this.createValidators(1, fieldsValue);
                 if (this.props.numberOfVacations >= 2) {
-                    createValidators(2);
+                    this.createValidators(2, fieldsValue);
                 }
                 if (this.props.numberOfVacations >= 3) {
-                    createValidators(3);
+                    this.createValidators(3, fieldsValue);
                 }
             });
+            window.location = "/";
         }
         componentDidMount() {
             var pickers = [];
