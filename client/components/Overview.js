@@ -30,6 +30,7 @@ export default class Overview extends React.Component {
         };
     }
     createColumns() {
+        var columns = [];
         const emp_no = {
             title: 'Emp no',
             dataIndex: 'emp_no',
@@ -38,21 +39,65 @@ export default class Overview extends React.Component {
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.emp_no - b.emp_no,
         }
+        columns.push(emp_no);
         const range = moment.range(moment(this.props.vacationperiod.start_date).format('YYYY-MM-DD'), moment(this.props.vacationperiod.end_date).format('YYYY-MM-DD'));
+        const months = Array.from(range.by('months'));
+        var monthsarray = [];
+        const weeks = Array.from(range.by('weeks'));
+        var weeksarray = [];
+        for (var i = 0; i < months.length; i++) {
+            var weekchildren = [];
+            for (var y = 0; y < weekssarray.length; i++) {
+                weekchildren.push(weekssarray[i]);
+            }
+            monthsarray[i] = {
+                title: months[i].format('MMM'),
+                dataIndex: months[i].format('YYYY/MM'),
+                key: months[i].format('YYYY/MM'),
+                children: weekchildren
+            }
+        }
+        for (var i = 0; i < weeks.length; i++) {
+            var daychildren = [];
+            for (var y = 0; y < daysarray.length; i++) {
+                if (daysarray[i])
+                daychildren.push(daysarray[i]);
+            }
+            weeksarray[i] = {
+                title: weeks[i].format('w'),
+                dataIndex: months[i].format('YYYY/w'),
+                key: months[i].format('YYYY/w'),
+                children: daychildren
+            }
+        }
         const days = Array.from(range.by('days'));
-        const formatteddays = days.map(m => m.format('DD'))
+        // const formatteddays = days.map(m => m.format('DD'))
         var daysarray = [];
         for (var i = 0; i < days.length; i++) {
             daysarray[i] = {
                 title: days[i].format('DD'),
-                dataIndex: days[i].format('YYYY-MM-DD'),
-                key: days[i].format('YYYY-MM-DD'),
+                dataIndex: days[i].format('YYYY/MM/DD'),
+                key: days[i].format('YYYY/MM/DD'),
+                onHeaderCell: (column) => ({
+
+                }),
                 children: [{
                     title: days[i].format("ddd"),
+                    dataIndex: days[i].format('YYYY-MM-DD'),
+                    key: days[i].format('YYYY-MM-DD'),
+                    onHeaderCell: (column) => ({
+                        className: "test",
+                    }),
+                    render: (text, record) => <span className={text == 1 ? "dot" : null}></span>,
+                    // onCell: (record) =>  ({
+                    //     className: "test",
+                    //   }),
+
                 }]
 
             }
-            console.log(days[i].format('DD'));
+
+
         }
         const dates = {
             title: 'Dates',
@@ -71,11 +116,15 @@ export default class Overview extends React.Component {
             .then(res => {
                 var vacations = res.data;
                 for (var i = 0; i < vacations.length; i++) {
-                    // var range1 = moment.range(moment(vacations[i].start_date).format('YYYY-MM-DD'), moment(vacations[i].end_date).format('YYYY-MM-DD'));
-                    // var days1 = Array.from(range1.by('days'));
+                    var range1 = moment.range(moment(vacations[i].start_date).format('YYYY-MM-DD'), moment(vacations[i].end_date).format('YYYY-MM-DD'));
+                    var days1 = Array.from(range1.by('days'));
+
                     vacations[i] = {
                         emp_no: vacations[i].emp_no,
                         key: vacations[i].id,
+                    }
+                    for (var y = 0; y < days1.length; y++) {
+                        vacations[i][days1[y].format('YYYY-MM-DD')] = 1;
                     }
                 }
 
