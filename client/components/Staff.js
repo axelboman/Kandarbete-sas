@@ -69,6 +69,11 @@ export default class Staff extends React.Component {
             title: 'Qualifications',
             dataIndex: 'qualifications',
             key: 'qualifications',
+            filters: [
+                { text: 'Structural Analysis Engineer', value: 'Structural Analysis Engineer' },
+                { text: 'Legal Assistant', value: 'Legal Assistant' },
+              ],
+              onFilter: (value, record) => record.qualifications.includes(value),
             render: (text, record) => <span>{record.qualifications.map((title) => title + ", ")}</span>,
         },
             // {
@@ -109,7 +114,6 @@ export default class Staff extends React.Component {
                 axios.get(`/api/getqualifications`)
                     .then(res => {
                         var qualifications = res.data;
-                        this.setState({ qualifications });
                         for (var i = 0; i < qualifications.length; i++) {
                             for (var y = 0; y < staffmembers.length; y++) {
                                 if (staffmembers[y].emp_no == qualifications[i].emp_no) {
@@ -120,6 +124,13 @@ export default class Staff extends React.Component {
                         this.setState({ staffmembers });
                     })
             })
+            axios.get(`/api/getallqualifications`)
+                .then(res => {
+                    var qualifications = res.data;
+     
+                    this.setState({ qualifications });
+                })
+
 
     }
     showModal = () => {
@@ -134,14 +145,14 @@ export default class Staff extends React.Component {
             if (err) {
                 return;
             }
-            // var qualifications = [];
-            // for (var i = 0; i < values['select-multiple'].length; i++) {
-            //     for (var y = 0; y < this.state.qualifications.length; y++) {
-            //         if (this.state.qualifications[y].id == values['select-multiple'][i]) {
-            //             qualifications.push(this.state.qualifications[y].title)
-            //         }
-            //     }
-            // }
+            var qualifications = [];
+            for (var i = 0; i < values['select-multiple'].length; i++) {
+                for (var y = 0; y < this.state.qualifications.length; y++) {
+                    if (this.state.qualifications[y].id == values['select-multiple'][i]) {
+                        qualifications.push(this.state.qualifications[y].title)
+                    }
+                }
+            }
             var valuestosend = {
                 status: values['status'],
                 location: values['location'],
@@ -151,6 +162,8 @@ export default class Staff extends React.Component {
                 last_name: values['last_name'],
                 email: values['first_name'] + "." + values['last_name'] + "@sas.se",
                 hire_date: moment().format('YYYY-MM-DD'),
+                key: values['emp_no'],
+                qualifications: qualifications,
   
             }
             axios.post(`/api/createuser`, valuestosend).then(res => {
@@ -158,10 +171,11 @@ export default class Staff extends React.Component {
                     axios.post(`/api/createqualification`, { qualification: values['select-multiple'][i], emp_no: values['emp_no']});
                 }
             });
-            // this.state.staffmembers[this.state.staffmembers.length] = valuestosend;
-            this.getStaffMembers();
+            var staffmembers = this.state.staffmembers;
+            staffmembers[this.state.staffmembers.length] = valuestosend;
             form.resetFields();
             this.setState({ visible: false });
+            this.setState({ staffmembers });
 
         });
     }

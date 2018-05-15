@@ -289,7 +289,7 @@ const TimeRelatedForm = Form.create()(
                     end_date: fieldsValue[`range-picker${id}3`][1].format('YYYY-MM-DD')
                 })
             }
-        
+
         }
         handleSubmit = (e) => {
             e.preventDefault();

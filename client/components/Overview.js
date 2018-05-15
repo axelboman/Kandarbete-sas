@@ -3,6 +3,10 @@ import { Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Div
 import axios from 'axios';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid/dist/styles/ag-grid.css';
+import 'ag-grid/dist/styles/ag-theme-balham.css';
+
 const moment = extendMoment(Moment);
 const FormItem = Form.Item;
 
@@ -11,7 +15,18 @@ export default class Overview extends React.Component {
         super(props);
         this.state = {
             vacations: null,
-            columns: null
+            columns: null,
+            columnDefs: [
+                {headerName: "Make", field: "make"},
+                {headerName: "Model", field: "model"},
+                {headerName: "Price", field: "price"}
+
+            ],
+            rowData: [
+                {make: "Toyota", model: "Celica", price: 35000},
+                {make: "Ford", model: "Mondeo", price: 32000},
+                {make: "Porsche", model: "Boxter", price: 72000}
+            ]
         };
     }
     createColumns() {
@@ -62,7 +77,7 @@ export default class Overview extends React.Component {
     }
 
     componentDidMount() {
-        this.createColumns();
+        // this.createColumns();
         this.getVacations();
 
     }
@@ -87,8 +102,18 @@ export default class Overview extends React.Component {
     render() {
 
         return (
-            <div>
-                <Table scroll={ {x: 5500} } columns={this.state.columns} bordered dataSource={this.state.vacations} />
+            <div                  className="ag-theme-balham"
+            style={{ 
+              height: '500px', 
+              width: '900px' }} 
+              >
+              <AgGridReact
+                   enableSorting={true}
+                   enableFilter={true}
+                   columnDefs={this.state.columnDefs}
+                   rowData={this.state.rowData}>
+              </AgGridReact>>
+                {/* <Table scroll={ {x: 5500} } columns={this.state.columns} bordered dataSource={this.state.vacations} /> */}
             </div>
 
         );

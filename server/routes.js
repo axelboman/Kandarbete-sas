@@ -66,8 +66,6 @@ module.exports = function (app, passport, con, bcrypt) {
         });
     });
     app.post('/api/createqualification', (req, res, next) => {
-        console.log(req.body.emp_no)
-        console.log(req.body.qualification)
             con.query("INSERT INTO competence_group (emp_no, id) VALUES (?,?)",
                 [req.body.emp_no, req.body.qualification], function (err, result, fields) {
                     if (err) throw err;
