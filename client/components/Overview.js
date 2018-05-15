@@ -3,9 +3,9 @@ import { Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Div
 import axios from 'axios';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid/dist/styles/ag-grid.css';
-import 'ag-grid/dist/styles/ag-theme-balham.css';
+// import { AgGridReact } from 'ag-grid-react';
+// import 'ag-grid/dist/styles/ag-grid.css';
+// import 'ag-grid/dist/styles/ag-theme-balham.css';
 
 const moment = extendMoment(Moment);
 const FormItem = Form.Item;
@@ -16,17 +16,17 @@ export default class Overview extends React.Component {
         this.state = {
             vacations: null,
             columns: null,
-            columnDefs: [
-                {headerName: "Make", field: "make"},
-                {headerName: "Model", field: "model"},
-                {headerName: "Price", field: "price"}
+            // columnDefs: [
+            //     {headerName: "Make", field: "make"},
+            //     {headerName: "Model", field: "model"},
+            //     {headerName: "Price", field: "price"}
 
-            ],
-            rowData: [
-                {make: "Toyota", model: "Celica", price: 35000},
-                {make: "Ford", model: "Mondeo", price: 32000},
-                {make: "Porsche", model: "Boxter", price: 72000}
-            ]
+            // ],
+            // rowData: [
+            //     {make: "Toyota", model: "Celica", price: 35000},
+            //     {make: "Ford", model: "Mondeo", price: 32000},
+            //     {make: "Porsche", model: "Boxter", price: 72000}
+            // ]
         };
     }
     createColumns() {
@@ -42,15 +42,15 @@ export default class Overview extends React.Component {
         const days = Array.from(range.by('days'));
         const formatteddays = days.map(m => m.format('DD'))
         var daysarray = [];
-        for (var i=0;i<days.length; i++){
-            daysarray[i] ={
+        for (var i = 0; i < days.length; i++) {
+            daysarray[i] = {
                 title: days[i].format('DD'),
-            dataIndex: days[i].format('YYYY-MM-DD'),
-            key: days[i].format('YYYY-MM-DD'),
-            children: [{
-                title: days[i].format("ddd"),
-            }]
-  
+                dataIndex: days[i].format('YYYY-MM-DD'),
+                key: days[i].format('YYYY-MM-DD'),
+                children: [{
+                    title: days[i].format("ddd"),
+                }]
+
             }
             console.log(days[i].format('DD'));
         }
@@ -58,26 +58,11 @@ export default class Overview extends React.Component {
             title: 'Dates',
             children: daysarray
         }
-        // const first_name = {
-        //     title: 'First name',
-        //     dataIndex: 'first_name',
-        //     key: 'first_name',
-        // }
-        // const last_name = {
-        //         title: 'Last name',
-        //         dataIndex: 'last_name',
-        //         key: 'last_name'
-        //     }
-        // const station = {
-        //     title: 'Station',
-        //     dataIndex: 'location',
-        //     key: 'location'
-        // }
         this.setState({ columns: [emp_no, dates] });
     }
 
     componentDidMount() {
-        // this.createColumns();
+        this.createColumns();
         this.getVacations();
 
     }
@@ -102,19 +87,19 @@ export default class Overview extends React.Component {
     render() {
 
         return (
-            <div                  className="ag-theme-balham"
-            style={{ 
-              height: '500px', 
-              width: '900px' }} 
-              >
-              <AgGridReact
-                   enableSorting={true}
-                   enableFilter={true}
-                   columnDefs={this.state.columnDefs}
-                   rowData={this.state.rowData}>
-              </AgGridReact>>
-                {/* <Table scroll={ {x: 5500} } columns={this.state.columns} bordered dataSource={this.state.vacations} /> */}
-            </div>
+            // <div                  className="ag-theme-balham"
+            // style={{ 
+            //   height: '500px', 
+            //   width: '900px' }} 
+            //   >
+            //   <AgGridReact
+            //        enableSorting={true}
+            //        enableFilter={true}
+            //        columnDefs={this.state.columnDefs}
+            //        rowData={this.state.rowData}>
+            //   </AgGridReact>>
+            <Table scroll={{ x: 5500 }} columns={this.state.columns} bordered dataSource={this.state.vacations} />
+            // </div>
 
         );
     }
