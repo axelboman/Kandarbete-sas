@@ -16,17 +16,7 @@ export default class Overview extends React.Component {
         this.state = {
             vacations: null,
             columns: null,
-            // columnDefs: [
-            //     {headerName: "Make", field: "make"},
-            //     {headerName: "Model", field: "model"},
-            //     {headerName: "Price", field: "price"}
 
-            // ],
-            // rowData: [
-            //     {make: "Toyota", model: "Celica", price: 35000},
-            //     {make: "Ford", model: "Mondeo", price: 32000},
-            //     {make: "Porsche", model: "Boxter", price: 72000}
-            // ]
         };
     }
     createColumns() {
@@ -42,38 +32,24 @@ export default class Overview extends React.Component {
         columns.push(emp_no);
         const range = moment.range(moment(this.props.vacationperiod.start_date).format('YYYY-MM-DD'), moment(this.props.vacationperiod.end_date).format('YYYY-MM-DD'));
         const months = Array.from(range.by('months'));
+        const days = Array.from(range.by('days'));
+        var daysarray = [];
         var monthsarray = [];
-        const weeks = Array.from(range.by('weeks'));
+        // const weeks = Array.from(range.by('weeks'));
         var weeksarray = [];
         for (var i = 0; i < months.length; i++) {
-            var weekchildren = [];
-            for (var y = 0; y < weekssarray.length; i++) {
-                weekchildren.push(weekssarray[i]);
-            }
             monthsarray[i] = {
                 title: months[i].format('MMM'),
                 dataIndex: months[i].format('YYYY/MM'),
                 key: months[i].format('YYYY/MM'),
-                children: weekchildren
+                children: []
             }
         }
-        for (var i = 0; i < weeks.length; i++) {
-            var daychildren = [];
-            for (var y = 0; y < daysarray.length; i++) {
-                if (daysarray[i])
-                daychildren.push(daysarray[i]);
-            }
-            weeksarray[i] = {
-                title: weeks[i].format('w'),
-                dataIndex: months[i].format('YYYY/w'),
-                key: months[i].format('YYYY/w'),
-                children: daychildren
-            }
-        }
-        const days = Array.from(range.by('days'));
-        // const formatteddays = days.map(m => m.format('DD'))
-        var daysarray = [];
+ 
+
         for (var i = 0; i < days.length; i++) {
+            // console.log(days[i].format('YYYY-MM-DD'));
+            // console.log(days[i].format('W'));
             daysarray[i] = {
                 title: days[i].format('DD'),
                 dataIndex: days[i].format('YYYY/MM/DD'),
@@ -96,14 +72,33 @@ export default class Overview extends React.Component {
                 }]
 
             }
-
+            for (var y = 0; y < monthsarray.length; y++) {
+                if (days[i].format('MMM') === monthsarray[y].title) {
+                    var found = 0;
+                    for (var z = 0; z < monthsarray[y].children.length; z++) {
+                        if (days[i].format('W') === monthsarray[y].children[z].title) {
+                            found = 1;
+                            monthsarray[y].children[z].children.push(daysarray[i]);
+                        }
+                    }
+                    if (found == 0) {
+                        monthsarray[y].children.push({
+                            title: days[i].format('W'),
+                            dataIndex: days[i].format('YYYY/MMM/W'),
+                            key: days[i].format('YYYY/MMM/W'),
+                            children: [daysarray[i]]
+                        }
+                        )
+                    }
+                }
+            }
 
         }
-        const dates = {
-            title: 'Dates',
-            children: daysarray
+        for (var i = 0; i < monthsarray.length; i++){
+            columns.push(monthsarray[i]);
         }
-        this.setState({ columns: [emp_no, dates] });
+
+        this.setState({ columns });
     }
 
     componentDidMount() {
@@ -136,19 +131,8 @@ export default class Overview extends React.Component {
     render() {
 
         return (
-            // <div                  className="ag-theme-balham"
-            // style={{ 
-            //   height: '500px', 
-            //   width: '900px' }} 
-            //   >
-            //   <AgGridReact
-            //        enableSorting={true}
-            //        enableFilter={true}
-            //        columnDefs={this.state.columnDefs}
-            //        rowData={this.state.rowData}>
-            //   </AgGridReact>>
+
             <Table scroll={{ x: 5500 }} columns={this.state.columns} bordered dataSource={this.state.vacations} />
-            // </div>
 
         );
     }
