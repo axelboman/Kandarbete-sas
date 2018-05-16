@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import logo from './images/SAS-Logo-white.png';
-import { Layout, Menu, Icon, Button, Form, Divider } from 'antd';
+import { Layout, Menu, Icon, Button, Form, Divider, Row, Col } from 'antd';
 import './css/App.css';
 import { Route, Switch } from "react-router-dom";
 import NotFound from "./components/NotFound";
@@ -171,14 +171,20 @@ class App extends Component {
         </Navbar> */}
         <Layout>
           <Header style={{ background: '#fff' }} >
-            {this.state.status >= 1 &&
-              <span>
-                Signed in as: {this.state.name}
-              </span>
-            }
-            {this.state.status >= 1 ? <Button type="danger" onClick={() => { this.logOut() }}>Logout</Button> :
-              null
-            }
+            <Row type="flex" justify="end" align="top">
+              <Col offset={1}>
+                {this.state.status >= 1 &&
+                  <span>
+                    Signed in as: {this.state.name}
+                  </span>
+                }
+              </Col>
+              <Col offset={1}>
+                {this.state.status >= 1 ? <Button type="danger" onClick={() => { this.logOut() }}>Logout</Button> :
+                  null
+                }
+              </Col>
+            </Row>
           </Header>
 
           <Content style={{ background: '#fff', padding: 24 }}>
