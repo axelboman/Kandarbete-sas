@@ -57,12 +57,26 @@
 .login-form-button {
   width: 100%;
 }
-.dot {
+.applied {
+  background-color: grey;
+}
+.accepted {
   background-color: green;
+}
+.denied {
+  background-color: red;
+}
+.applied, .accepted, .denied{
+
   height: 25px;
   width: 25px;
   border-radius: 50%;
   display: inline-block;
+}
+
+.booked {
+ color: red;
+
 }
 .test {
   padding: 0;

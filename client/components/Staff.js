@@ -48,7 +48,8 @@ export default class Staff extends React.Component {
             dataIndex: 'location',
             key: 'location',
             render: (text, record) => (
-                <EditableCell
+                <EditableSelect
+                    type="location"
                     value={text}
                     onChange={this.onCellChange(record.key, 'location')}
                 />
@@ -63,7 +64,13 @@ export default class Staff extends React.Component {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            render: (text, record) => <span>{record.status === 1 && 'Staff'}{record.status === 2 && 'Admin'}</span>,
+            render: (text, record) => (
+                <EditableSelect
+                    type="status"
+                    value={text}
+                    onChange={this.onCellChange(record.key, 'status')}
+                />
+            ),
         },
         {
             title: 'Qualifications',
@@ -72,9 +79,16 @@ export default class Staff extends React.Component {
             filters: [
                 { text: 'Structural Analysis Engineer', value: 'Structural Analysis Engineer' },
                 { text: 'Legal Assistant', value: 'Legal Assistant' },
-              ],
-              onFilter: (value, record) => record.qualifications.includes(value),
-            render: (text, record) => <span>{record.qualifications.map((title) => title + ", ")}</span>,
+            ],
+            onFilter: (value, record) => record.qualifications.includes(value),
+            render: (text, record) => (
+                <EditableMultipleSelect
+                    qualifications={this.state.qualifications}
+                    personalQualifications={record.qualifications}
+                    value={text}
+                    onChange={this.onCellChange(record.key, 'qualifications')}
+                />
+            ),
         },
             // {
             //     title: 'Action',
@@ -95,7 +109,7 @@ export default class Staff extends React.Component {
         this.state = {
             visible: false,
             staffmembers: null,
-            qualifications: null
+            qualifications: []
         };
     }
     componentDidMount() {
@@ -117,19 +131,19 @@ export default class Staff extends React.Component {
                         for (var i = 0; i < qualifications.length; i++) {
                             for (var y = 0; y < staffmembers.length; y++) {
                                 if (staffmembers[y].emp_no == qualifications[i].emp_no) {
-                                    staffmembers[y].qualifications.push(qualifications[i].title);
+                                    staffmembers[y].qualifications.push(qualifications[i].id);
                                 }
                             }
                         }
                         this.setState({ staffmembers });
                     })
             })
-            axios.get(`/api/getallqualifications`)
-                .then(res => {
-                    var qualifications = res.data;
-     
-                    this.setState({ qualifications });
-                })
+        axios.get(`/api/getallqualifications`)
+            .then(res => {
+                var qualifications = res.data;
+
+                this.setState({ qualifications });
+            })
 
 
     }
@@ -164,11 +178,11 @@ export default class Staff extends React.Component {
                 hire_date: moment().format('YYYY-MM-DD'),
                 key: values['emp_no'],
                 qualifications: qualifications,
-  
+
             }
             axios.post(`/api/createuser`, valuestosend).then(res => {
                 for (var i = 0; i < values['select-multiple'].length; i++) {
-                    axios.post(`/api/createqualification`, { qualification: values['select-multiple'][i], emp_no: values['emp_no']});
+                    axios.post(`/api/createqualification`, { qualification: values['select-multiple'][i], emp_no: values['emp_no'] });
                 }
             });
             var staffmembers = this.state.staffmembers;
@@ -420,3 +434,128 @@ class EditableCell extends React.Component {
         );
     }
 }
+class EditableSelect extends React.Component {
+    state = {
+        value: this.props.value,
+        editable: false,
+    }
+    handleChange = (e) => {
+        const value = e;
+        this.setState({ value });
+    }
+    check = () => {
+        this.setState({ editable: false });
+        if (this.props.onChange) {
+            this.props.onChange(this.state.value);
+        }
+    }
+    edit = () => {
+        this.setState({ editable: true });
+    }
+    render() {
+        const { value, editable } = this.state;
+        return (
+            <div className="editable-cell">
+                {
+                    editable ?
+                        <div className="editable-cell-input-wrapper">
+                            {this.props.type === "location" &&
+                                <Select value={value} style={{ width: 140 }} onChange={this.handleChange}>
+
+
+                                    <Select.Option value="Stockholm">Stockholm</Select.Option>
+                                    <Select.Option value="Oslo">Oslo</Select.Option>
+                                    <Select.Option value="Copenhagen">Copenhagen</Select.Option>
+
+
+                                </Select>
+                            }
+                            {this.props.type === "status" &&
+                                <Select value={value} style={{ width: 100 }} onChange={this.handleChange}>
+
+                                    <Select.Option value={1} >Staff</Select.Option>
+                                    <Select.Option value={2} >Admin</Select.Option>
+
+
+                                </Select>
+                            }
+                            <Icon
+                                type="check"
+                                className="editable-cell-icon-check"
+                                onClick={this.check}
+                            />
+                        </div>
+                        :
+                        <div className="editable-cell-text-wrapper">
+                            {value == 1 && 'Staff'}
+                            {value == 2 && 'Admin'}
+                            {typeof value === "string" && value}
+                            <Icon
+                                type="edit"
+                                className="editable-cell-icon"
+                                onClick={this.edit}
+                            />
+                        </div>
+                }
+            </div>
+        );
+    }
+}
+class EditableMultipleSelect extends React.Component {
+    state = {
+        value: this.props.value,
+        options: [],
+        editable: false,
+    }
+    handleChange = (e) => {
+        
+        console.log(this.props.personalQualifications)
+        console.log(this.props.qualifications)
+        console.log(e)
+        const value = e;
+        this.setState({ value });
+    }
+    check = () => {
+        this.setState({ editable: false });
+        if (this.props.onChange) {
+            this.props.onChange(this.state.value);
+        }
+    }
+    edit = () => {
+        this.setState({ editable: true });
+    }
+    render() {
+        const { value, editable } = this.state;
+
+        return (
+            <div className="editable-cell">
+                {
+                    editable ?
+                        <div className="editable-cell-input-wrapper">
+                            <Select style={{ width: 150 }} mode="multiple" value={value.map((value) => String(value))} onChange={this.handleChange}>
+                                {this.props.qualifications.map((element) =>
+                                    <Select.Option key={String(element.id)} >{element.title}</Select.Option>
+                                )}
+                            </Select>
+
+                            <Icon
+                                type="check"
+                                className="editable-cell-icon-check"
+                                onClick={this.check}
+                            />
+                        </div>
+                        :
+                        <div className="editable-cell-text-wrapper">
+                            {value.map((id) => this.props.qualifications.find(item => item.id === parseInt(id)).title + ", ")}
+                            <Icon
+                                type="edit"
+                                className="editable-cell-icon"
+                                onClick={this.edit}
+                            />
+                        </div>
+                }
+            </div>
+        );
+    }
+}
+// {record.status === 1 && 'Staff'}{record.status === 2 && 'Admin'}

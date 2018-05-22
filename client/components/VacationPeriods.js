@@ -79,9 +79,9 @@ export default class VacationPeriods extends React.Component {
             dataIndex: 'end_date',
             key: 'end_date',
             render: (text, record) => <EditableDatePicker
-            value={record.end_date}
-            onChange={this.onCellChange(record.key, 'end_date')}
-        />,
+                value={record.end_date}
+                onChange={this.onCellChange(record.key, 'end_date')}
+            />,
         }, {
             title: 'Open',
             dataIndex: 'open_status',
@@ -111,6 +111,7 @@ export default class VacationPeriods extends React.Component {
             vacationperiods: null,
             activevacationperiod: null
         };
+        this.showSite = this.showSite.bind(this);
     }
     showOverview(record) {
         this.setState({ sitevisibility: false });
@@ -121,6 +122,12 @@ export default class VacationPeriods extends React.Component {
         this.setState({ sitevisibility: false });
         this.setState({ applicationvisibility: true });
         this.setState({ activevacationperiod: record });
+    }
+    showSite() {
+        this.setState({ applicationvisibility: false });
+        this.setState({ overviewvisibility: false });
+        this.setState({ sitevisibility: true });
+        this.setState({ activevacationperiod: null });
     }
     componentDidMount() {
         this.getVacationPeriods();
@@ -139,8 +146,8 @@ export default class VacationPeriods extends React.Component {
             .then(res => {
                 var vacationperiods = res.data;
                 for (var i = 0; i < vacationperiods.length; i++) {
-                    vacationperiods[i].start_date = moment(vacationperiods[i].start_date).format('YYYY-MM-DD'); 
-                    vacationperiods[i].end_date = moment(vacationperiods[i].end_date).format('YYYY-MM-DD'); 
+                    vacationperiods[i].start_date = moment(vacationperiods[i].start_date).format('YYYY-MM-DD');
+                    vacationperiods[i].end_date = moment(vacationperiods[i].end_date).format('YYYY-MM-DD');
                     vacationperiods[i].key = vacationperiods[i].id;
                 }
                 this.setState({ vacationperiods });
@@ -185,7 +192,7 @@ export default class VacationPeriods extends React.Component {
                 target[dataIndex] = value;
                 this.setState({ vacationperiods: dataSource });
             }
-            axios.post(`/api/editvacationperiod`, {start_date: target.start_date, end_date: target.end_date, id: target.key, name: target.name });
+            axios.post(`/api/editvacationperiod`, { start_date: target.start_date, end_date: target.end_date, id: target.key, name: target.name });
         };
     }
     onDelete = (key) => {
@@ -212,6 +219,7 @@ export default class VacationPeriods extends React.Component {
                 }
                 {this.state.overviewvisibility &&
                     <div>
+                        <Button className="editable-add-btn" type="default" onClick={this.showSite}><Icon type="left" />Back</Button>
                         <Overview
                             vacationperiod={this.state.activevacationperiod}
                         />
@@ -219,6 +227,7 @@ export default class VacationPeriods extends React.Component {
                 }
                 {this.state.applicationvisibility &&
                     <div>
+                        <Button className="editable-add-btn" type="default" onClick={this.showSite}><Icon type="left" />Back</Button>
                         <Applications
                             vacationperiod={this.state.activevacationperiod}
                         />
@@ -291,7 +300,7 @@ class EditableDatePicker extends React.Component {
         this.setState({ value });
     }
     check = () => {
-        
+
         this.setState({ editable: false });
         if (this.props.onChange) {
             this.props.onChange(this.state.value);

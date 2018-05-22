@@ -72,8 +72,8 @@ module.exports = function (app, passport, con, bcrypt) {
                 });
     });
     app.post('/api/editstaffmembers', (req, res, next) => {
-        con.query("UPDATE users AS u SET u.email = ?, u.first_name = ?, u.last_name = ?, u.location = ? WHERE emp_no = ?",
-            [req.body.target.email, req.body.target.first_name, req.body.target.last_name, req.body.target.location, req.body.target.emp_no], function (err, result, fields) {
+        con.query("UPDATE users AS u SET u.email = ?, u.first_name = ?, u.last_name = ?, u.location = ?, u.status = ? WHERE emp_no = ?",
+            [req.body.target.email, req.body.target.first_name, req.body.target.last_name, req.body.target.location,req.body.target.status,  req.body.target.emp_no], function (err, result, fields) {
                 if (err) throw err;
             });
 
@@ -93,7 +93,7 @@ module.exports = function (app, passport, con, bcrypt) {
         });
     });
     app.get('/api/getqualifications', (req, res, next) => {
-        con.query("SELECT competence_group.emp_no, qualification.title FROM competence_group LEFT JOIN qualification ON competence_group.id = qualification.id", function (err, result, fields) {
+        con.query("SELECT competence_group.emp_no, qualification.title, qualification.id FROM competence_group LEFT JOIN qualification ON competence_group.id = qualification.id", function (err, result, fields) {
             if (err) throw err;
             res.send(result);
 
