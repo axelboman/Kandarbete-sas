@@ -205,9 +205,16 @@ export default class Staff extends React.Component {
                 target[dataIndex] = value;
                 this.setState({ staffmembers: dataSource });
             }
-            axios.post(`/api/editstaffmembers`, { target });
+            if (dataIndex === "qualifications") {
+                axios.post(`/api/editqualifications`, { emp_no: target.emp_no, qualifications: target.qualifications });
+
+            } else {
+                axios.post(`/api/editstaffmembers`, { target });
+            }
+
         };
     }
+
     // onDelete = (key) => {
     //     const dataSource = [...this.state.vacationperiods];
     //     axios.post(`/api/deletestaffmember`, { id: key })
@@ -508,10 +515,7 @@ class EditableMultipleSelect extends React.Component {
         editable: false,
     }
     handleChange = (e) => {
-        
-        console.log(this.props.personalQualifications)
-        console.log(this.props.qualifications)
-        console.log(e)
+
         const value = e;
         this.setState({ value });
     }
