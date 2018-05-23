@@ -7,6 +7,12 @@ const FormItem = Form.Item;
 export default class Staff extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            visible: false,
+            staffmembers: null,
+            qualifications: [],
+            filters: []
+        };
         this.columns = [{
             title: 'Emp no',
             dataIndex: 'emp_no',
@@ -77,9 +83,10 @@ export default class Staff extends React.Component {
             dataIndex: 'qualifications',
             key: 'qualifications',
             filters: [
-                { text: 'Structural Analysis Engineer', value: 'Structural Analysis Engineer' },
-                { text: 'Legal Assistant', value: 'Legal Assistant' },
+                { text: 'Structural Analysis Engineer', value: "1" },
+                { text: 'Legal Assistant', value: "2" },
             ],
+            // filters: this.state.filters,
             onFilter: (value, record) => record.qualifications.includes(value),
             render: (text, record) => (
                 <EditableMultipleSelect
@@ -106,14 +113,20 @@ export default class Staff extends React.Component {
             //     ),
             // }
         ];
-        this.state = {
-            visible: false,
-            staffmembers: null,
-            qualifications: []
-        };
+
     }
     componentDidMount() {
         this.getStaffMembers();
+    }
+    getFilters() {
+
+
+
+
+        // filters: [
+        //     { text: 'Structural Analysis Engineer', value: 'Structural Analysis Engineer' },
+        //     { text: 'Legal Assistant', value: 'Legal Assistant' },
+        // ],
     }
     getStaffMembers() {
         axios.get(`/api/getstaffmembers`)
@@ -141,8 +154,12 @@ export default class Staff extends React.Component {
         axios.get(`/api/getallqualifications`)
             .then(res => {
                 var qualifications = res.data;
-
+                var filters = qualifications.map((qualification) => ({ text: qualification.title, value: qualification.title }));
+            filters =  [{ text: 'Legal Assistant', value: 'Legal Assistant' }];
                 this.setState({ qualifications });
+                this.setState({ filters })
+                
+
             })
 
 

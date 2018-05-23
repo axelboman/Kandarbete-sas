@@ -121,8 +121,8 @@ export default class Applications extends React.Component {
         var periodID = null;
         if (this.props.vacationperiod !== undefined) {
             periodID = this.props.vacationperiod.key;
-        } 
-        else{
+        }
+        else {
             this.columns.unshift(
                 {
                     title: 'Period',
@@ -135,7 +135,6 @@ export default class Applications extends React.Component {
         axios.get(`/api/getapplications`, { params: { period: periodID } })
             .then(res => {
                 var applications = res.data;
-                console.log(applications);
                 for (var i = 0; i < applications.length; i++) {
 
                     applications[i].key = applications[i].id;
@@ -144,6 +143,30 @@ export default class Applications extends React.Component {
                 }
 
                 this.setState({ applications });
+                axios.get(`/api/getstaffmembers`)
+                    .then(res => {
+                        var staffmembers = res.data;
+                        for (var i = 0; i < staffmembers.length; i++) {
+                            staffmembers[i].key = staffmembers[i].emp_no;
+                            staffmembers[i].qualifications = [];
+                        }
+
+                        this.setState({ staffmembers });
+                        axios.get(`/api/getqualifications`)
+                            .then(res => {
+                                var qualifications = res.data;
+                                for (var i = 0; i < qualifications.length; i++) {
+                                    for (var y = 0; y < staffmembers.length; y++) {
+                                        if (staffmembers[y].emp_no == qualifications[i].emp_no) {
+                                            staffmembers[y].qualifications.push(qualifications[i].id);
+                                        }
+                                    }
+                                }
+                                this.setState({ staffmembers });
+                            })
+                    })
+
+                
             })
     }
 
@@ -156,19 +179,14 @@ export default class Applications extends React.Component {
                 target[dataIndex] = value;
                 this.setState({ staffmembers: dataSource });
             }
-            axios.post(`/api/editvacation`, { start_date: target.start_date, end_date: target.end_date, id:target.key });
+            axios.post(`/api/editvacation`, { start_date: target.start_date, end_date: target.end_date, id: target.key });
         };
     }
 
 
     render() {
         return (
-            <div>
-                <div>
-                    <Table columns={this.columns} dataSource={this.state.applications} />
-                </div>
-            </div>
-
+            <Table columns={this.columns} dataSource={this.state.applications} />
         );
     }
 
@@ -183,7 +201,7 @@ class EditableCell extends React.Component {
         this.setState({ value });
     }
     check = () => {
-        
+
         this.setState({ editable: false });
         if (this.props.onChange) {
             this.props.onChange(this.state.value);
