@@ -137,7 +137,7 @@ export default class Staff extends React.Component {
                     staffmembers[i].qualifications = [];
                 }
 
-                this.setState({ staffmembers });
+ 
                 axios.get(`/api/getqualifications`)
                     .then(res => {
                         var qualifications = res.data;
