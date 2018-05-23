@@ -320,7 +320,7 @@ export default class Overview extends React.Component {
             <div>
                 <Button className="editable-add-btn" type="primary" onClick={this.optimize}>Optimize</Button>
 
-                <Table loading={this.state.loading} pagination={false} scroll={{ x: 4500 }} size="middle" columns={this.state.columns} bordered dataSource={this.state.vacations} />
+                <Table loading={this.state.loading} pagination={false} scroll={{ x: 4300 }} size="middle" columns={this.state.columns} bordered dataSource={this.state.vacations} />
             </div>
         );
     }

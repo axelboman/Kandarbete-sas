@@ -49,6 +49,31 @@ export default class Applications extends React.Component {
             title: 'Qualifications',
             dataIndex: 'qualifications',
             key: 'qualifications',
+            filters: [
+                { text: 'Structural Analysis Engineer', value: 1 },
+                { text: 'Legal Assistant', value: 2 },
+                { text: 'Professor', value: 2 },
+                { text: 'Physical Therapy Assistant', value: 4 },
+                { text: 'Assistant Professor', value: 5 },
+                { text: 'VP Sales', value: 6 },
+                { text: 'Senior Financial Analyst', value: 7 },
+                { text: 'GIS Technical Architect', value: 8 },
+                { text: 'Staff Scientist', value: 9 },
+                { text: 'Data Coordiator', value: 10 },
+                { text: 'Nurse', value: 11 },
+                { text: 'Automation Specialist II', value: 12 },
+                { text: 'Human Resources Assistant III', value: 13 },
+                { text: 'Assistant Professor', value: 14 },
+                { text: 'Recruiting Manager', value: 15 },
+                { text: 'Social Worker', value: 16 },
+                { text: 'Web Developer II', value: 17 },
+                { text: 'Cost Accountant', value: 18 },
+                { text: 'GIS Technical Architect', value: 19 },
+                { text: 'Help Desk Technician', value: 20 },
+
+            ],
+            // filters: this.state.filters,
+            onFilter: (value, record) => record.qualifications.includes(parseInt(value)),
             render: (text, record) => <span>{text.map((id) => this.state.qualifications.find(item => item.id === parseInt(id)).title + ", ")}</span>,
         },
 
@@ -98,10 +123,7 @@ export default class Applications extends React.Component {
         var periodID = null;
         if (this.props.vacationperiod !== undefined) {
             periodID = this.props.vacationperiod.key;
-<<<<<<< HEAD
-=======
             this.setState({ periodID });
->>>>>>> 6d7a5e9b10accfa262ddc2cac45ec5ea7bac47cc
         }
         else {
             this.columns.unshift(
@@ -154,16 +176,11 @@ export default class Applications extends React.Component {
     getQualifications() {
         axios.get(`/api/getallqualifications`)
             .then(res => {
-<<<<<<< HEAD
-                var applications = res.data;
-                for (var i = 0; i < applications.length; i++) {
-=======
                 var qualifications = res.data;
                 var filters = qualifications.map((qualification) => ({ text: qualification.title, value: qualification.title }));
                 filters = [{ text: 'Legal Assistant', value: 'Legal Assistant' }];
                 this.setState({ qualifications });
                 this.setState({ filters })
->>>>>>> 6d7a5e9b10accfa262ddc2cac45ec5ea7bac47cc
 
 
             })
@@ -179,33 +196,6 @@ export default class Applications extends React.Component {
                     staffmembers[i].applications = [];
                 }
 
-<<<<<<< HEAD
-                this.setState({ applications });
-                axios.get(`/api/getstaffmembers`)
-                    .then(res => {
-                        var staffmembers = res.data;
-                        for (var i = 0; i < staffmembers.length; i++) {
-                            staffmembers[i].key = staffmembers[i].emp_no;
-                            staffmembers[i].qualifications = [];
-                        }
-
-                        this.setState({ staffmembers });
-                        axios.get(`/api/getqualifications`)
-                            .then(res => {
-                                var qualifications = res.data;
-                                for (var i = 0; i < qualifications.length; i++) {
-                                    for (var y = 0; y < staffmembers.length; y++) {
-                                        if (staffmembers[y].emp_no == qualifications[i].emp_no) {
-                                            staffmembers[y].qualifications.push(qualifications[i].id);
-                                        }
-                                    }
-                                }
-                                this.setState({ staffmembers });
-                            })
-                    })
-
-                
-=======
                 axios.get(`/api/getqualifications`)
                     .then(res => {
                         var qualifications = res.data;
@@ -291,7 +281,6 @@ export default class Applications extends React.Component {
                             })
 
                     })
->>>>>>> 6d7a5e9b10accfa262ddc2cac45ec5ea7bac47cc
             })
     }
 
@@ -347,6 +336,12 @@ export default class Applications extends React.Component {
                     {record.status === 1 && 'Denied'}
                     {record.status === 2 && 'Accepted'}</span>,
             },
+            {
+                title: 'Description',
+                dataIndex: 'description',
+                key: 'description',
+
+            },
 
             {
                 title: 'Action',
@@ -374,11 +369,7 @@ export default class Applications extends React.Component {
     };
     render() {
         return (
-<<<<<<< HEAD
-            <Table columns={this.columns} dataSource={this.state.applications} />
-=======
             <Table expandedRowRender={this.expandedRowRender} columns={this.columns} dataSource={this.state.staffmemberswithvacation} />
->>>>>>> 6d7a5e9b10accfa262ddc2cac45ec5ea7bac47cc
         );
     }
 
