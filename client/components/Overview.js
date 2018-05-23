@@ -49,7 +49,7 @@ export default class Overview extends React.Component {
             //   },
         }
         const vacation_no = {
-            title: 'Vacation no',
+            title: 'Vac no',
             dataIndex: 'vacation_no',
             key: 'vacation_no',
             fixed: 'left',
@@ -57,7 +57,7 @@ export default class Overview extends React.Component {
             sorter: (a, b) => a.vacation_no - b.vacation_no,
         }
         const choice_no = {
-            title: 'Choice no',
+            title: 'Ch no',
             dataIndex: 'choice_no',
             key: 'choice_no',
             fixed: 'left',

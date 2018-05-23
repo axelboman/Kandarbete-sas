@@ -66,14 +66,14 @@ module.exports = function (app, passport, con, bcrypt) {
         });
     });
     app.post('/api/createqualification', (req, res, next) => {
-            con.query("INSERT INTO competence_group (emp_no, id) VALUES (?,?)",
-                [req.body.emp_no, req.body.qualification], function (err, result, fields) {
-                    if (err) throw err;
-                });
+        con.query("INSERT INTO competence_group (emp_no, id) VALUES (?,?)",
+            [req.body.emp_no, req.body.qualification], function (err, result, fields) {
+                if (err) throw err;
+            });
     });
     app.post('/api/editstaffmembers', (req, res, next) => {
         con.query("UPDATE users AS u SET u.email = ?, u.first_name = ?, u.last_name = ?, u.location = ?, u.status = ? WHERE emp_no = ?",
-            [req.body.target.email, req.body.target.first_name, req.body.target.last_name, req.body.target.location,req.body.target.status,  req.body.target.emp_no], function (err, result, fields) {
+            [req.body.target.email, req.body.target.first_name, req.body.target.last_name, req.body.target.location, req.body.target.status, req.body.target.emp_no], function (err, result, fields) {
                 if (err) throw err;
             });
 
@@ -99,6 +99,29 @@ module.exports = function (app, passport, con, bcrypt) {
 
         });
     });
+    app.post('/api/editqualifications', (req, res, next) => {
+        con.query("DELETE FROM competence_group WHERE emp_no = ?", [req.body.emp_no], function (err, result, fields) {
+            req.body.qualifications.forEach((qualification) => {
+                con.query("INSERT INTO competence_group (emp_no,id) VALUES (?,?)", [req.body.emp_no, qualification], function (err, result, fields) {
+                    if (err) throw err;
+                });
+            });
+        });
+
+    });
+    // app.post('/api/deletequalifications', (req, res, next) => {
+    //     con.query("DELETE FROM competence_group WHERE emp_no = ?", [req.body.emp_no], function (err, result, fields) {
+    //         if (err) throw err;
+
+    //     });
+    // });
+    // app.post('/api/addqualifications', (req, res, next) => {
+
+    //     con.query("INSERT INTO competence_group (emp_no,id) VALUES (?,?)", [req.body.emp_no, req.body.id], function (err, result, fields) {
+    //         if (err) throw err;
+    //     });
+
+    // });
     app.get('/api/getapplications', (req, res, next) => {
         if (req.query.period !== undefined) {
             con.query("SELECT status FROM users WHERE emp_no = ?", [req.user], function (err, result, fields) {

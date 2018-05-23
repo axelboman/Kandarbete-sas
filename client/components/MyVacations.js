@@ -52,7 +52,7 @@ export default class MyVacations extends Component {
       title: 'End date',
       dataIndex: 'end_date',
       key: 'end_date',
-      render: (text, record) => <span>{moment(record.start_date).format('YYYY-MM-DD')}</span>,
+      render: (text, record) => <span>{moment(record.end_date).format('YYYY-MM-DD')}</span>,
     }, {
       title: 'Status',
       dataIndex: 'status',

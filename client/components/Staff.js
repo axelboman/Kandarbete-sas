@@ -7,6 +7,12 @@ const FormItem = Form.Item;
 export default class Staff extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            visible: false,
+            staffmembers: null,
+            qualifications: [],
+            filters: []
+        };
         this.columns = [{
             title: 'Emp no',
             dataIndex: 'emp_no',
@@ -77,9 +83,10 @@ export default class Staff extends React.Component {
             dataIndex: 'qualifications',
             key: 'qualifications',
             filters: [
-                { text: 'Structural Analysis Engineer', value: 'Structural Analysis Engineer' },
-                { text: 'Legal Assistant', value: 'Legal Assistant' },
+                { text: 'Structural Analysis Engineer', value: "1" },
+                { text: 'Legal Assistant', value: "2" },
             ],
+            // filters: this.state.filters,
             onFilter: (value, record) => record.qualifications.includes(value),
             render: (text, record) => (
                 <EditableMultipleSelect
@@ -106,14 +113,20 @@ export default class Staff extends React.Component {
             //     ),
             // }
         ];
-        this.state = {
-            visible: false,
-            staffmembers: null,
-            qualifications: []
-        };
+
     }
     componentDidMount() {
         this.getStaffMembers();
+    }
+    getFilters() {
+
+
+
+
+        // filters: [
+        //     { text: 'Structural Analysis Engineer', value: 'Structural Analysis Engineer' },
+        //     { text: 'Legal Assistant', value: 'Legal Assistant' },
+        // ],
     }
     getStaffMembers() {
         axios.get(`/api/getstaffmembers`)
@@ -124,7 +137,7 @@ export default class Staff extends React.Component {
                     staffmembers[i].qualifications = [];
                 }
 
-                this.setState({ staffmembers });
+ 
                 axios.get(`/api/getqualifications`)
                     .then(res => {
                         var qualifications = res.data;
@@ -141,8 +154,12 @@ export default class Staff extends React.Component {
         axios.get(`/api/getallqualifications`)
             .then(res => {
                 var qualifications = res.data;
-
+                var filters = qualifications.map((qualification) => ({ text: qualification.title, value: qualification.title }));
+            filters =  [{ text: 'Legal Assistant', value: 'Legal Assistant' }];
                 this.setState({ qualifications });
+                this.setState({ filters })
+                
+
             })
 
 
@@ -205,9 +222,16 @@ export default class Staff extends React.Component {
                 target[dataIndex] = value;
                 this.setState({ staffmembers: dataSource });
             }
-            axios.post(`/api/editstaffmembers`, { target });
+            if (dataIndex === "qualifications") {
+                axios.post(`/api/editqualifications`, { emp_no: target.emp_no, qualifications: target.qualifications });
+
+            } else {
+                axios.post(`/api/editstaffmembers`, { target });
+            }
+
         };
     }
+
     // onDelete = (key) => {
     //     const dataSource = [...this.state.vacationperiods];
     //     axios.post(`/api/deletestaffmember`, { id: key })
@@ -508,10 +532,7 @@ class EditableMultipleSelect extends React.Component {
         editable: false,
     }
     handleChange = (e) => {
-        
-        console.log(this.props.personalQualifications)
-        console.log(this.props.qualifications)
-        console.log(e)
+
         const value = e;
         this.setState({ value });
     }
