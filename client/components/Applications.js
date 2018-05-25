@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Divider, Popconfirm } from 'antd';
+import { Badge, Switch, Icon, Button, Modal, Form, Input, Radio, DatePicker, Table, Divider, Popconfirm } from 'antd';
 import axios from 'axios';
 import moment from 'moment';
 const FormItem = Form.Item;
@@ -12,82 +12,96 @@ export default class Applications extends React.Component {
             staffmembers: null,
             staffmemberswithvacation: null,
             periodID: null,
+            loading: false,
+            searchText: '',
+            filterDropdownVisible: false,
+            filtered: false,
             filters: []
         };
-        this.columns = [{
-            title: 'Emp no',
-            dataIndex: 'emp_no',
-            key: 'emp_no',
-            defaultSortOrder: 'descend',
-            sorter: (a, b) => a.emp_no - b.emp_no,
-        },
-        {
-            title: 'First name',
-            dataIndex: 'first_name',
-            key: 'first_name',
-            sorter: (a, b) => { return a.first_name.localeCompare(b.first_name) },
-        }, {
-            title: 'Last name',
-            dataIndex: 'last_name',
-            key: 'last_name',
-            sorter: (a, b) => { return a.last_name.localeCompare(b.last_name) },
-        }, {
-            title: 'Hire date',
-            dataIndex: 'hire_date',
-            key: 'hire_date',
-            sorter: (a, b) => a.hire_date - b.hire_date,
-            render: (text, record) => <span>{moment(record.hire_date).format('YYYY-MM-DD')}</span>,
-        },
-        {
-            title: 'Created',
-            dataIndex: 'created',
-            key: 'created',
-            render: (text, record) => <span>{moment(record.created).format('YYYY-MM-DD')}</span>,
+    }
+    verifyStatus(record) {
+        var vacation1 = null;
+        var vacation2 = null;
+        var vacation3 = null;
+        var v1 = 0;
+        var v2 = 0;
+        var v3 = 0;
+        if (record.applications.find(application => (application.vacation_no == 1 && application.status == 0))) {
+            vacation1 = <Badge status="default" />
+            v1++
+        }
+        if (record.applications.find(application => (application.vacation_no == 1 && application.status == 1))) {
+            vacation1 = <Badge status="error" />
+            v1++
+        }
+        if (record.applications.find(application => (application.vacation_no == 1 && application.status == 2))) {
+            vacation1 = <Badge status="success" />
+            v1++
+        }
+        if (record.applications.find(application => (application.vacation_no == 2 && application.status == 0))) {
+            vacation2 = <Badge status="default" />
+            v2++
+        }
+        if (record.applications.find(application => (application.vacation_no == 2 && application.status == 1))) {
+            vacation2 = <Badge status="error" />
+            v2++
+        }
+        if (record.applications.find(application => (application.vacation_no == 2 && application.status == 2))) {
+            vacation2 = <Badge status="success" />
+            v2++
+        }
+        if (record.applications.find(application => (application.vacation_no == 3 && application.status == 0))) {
+            vacation3 = <Badge status="default" />
+            v3++
+        }
+        if (record.applications.find(application => (application.vacation_no == 3 && application.status == 1))) {
+            vacation3 = <Badge status="error" />
+            v3++
+        }
+        if (record.applications.find(application => (application.vacation_no == 3 && application.status == 2))) {
+            vacation3 = <Badge status="success" />
+            v3++
+        }
+        if (v1 > 1) {
+            vacation1 = <Badge status="warning" />
+        }
+        if (v2 > 1) {
+            vacation2 = <Badge status="warning" />
+        }
+        if (v3 > 1) {
+            vacation3 = <Badge status="warning" />
+        }
 
-        },
-        {
-            title: 'Qualifications',
-            dataIndex: 'qualifications',
-            key: 'qualifications',
-            render: (text, record) => <span>{text.map((id) => this.state.qualifications.find(item => item.id === parseInt(id)).title + ", ")}</span>,
-        },
-
-            // {
-            //     title: 'Vacation no',
-            //     dataIndex: 'vacation_no',
-            //     key: 'vacation_no',
-            // },
-            // {
-            //     title: 'Choice no',
-            //     dataIndex: 'choice_no',
-            //     key: 'choice_no',
-            // },
-            // {
-            //     title: 'Status',
-            //     dataIndex: 'status',
-            //     key: 'status',
-            //     render: (text, record) => <span>{record.status === 0 && 'Not reviewed'}
-            //         {record.status === 1 && 'Denied'}
-            //         {record.status === 2 && 'Accepted'}</span>,
-            // },
-
-            // {
-            //     title: 'Action',
-            //     key: 'action',
-            //     render: (text, record) => (
-            //         <span>
-            //             <a onClick={() => this.confirmApplication(record)}>Confirm</a>
-            //             <Divider type="vertical" />
-            //             <a onClick={() => this.denyApplication(record)}>Deny</a>
-            //             <Divider type="vertical" />
-            //             <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
-            //                 <a href="javascript:;">Delete</a>
-            //             </Popconfirm>
-            //         </span>
-            //     ),
-            // }
-        ];
-
+        return <span>{vacation1}{vacation2}{vacation3}</span>;
+    }
+    onInputChange = (e) => {
+        this.setState({ searchText: e.target.value });
+    }
+    onSearch = () => {
+        const { searchText } = this.state;
+        const reg = new RegExp(searchText, 'gi');
+        this.setState({
+            filterDropdownVisible: false,
+            filtered: !!searchText,
+            staffmemberswithvacation: this.state.staffmemberswithvacation.map((record) => {
+                console.log(record.first_name)
+                const match = record.first_name.match(reg);
+                if (!match) {
+                    return null;
+                }
+                return {
+                    ...record,
+                    first_name: (
+                        <span>
+                            {record.first_name.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((text, i) => (
+                                text.toLowerCase() === searchText.toLowerCase() ?
+                                    <span key={i} className="highlight">{text}</span> : text // eslint-disable-line
+                            ))}
+                        </span>
+                    ),
+                };
+            }).filter(record => !!record),
+        });
     }
     componentDidMount() {
         this.initiailizePeriod();
@@ -104,6 +118,7 @@ export default class Applications extends React.Component {
             this.columns.unshift(
                 {
                     title: 'Period',
+                    width: 130,
                     dataIndex: 'name',
                     key: 'name',
 
@@ -161,6 +176,7 @@ export default class Applications extends React.Component {
             })
     }
     getApplications() {
+        this.setState({ loading: true });
         axios.get(`/api/getstaffmembers`)
             .then(res => {
                 var staffmembers = res.data;
@@ -193,12 +209,12 @@ export default class Applications extends React.Component {
                                     var notfound = true;
                                     for (var y = 0; y < staffmemberswithvacation.length; y++) {
                                         if (applications[i].emp_no === 2) {
-                                            console.log(" - ");
-                                            console.log(applications[i].emp_no);
-                                            console.log(staffmemberswithvacation[y].emp_no);
-                                            console.log(applications[i].name);
-                                            console.log(staffmemberswithvacation[y].name);
-                                            console.log(" + ");
+                                            // console.log(" - ");
+                                            // console.log(applications[i].emp_no);
+                                            // console.log(staffmemberswithvacation[y].emp_no);
+                                            // console.log(applications[i].name);
+                                            // console.log(staffmemberswithvacation[y].name);
+                                            // console.log(" + ");
                                         }
                                         if (
                                             staffmemberswithvacation[y].emp_no === applications[i].emp_no &&
@@ -207,8 +223,8 @@ export default class Applications extends React.Component {
                                             staffmemberswithvacation[y].applications.push(applications[i]);
                                             notfound = false;
                                             if (applications[i].emp_no === 2) {
-                                                console.log(notfound);
-                                                console.log(" / ");
+                                                // console.log(notfound);
+                                                // console.log(" / ");
                                             }
                                         }
                                     }
@@ -252,6 +268,7 @@ export default class Applications extends React.Component {
                                 this.setState({ applications });
                                 this.setState({ staffmembers });
                                 this.setState({ staffmemberswithvacation });
+                                this.setState({ loading: false });
 
                             })
 
@@ -278,6 +295,21 @@ export default class Applications extends React.Component {
                 title: 'Vacation no',
                 dataIndex: 'vacation_no',
                 key: 'vacation_no',
+                render: (value, row, index) => {
+                    const obj = {
+                        children: value,
+                        props: {},
+                    };
+                    if (record.applications.findIndex(application => application.vacation_no == value) == index) {
+                        var vacationno_vacations = record.applications.filter(application => application.vacation_no == value);
+                        obj.props.rowSpan = vacationno_vacations.length;
+                    }
+                    else {
+                        obj.props.rowSpan = 0;
+                    }
+
+                    return obj;
+                },
             },
             {
                 title: 'Choice no',
@@ -311,6 +343,26 @@ export default class Applications extends React.Component {
                     {record.status === 1 && 'Denied'}
                     {record.status === 2 && 'Accepted'}</span>,
             },
+            {
+                title: 'Description',
+                dataIndex: 'description',
+                key: 'description',
+                render: (value, row, index) => {
+                    const obj = {
+                        children: value,
+                        props: {},
+                    };
+                    if (record.applications.findIndex(application => application.vacation_no == row.vacation_no) == index) {
+                        var vacationno_vacations = record.applications.filter(application => application.vacation_no == row.vacation_no);
+                        obj.props.rowSpan = vacationno_vacations.length;
+                    }
+                    else {
+                        obj.props.rowSpan = 0;
+                    }
+
+                    return obj;
+                },
+            },
 
             {
                 title: 'Action',
@@ -337,8 +389,117 @@ export default class Applications extends React.Component {
         );
     };
     render() {
+        const columns = [{
+            title: 'Emp no',
+            width: 140,
+            dataIndex: 'emp_no',
+            key: 'emp_no',
+            defaultSortOrder: 'descend',
+            sorter: (a, b) => a.emp_no - b.emp_no,
+
+        },
+        {
+            title: 'First name',
+            dataIndex: 'first_name',
+            key: 'first_name',
+            width: 130,
+            sorter: (a, b) => { return a.first_name.localeCompare(b.first_name) },
+            filterDropdown: (
+                <div className="custom-filter-dropdown">
+                    <Input
+                        ref={ele => this.searchInput = ele}
+                        placeholder="Search name"
+                        value={this.state.searchText}
+                        onChange={this.onInputChange}
+                        onPressEnter={this.onSearch}
+                    />
+                    <Button type="primary" onClick={this.onSearch}>Search</Button>
+                </div>
+            ),
+            filterIcon: <Icon type="search" style={{ color: this.state.filtered ? '#108ee9' : '#aaa' }} />,
+            filterDropdownVisible: this.state.filterDropdownVisible,
+            onFilterDropdownVisibleChange: (visible) => {
+                this.setState({
+                    filterDropdownVisible: visible,
+                }, () => this.searchInput && this.searchInput.focus());
+            },
+        }, {
+            title: 'Last name',
+            dataIndex: 'last_name',
+            key: 'last_name',
+            width: 120,
+            sorter: (a, b) => { return a.last_name.localeCompare(b.last_name) },
+        }, {
+            title: 'Hire date',
+            dataIndex: 'hire_date',
+            key: 'hire_date',
+            width: 120,
+            sorter: (a, b) => a.hire_date - b.hire_date,
+            render: (text, record) => <span>{moment(record.hire_date).format('YYYY-MM-DD')}</span>,
+        },
+        {
+            title: 'Created',
+            dataIndex: 'created',
+            key: 'created',
+            width: 120,
+            render: (text, record) => <span>{moment(record.created).format('YYYY-MM-DD')}</span>,
+
+        }, {
+            title: 'Status',
+            key: 'status',
+            width: 120,
+            render: (text, record) => this.verifyStatus(record),
+        },
+        {
+            title: 'Qualifications',
+            dataIndex: 'qualifications',
+            key: 'qualifications',
+            filters: [
+                { text: 'Structural Analysis Engineer', value: 1 },
+                { text: 'Legal Assistant', value: 2 },
+                { text: 'Professor', value: 3 },
+                { text: 'Physical Therapy Assistant', value: 4 },
+                { text: 'Assistant Professor', value: 5 },
+                { text: 'VP Sales', value: 6 },
+                { text: 'Senior Financial Analyst', value: 7 },
+                { text: 'GIS Technical Architect', value: 8 },
+                { text: 'Staff Scientist', value: 9 },
+                { text: 'Data Coordiator', value: 10 },
+                { text: 'Nurse', value: 11 },
+                { text: 'Automation Specialist II', value: 12 },
+                { text: 'Human Resources Assistant III', value: 13 },
+                { text: 'Assistant Professor', value: 14 },
+                { text: 'Recruiting Manager', value: 15 },
+                { text: 'Social Worker', value: 16 },
+                { text: 'Web Developer II', value: 17 },
+                { text: 'Cost Accountant', value: 18 },
+                { text: 'GIS Technical Architect', value: 19 },
+                { text: 'Help Desk Technician', value: 20 },
+
+            ],
+            // filters: this.state.filters,
+            onFilter: (value, record) => record.qualifications.includes(parseInt(value)),
+            render: (text, record) => <span>{text.map((id) => this.state.qualifications.find(item => item.id === parseInt(id)).title + ", ")}</span>,
+        },
+
+            // {
+            //     title: 'Action',
+            //     key: 'action',
+            //     render: (text, record) => (
+            //         <span>
+            //             <a onClick={() => this.confirmApplication(record)}>Confirm</a>
+            //             <Divider type="vertical" />
+            //             <a onClick={() => this.denyApplication(record)}>Deny</a>
+            //             <Divider type="vertical" />
+            //             <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+            //                 <a href="javascript:;">Delete</a>
+            //             </Popconfirm>
+            //         </span>
+            //     ),
+            // }
+        ];
         return (
-            <Table expandedRowRender={this.expandedRowRender} columns={this.columns} dataSource={this.state.staffmemberswithvacation} />
+            <Table scroll={{ y: 650 }} loading={this.state.loading} expandedRowRender={this.expandedRowRender} columns={columns} dataSource={this.state.staffmemberswithvacation} />
         );
     }
 

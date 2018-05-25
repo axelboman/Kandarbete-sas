@@ -9,6 +9,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
 var mysql = require('mysql');
 
+
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -19,6 +20,7 @@ con.connect(function (err) {
     if (err) throw err
 
 });
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

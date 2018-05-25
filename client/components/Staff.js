@@ -10,6 +10,7 @@ export default class Staff extends React.Component {
         this.state = {
             visible: false,
             staffmembers: null,
+            loading: false,
             qualifications: [],
             filters: []
         };
@@ -129,6 +130,7 @@ export default class Staff extends React.Component {
         // ],
     }
     getStaffMembers() {
+        this.setState({ loading: true });
         axios.get(`/api/getstaffmembers`)
             .then(res => {
                 var staffmembers = res.data;
@@ -158,6 +160,7 @@ export default class Staff extends React.Component {
             filters =  [{ text: 'Legal Assistant', value: 'Legal Assistant' }];
                 this.setState({ qualifications });
                 this.setState({ filters })
+                this.setState({ loading: false });
                 
 
             })
@@ -251,7 +254,7 @@ export default class Staff extends React.Component {
                         onCreate={this.handleCreate}
                         staff={this.state.staffmembers}
                     />
-                    <Table columns={this.columns} dataSource={this.state.staffmembers} />
+                    <Table loading={this.state.loading} columns={this.columns} dataSource={this.state.staffmembers} />
                 </div>
             </div>
 

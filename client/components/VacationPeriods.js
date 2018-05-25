@@ -108,6 +108,7 @@ export default class VacationPeriods extends React.Component {
             overviewvisibility: false,
             applicationvisibility: false,
             visible: false,
+            loading: false,
             vacationperiods: null,
             activevacationperiod: null
         };
@@ -142,6 +143,8 @@ export default class VacationPeriods extends React.Component {
         axios.post(`/api/editvacationperiod`, { id: id, openstatus: openstatus });
     }
     getVacationPeriods() {
+        this.setState({ loading: true });
+
         axios.get(`/api/getvacationperiods`)
             .then(res => {
                 var vacationperiods = res.data;
@@ -151,6 +154,7 @@ export default class VacationPeriods extends React.Component {
                     vacationperiods[i].key = vacationperiods[i].id;
                 }
                 this.setState({ vacationperiods });
+                this.setState({ loading: false });
             })
     }
     showModal = () => {
@@ -214,7 +218,7 @@ export default class VacationPeriods extends React.Component {
                             onCancel={this.handleCancel}
                             onCreate={this.handleCreate}
                         />
-                        <Table columns={this.columns} dataSource={this.state.vacationperiods} />
+                        <Table loading={this.state.loading} columns={this.columns} dataSource={this.state.vacationperiods} />
                     </div>
                 }
                 {this.state.overviewvisibility &&

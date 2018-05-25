@@ -324,7 +324,7 @@ const TimeRelatedForm = Form.create()(
             const formItemLayout = {
                 labelCol: {
                     xs: { span: 24 },
-                    sm: { span: 5 },
+                    sm: { span: 12 },
                 },
                 wrapperCol: {
                     xs: { span: 24 },
