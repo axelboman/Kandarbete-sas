@@ -167,8 +167,7 @@ export default class Applications extends React.Component {
         axios.get(`/api/getallqualifications`)
             .then(res => {
                 var qualifications = res.data;
-                var filters = qualifications.map((qualification) => ({ text: qualification.title, value: qualification.title }));
-                filters = [{ text: 'Legal Assistant', value: 'Legal Assistant' }];
+                var filters = qualifications.map((qualification) => ({ text: qualification.title, value: qualification.id }));
                 this.setState({ qualifications });
                 this.setState({ filters })
 
@@ -454,30 +453,30 @@ export default class Applications extends React.Component {
             title: 'Qualifications',
             dataIndex: 'qualifications',
             key: 'qualifications',
-            filters: [
-                { text: 'Structural Analysis Engineer', value: 1 },
-                { text: 'Legal Assistant', value: 2 },
-                { text: 'Professor', value: 3 },
-                { text: 'Physical Therapy Assistant', value: 4 },
-                { text: 'Assistant Professor', value: 5 },
-                { text: 'VP Sales', value: 6 },
-                { text: 'Senior Financial Analyst', value: 7 },
-                { text: 'GIS Technical Architect', value: 8 },
-                { text: 'Staff Scientist', value: 9 },
-                { text: 'Data Coordiator', value: 10 },
-                { text: 'Nurse', value: 11 },
-                { text: 'Automation Specialist II', value: 12 },
-                { text: 'Human Resources Assistant III', value: 13 },
-                { text: 'Assistant Professor', value: 14 },
-                { text: 'Recruiting Manager', value: 15 },
-                { text: 'Social Worker', value: 16 },
-                { text: 'Web Developer II', value: 17 },
-                { text: 'Cost Accountant', value: 18 },
-                { text: 'GIS Technical Architect', value: 19 },
-                { text: 'Help Desk Technician', value: 20 },
+            // filters: [
+            //     { text: 'Structural Analysis Engineer', value: 1 },
+            //     { text: 'Legal Assistant', value: 2 },
+            //     { text: 'Professor', value: 3 },
+            //     { text: 'Physical Therapy Assistant', value: 4 },
+            //     { text: 'Assistant Professor', value: 5 },
+            //     { text: 'VP Sales', value: 6 },
+            //     { text: 'Senior Financial Analyst', value: 7 },
+            //     { text: 'GIS Technical Architect', value: 8 },
+            //     { text: 'Staff Scientist', value: 9 },
+            //     { text: 'Data Coordiator', value: 10 },
+            //     { text: 'Nurse', value: 11 },
+            //     { text: 'Automation Specialist II', value: 12 },
+            //     { text: 'Human Resources Assistant III', value: 13 },
+            //     { text: 'Assistant Professor', value: 14 },
+            //     { text: 'Recruiting Manager', value: 15 },
+            //     { text: 'Social Worker', value: 16 },
+            //     { text: 'Web Developer II', value: 17 },
+            //     { text: 'Cost Accountant', value: 18 },
+            //     { text: 'GIS Technical Architect', value: 19 },
+            //     { text: 'Help Desk Technician', value: 20 },
 
-            ],
-            // filters: this.state.filters,
+            // ],
+            filters: this.state.filters,
             onFilter: (value, record) => record.qualifications.includes(parseInt(value)),
             render: (text, record) => <span>{text.map((id) => this.state.qualifications.find(item => item.id === parseInt(id)).title + ", ")}</span>,
         },

@@ -28,6 +28,13 @@ module.exports = function (app, passport, con, bcrypt) {
             if (err) throw err;
         });
     });
+    app.post('/api/deletevacations', (req, res, next) => {
+        console.log(req.user)
+        console.log(req.body.period )
+        con.query("DELETE FROM vacation WHERE emp_no=? AND period =?", [req.user,req.body.period ], function (err, result, fields) {
+            if (err) throw err;
+        });
+    });
     app.post('/api/editvacation', (req, res, next) => {
         if (req.body.status !== undefined) {
             con.query("UPDATE vacation SET status = ? WHERE id=?", [req.body.status, req.body.id], function (err, result, fields) {

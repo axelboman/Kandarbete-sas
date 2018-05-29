@@ -23,7 +23,7 @@ export default class Login extends React.Component {
       const { getFieldDecorator } = this.props.form;
       return (
         <Row>
-        <Col offset={10} span={4}>
+        <Col offset={10} span={5}>
         <Form onSubmit={this.handleSubmit} className="login-form">
           <FormItem>
             {getFieldDecorator('username', {
